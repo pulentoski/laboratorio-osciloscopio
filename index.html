@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Laboratorio de Osciloscopio</title>
+<meta name="description" content="Laboratorio virtual pedagógico: generador de funciones y osciloscopio analógico interactivo, con guía de uso y ejercicios prácticos.">
+<meta property="og:title" content="Laboratorio Virtual · Generador de Funciones y Osciloscopio">
+<meta property="og:description" content="Simulador interactivo con perillas, guía paso a paso y ejercicios con corrección.">
+<meta name="theme-color" content="#1b2024">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{background:radial-gradient(ellipse at 50% -10%,#46525a,#1b2024 60%) fixed;color:#e3e8eb;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;min-height:100vh}
+a{color:#7fd3ff}
+
+/* barra superior */
+.top{position:sticky;top:0;z-index:50;background:rgba(20,24,27,.88);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.08)}
+.top .in{max-width:1440px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.top h1{font-size:16px;margin:0;font-weight:650}
+.top h1 small{display:block;font-size:11px;font-weight:400;color:#9fb0ba}
+.nav{display:flex;gap:6px;flex-wrap:wrap}
+.nav a,.nav button{font:600 13px system-ui;color:#dfe6ea;text-decoration:none;padding:7px 12px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);cursor:pointer}
+.nav a:hover,.nav button:hover{background:rgba(255,255,255,.14)}
+main{padding:16px}
+
+/* banco */
+.bench{position:relative;max-width:1440px;margin:0 auto;display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap;transition:padding .2s}
+.bench.wired{padding-bottom:90px}
+#cables{position:absolute;left:0;top:0;overflow:visible;pointer-events:none;z-index:0}
+.inst{z-index:1}
+.bnc{position:relative}
+.bnc.plug::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:4px solid #2a2c2e;box-shadow:0 0 0 2px var(--pc),0 3px 6px rgba(0,0,0,.6),inset 0 0 0 2px #777}
+.inst{position:relative;border-radius:14px;padding:14px;box-shadow:0 22px 46px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.3),inset 0 -2px 0 rgba(0,0,0,.25)}
+.gen{flex:1 1 330px;max-width:430px;color:#262a2d;background:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 3px),linear-gradient(#dcd9cf,#b6b2a6)}
+.scope{flex:3 1 660px;color:#d9e1e6;background:repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px),linear-gradient(#5d6973,#39424a)}
+.inst::before{content:"";position:absolute;inset:6px;border-radius:10px;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.screw{position:absolute;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ddd,#666);box-shadow:0 1px 1px rgba(0,0,0,.6)}
+.screw::after{content:"";position:absolute;left:1px;right:1px;top:4px;height:2px;background:#444;transform:rotate(35deg)}
+.screw.a{top:8px;left:8px}.screw.b{top:8px;right:8px}.screw.c{bottom:8px;left:8px}.screw.d{bottom:8px;right:8px}
+.brand{display:flex;justify-content:space-between;align-items:center;margin:0 10px 10px;font-size:11px;letter-spacing:.14em;font-weight:800;gap:10px}
+.brand .sub{font-weight:500;letter-spacing:.06em;opacity:.75}
+.pbtn{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:6px;padding:6px 9px;font:800 10px system-ui;letter-spacing:.08em;cursor:pointer;color:#eee;background:linear-gradient(#5a5f64,#2c2f33);box-shadow:0 2px 4px rgba(0,0,0,.5),0 0 0 1px #15171a}
+.pbtn:active{transform:translateY(1px)}
+.sec{border-radius:10px;padding:8px 10px 10px;margin-bottom:10px;transition:filter .3s,opacity .3s}
+.scope .sec{background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.08)}
+.gen .sec{background:rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.1)}
+.sec h3{margin:0 0 8px;font-size:10px;letter-spacing:.16em;font-weight:800;opacity:.9}
+.sec h3 small{font-weight:600;letter-spacing:.06em;opacity:.7;text-transform:none}
+.row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;justify-content:space-around}
+.col{display:flex;flex-direction:column;align-items:center;gap:6px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.split>div{display:flex;flex-direction:column;align-items:center;gap:7px;padding:6px 4px;border-radius:8px;background:rgba(0,0,0,.12)}
+.chtag{font:800 11px/1 system-ui;letter-spacing:.1em;padding:3px 8px;border-radius:4px;color:#111}
+.c1{background:#ffe45c}.c2{background:#55e3ff}
+.cap{font:600 9.5px/1.3 system-ui;opacity:.7;text-align:center;max-width:240px}
+.glbl{font:800 10px system-ui;letter-spacing:.08em;text-align:center;line-height:1.15}
+.glbl small,.kw .lbl small{display:block;font-weight:600;font-size:8.5px;letter-spacing:.02em;opacity:.7;text-transform:none}
+
+/* perillas */
+.kw{display:flex;flex-direction:column;align-items:center;gap:4px;user-select:none;-webkit-user-select:none;min-width:62px}
+.kw .lbl{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;text-align:center;line-height:1.15}
+.kw .val{font:600 10px/1.2 ui-monospace,Consolas,monospace;min-height:12px;opacity:.85;white-space:nowrap}
+.knob{position:relative;width:var(--s);height:var(--s);margin:8px;touch-action:none;cursor:grab;border-radius:50%;outline:none}
+.knob.drag{cursor:grabbing}
+.knob.s{--s:40px}.knob.m{--s:54px}.knob.l{--s:78px}
+.knob:focus-visible{box-shadow:0 0 0 3px #4da3ff}
+.knob .ticks{position:absolute;inset:-8px;pointer-events:none}
+.knob .ticks b{position:absolute;left:50%;top:0;width:2px;height:5px;margin-left:-1px;background:currentColor;opacity:.65;transform-origin:50% calc(var(--s)/2 + 8px)}
+.knob .rot{position:absolute;inset:0;border-radius:50%;transition:transform .06s linear}
+.knob .skirt{position:absolute;inset:0;border-radius:50%;background:repeating-conic-gradient(#1b1d1f 0 4deg,#41454a 4deg 8deg);box-shadow:0 6px 12px rgba(0,0,0,.6),0 0 0 2px #121416}
+.knob .cap{position:absolute;inset:13%;border-radius:50%;background:radial-gradient(circle at 35% 28%,#8a9096,#34383c 55%,#17191b);box-shadow:inset 0 1px 1px rgba(255,255,255,.4),0 2px 4px rgba(0,0,0,.6)}
+.knob .cap::after{content:"";position:absolute;inset:18%;border-radius:50%;background:radial-gradient(circle at 40% 30%,rgba(255,255,255,.18),transparent 60%)}
+.knob .cap i{position:absolute;left:50%;top:5%;width:3px;height:36%;margin-left:-1.5px;border-radius:2px;background:var(--cap,#f4f4f4);box-shadow:0 0 4px var(--cap,#fff)}
+.knob:hover .skirt{box-shadow:0 6px 12px rgba(0,0,0,.6),0 0 0 2px #121416,0 0 12px rgba(120,190,255,.35)}
+.knob .bubble{position:absolute;left:50%;bottom:calc(100% + 12px);transform:translateX(-50%) scale(.85);background:#0d1114;color:#e9f6ff;border:1px solid #4da3ff;font:700 12px ui-monospace,Consolas,monospace;padding:4px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:.12s;z-index:20;box-shadow:0 6px 14px rgba(0,0,0,.5)}
+.knob.drag .bubble{opacity:1;transform:translateX(-50%) scale(1)}
+
+/* botones */
+.seg{display:inline-flex;border-radius:6px;overflow:hidden;box-shadow:0 2px 5px rgba(0,0,0,.5),0 0 0 1px #15171a}
+.btn{appearance:none;border:0;background:linear-gradient(#53585d,#2d3034);color:#e6eaed;font:800 10px/1 system-ui,sans-serif;letter-spacing:.06em;padding:8px 9px;cursor:pointer;border-right:1px solid #16181b;display:inline-flex;align-items:center;gap:5px;transition:background .1s}
+.btn:last-child{border-right:0}
+.btn:hover{background:linear-gradient(#62676c,#36393d)}
+.btn:active{transform:translateY(1px)}
+.btn.on{background:linear-gradient(#202326,#373b3f);color:#fff;box-shadow:inset 0 3px 6px rgba(0,0,0,.75);text-shadow:0 0 6px rgba(140,210,255,.8)}
+.btn svg{width:20px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8}
+.tg{border-radius:6px;box-shadow:0 2px 5px rgba(0,0,0,.5),0 0 0 1px #15171a}
+.led{width:8px;height:8px;border-radius:50%;background:#3b1414;box-shadow:inset 0 1px 2px rgba(0,0,0,.6);flex:none}
+.on>.led,.led.on{background:#ff4b3e;box-shadow:0 0 8px #ff4b3e,0 0 2px #fff inset}
+.led.g{background:#143b18}
+.on>.led.g,.led.g.on{background:#59ff6b;box-shadow:0 0 8px #59ff6b,0 0 2px #fff inset}
+.ledwrap{display:flex;align-items:center;gap:6px;font:800 10px system-ui;letter-spacing:.08em}
+
+/* LCD */
+.lcd{position:relative;background:linear-gradient(#06130f,#0b1e19);border-radius:8px;padding:10px 12px;font-family:ui-monospace,Consolas,"Courier New",monospace;color:#6ff5d2;text-shadow:0 0 6px rgba(111,245,210,.6);box-shadow:inset 0 3px 10px #000,0 0 0 3px #2c2f2f,0 0 0 5px #8d897f;margin:4px 3px 14px;overflow:hidden;transition:color .3s}
+.lcd::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);pointer-events:none}
+.lcd.dark{color:transparent;text-shadow:none}
+.lcd.boot{animation:boot .6s steps(6)}
+@keyframes boot{0%{opacity:.2}30%{opacity:1}45%{opacity:.4}60%{opacity:1}75%{opacity:.7}100%{opacity:1}}
+.lrow{display:flex;justify-content:space-between;gap:10px;font-size:13px;line-height:1.7}
+.lrow.big{font-size:20px;line-height:1.5}
+.lrow .lk{opacity:.6}
+.lrow .lk small{font-size:10px}
+.ed{cursor:text;border-bottom:1px dashed rgba(111,245,210,.25)}
+.ed:hover{border-bottom-color:rgba(111,245,210,.8)}
+.lcdin{width:9em;background:#0e2a24;border:1px solid #6ff5d2;color:#6ff5d2;font:inherit;padding:0 4px;outline:none;text-align:right}
+.lcd .warn{color:#ff8a6b;text-shadow:0 0 6px rgba(255,138,107,.6)}
+.outs,.inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.out{display:flex;flex-direction:column;align-items:center;gap:6px;font:800 10px system-ui;letter-spacing:.06em;text-align:center}
+.bnc{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle,#0c0c0c 0 16%,#d7d7d7 18% 40%,#7c7c7c 43% 56%,#e2e2e2 59% 70%,#6f6f6f 73%);box-shadow:0 3px 6px rgba(0,0,0,.5)}
+.gen .btn{background:linear-gradient(#5d6166,#33363a)}
+.gen .btn.on{background:linear-gradient(#202326,#3a3e42)}
+.gen.locked .adj{filter:blur(5px) grayscale(1);opacity:.45;pointer-events:none}
+.lockmsg{display:none;margin:0 3px 12px;padding:9px 11px;border-radius:8px;background:#2a2318;color:#ffd99a;font:600 12px/1.4 system-ui;border:1px solid #6b5420}
+.gen.locked .lockmsg{display:block}
+.lockmsg button{margin-top:6px;font:700 11px system-ui;padding:5px 9px;border-radius:6px;border:0;background:#ffcf6b;color:#2a1d00;cursor:pointer}
+
+/* pantalla */
+.scope-body{display:grid;grid-template-columns:minmax(300px,1.3fr) minmax(290px,1fr);gap:16px}
+@media(max-width:940px){.scope-body{grid-template-columns:1fr}}
+.bezel{background:linear-gradient(#202326,#141618);border-radius:16px;padding:14px;box-shadow:inset 0 2px 0 rgba(255,255,255,.08),inset 0 -2px 6px #000,0 3px 8px rgba(0,0,0,.5);margin-bottom:12px}
+.screen{position:relative;width:100%;aspect-ratio:5/4;border-radius:14px/16px;overflow:hidden;background:radial-gradient(ellipse at center,#0e2118,#030806 85%);box-shadow:inset 0 0 34px #000;transition:background .8s}
+.screen.off{background:radial-gradient(ellipse at center,#0a0f0c,#020403 85%)}
+.screen.off .crt{opacity:.15}
+.crt{position:absolute;top:5%;bottom:5%;left:5%;right:5%;transition:opacity .5s}
+.crt canvas{position:absolute;inset:0;width:100%;height:100%}
+#cvBloom{filter:blur(7px) brightness(1.7) saturate(1.25);opacity:.85;mix-blend-mode:screen}
+#cvTrace{mix-blend-mode:screen}
+.screen::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px);mix-blend-mode:multiply}
+.screen::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:3;background:linear-gradient(125deg,rgba(255,255,255,.1),rgba(255,255,255,0) 32%),radial-gradient(ellipse at 50% 120%,rgba(255,255,255,.05),transparent 50%),radial-gradient(ellipse at center,transparent 52%,rgba(0,0,0,.65))}
+.screen-lbl{display:flex;justify-content:space-between;font:700 10px system-ui;letter-spacing:.12em;opacity:.6;margin-top:8px;padding:0 4px}
+.inputs{margin-top:4px}
+
+/* tooltip */
+#tip{position:fixed;z-index:100;max-width:280px;background:#0f1418;color:#e7eef2;border:1px solid #3d6a8a;border-radius:8px;padding:8px 10px;font:13px/1.4 system-ui;box-shadow:0 10px 24px rgba(0,0,0,.5);pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s}
+#tip.show{opacity:1;transform:none}
+#tip b{color:#9fdcff}
+
+/* documento */
+.doc{max-width:1100px;margin:40px auto 0;background:#1d2327;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:26px 30px;line-height:1.6;color:#d6dfe4;box-shadow:0 14px 36px rgba(0,0,0,.4)}
+.doc h2{margin:0 0 6px;font-size:24px;color:#fff}
+.doc h2+p.lead{margin-top:0;color:#a9b8c1}
+.doc h3{margin:28px 0 8px;font-size:17px;color:#9fdcff;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:6px}
+.doc table{width:100%;border-collapse:collapse;margin:10px 0 6px;font-size:14px}
+.doc th,.doc td{text-align:left;vertical-align:top;padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.07)}
+.doc th{color:#9fb0ba;font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.doc td:first-child{white-space:nowrap}
+.k{display:inline-block;font:800 11px/1 system-ui;letter-spacing:.05em;padding:4px 7px;border-radius:5px;background:linear-gradient(#53585d,#2d3034);color:#fff;box-shadow:0 1px 0 #000}
+.es{color:#ffd166;font-style:italic}
+.formula{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:12px 0}
+.formula div{background:#12171a;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.formula b{display:block;color:#fff;font:600 15px ui-monospace,Consolas,monospace;margin-bottom:3px}
+.formula span{font-size:13px;color:#a9b8c1}
+.figwrap{display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+.figwrap svg{flex:0 0 auto;max-width:100%;background:#071109;border-radius:10px}
+.figwrap .txt{flex:1 1 280px}
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{position:relative;padding:8px 0 8px 44px}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:6px;width:30px;height:30px;border-radius:50%;background:#2c5a7a;color:#fff;display:grid;place-items:center;font-weight:700}
+.tipbox{background:#16232b;border-left:4px solid #4da3ff;padding:10px 14px;border-radius:6px;margin:12px 0;font-size:14px}
+
+/* ejercicios */
+.exgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:14px}
+.exc{background:#12171a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px;transition:transform .15s,border-color .15s}
+.exc:hover{transform:translateY(-2px);border-color:rgba(77,163,255,.5)}
+.exc.done{border-color:rgba(89,255,107,.45)}
+.exc h4{margin:2px 0;font-size:15px;color:#fff}
+.exc p{margin:0;font-size:13px;color:#b4c2ca}
+.exc .mini{font-size:12px;color:#8fa1ab}
+.exh{display:flex;justify-content:space-between;align-items:center;font-size:11px}
+.lvl{font-weight:800;letter-spacing:.06em;padding:2px 8px;border-radius:20px;font-size:10px}
+.lv-Básico{background:#1f4d2b;color:#9dffb1}.lv-Intermedio{background:#4d421f;color:#ffe08a}.lv-Avanzado{background:#4d1f2b;color:#ffa0b4}
+.ok{color:#7dff91;font-weight:700}
+.go{margin-top:auto;font:700 13px system-ui;padding:8px 12px;border-radius:8px;border:0;background:#2f7bd1;color:#fff;cursor:pointer}
+.go:hover{background:#3a8ae6}
+.progress{font-size:13px;color:#a9b8c1}
+.progress b{color:#7dff91}
+
+/* panel ejercicio activo */
+#dock{position:fixed;right:14px;bottom:14px;z-index:60;width:min(420px,calc(100vw - 28px));max-height:min(62vh,600px);display:none;flex-direction:column;background:#161c20;border:1px solid #3d6a8a;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.65);overflow:hidden}
+#dock.open{display:flex}
+#dock.min .dk-b{display:none}
+.dk-h{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#1f2b33;cursor:pointer}
+.dk-h b{flex:1;font-size:14px}
+.dk-h button{border:0;background:rgba(255,255,255,.1);color:#fff;width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:16px}
+.dk-b{overflow:auto;padding:12px 16px 16px;font-size:14px;line-height:1.5}
+.dk-b h5{margin:14px 0 6px;font-size:12px;letter-spacing:.1em;color:#9fdcff;text-transform:uppercase}
+.dk-b ol{margin:0;padding-left:20px}
+.dk-b li{margin:4px 0}
+.note{background:#2a2318;color:#ffd99a;border-radius:8px;padding:8px 10px;font-size:13px}
+.q{background:#11171b;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px;margin:8px 0}
+.q p{margin:0 0 7px}
+.qa{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.qa input[type=text]{width:120px;background:#0a0e10;border:1px solid #3a4a55;border-radius:6px;color:#fff;padding:6px 8px;font:14px ui-monospace,Consolas,monospace}
+.qa .u{color:#9fb0ba;font-size:13px}
+.qa label{display:flex;gap:6px;align-items:flex-start;width:100%;cursor:pointer;padding:3px 0}
+.chk{font:700 12px system-ui;padding:6px 10px;border-radius:6px;border:0;background:#2f7bd1;color:#fff;cursor:pointer}
+.fb{font-size:13px;margin-top:6px;min-height:0}
+.fb.good{color:#7dff91}.fb.bad{color:#ff9a8a}
+details.sol{margin-top:12px;background:#12201a;border:1px solid #275a3a;border-radius:10px;padding:8px 12px}
+details.sol summary{cursor:pointer;font-weight:700;color:#9dffb1}
+details.sol p,details.sol li{font-size:13.5px}
+.dk-f{display:flex;gap:8px;justify-content:space-between;margin-top:12px;flex-wrap:wrap}
+.dk-f button{font:700 12px system-ui;padding:7px 11px;border-radius:7px;border:1px solid rgba(255,255,255,.15);background:#232c32;color:#fff;cursor:pointer}
+.celebrate{background:#163a22;border:1px solid #2f8a4c;color:#b6ffc5;padding:8px 10px;border-radius:8px;margin-top:10px;font-weight:600}
+footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;font-size:12px}
+</style>
+</head>
+<body>
+<div class="top"><div class="in">
+  <h1>Laboratorio Virtual · Generador de Funciones y Osciloscopio<small>Simulador pedagógico de banco de pruebas</small></h1>
+  <nav class="nav"><a href="#lab">🔬 Laboratorio</a><a href="#guia">📘 Cómo usar</a><a href="#ejercicios">📝 Ejercicios</a><button id="resetAll" data-help="Vuelve todos los equipos a su configuración inicial.">↺ Restablecer</button></nav>
+</div></div>
+
+<main>
+<section id="lab">
+<div class="bench">
+  <svg id="cables"></svg>
+  <!-- GENERADOR -->
+  <section class="inst gen" id="gen">
+    <i class="screw a"></i><i class="screw b"></i><i class="screw c"></i><i class="screw d"></i>
+    <div class="brand"><span>GF-2 · GENERADOR DE FUNCIONES<br><span class="sub">FUNCTION GENERATOR · 1 Hz – 1 MHz</span></span>
+      <button class="pbtn tg" data-t="gpow" data-help="<b>POWER (encendido)</b><br>Enciende o apaga el generador. Apagado no entrega señal."><span class="led g"></span>POWER<small style="font-weight:600;opacity:.7">(encendido)</small></button></div>
+    <div class="lcd" id="lcd">
+      <div class="lrow"><span id="lcdCh">CH1</span><span id="lcdWave">SENOIDAL</span><span id="lcdOut">SALIDA ON</span></div>
+      <div class="lrow big"><span class="lk">FREC</span><span class="ed" data-f="freq" id="lcdF" data-help="Clic para escribir la frecuencia exacta. Ej: <b>2.5k</b> = 2500 Hz, <b>1M</b> = 1 MHz."></span></div>
+      <div class="lrow"><span class="lk">AMPL <small>(pico a pico)</small></span><span class="ed" data-f="amp" id="lcdA" data-help="Clic para escribir la amplitud pico a pico. Ej: <b>500m</b> = 0,5 V."></span></div>
+      <div class="lrow"><span class="lk">OFFSET <small>(nivel DC)</small></span><span class="ed" data-f="off" id="lcdO" data-help="Clic para escribir el offset (componente continua). Ej: <b>-2.5</b>."></span></div>
+      <div class="lrow"><span class="lk">FASE</span><span class="ed" data-f="ph" id="lcdP" data-help="Clic para escribir la fase en grados (0 a 360)."></span></div>
+    </div>
+    <div class="lockmsg">🔒 <b>Señal desconocida.</b> El generador está oculto: mida la señal solo con el osciloscopio.<br><button id="reveal">Revelar valores del generador</button></div>
+    <div class="sec adj">
+      <h3>CANAL Y FORMA DE ONDA <small>(channel · waveform)</small></h3>
+      <div class="row" style="justify-content:space-between">
+        <div class="col"><div class="seg" data-k="gs" data-help="<b>Selector de canal</b><br>Elige qué salida del generador (CH1 u CH2) está editando con las perillas."><button class="btn" data-v="0">CH1</button><button class="btn" data-v="1">CH2</button></div><span class="cap">canal que se edita</span></div>
+        <div class="col"><div class="seg" data-k="wave" data-help="<b>Forma de onda</b><br>Senoidal, triangular, cuadrada o diente de sierra.">
+          <button class="btn" data-v="sine" title="Senoidal"><svg viewBox="0 0 20 14"><path d="M1 7 Q5.5 -2 10 7 T19 7"/></svg></button>
+          <button class="btn" data-v="triangle" title="Triangular"><svg viewBox="0 0 20 14"><path d="M1 7 L5.5 2 L14.5 12 L19 7"/></svg></button>
+          <button class="btn" data-v="square" title="Cuadrada"><svg viewBox="0 0 20 14"><path d="M1 12 V2 H10 V12 H19 V2"/></svg></button>
+          <button class="btn" data-v="saw" title="Diente de sierra"><svg viewBox="0 0 20 14"><path d="M1 12 L10 2 V12 L19 2"/></svg></button>
+        </div><span class="cap">senoidal · triangular · cuadrada · sierra</span></div>
+      </div>
+    </div>
+    <div class="sec adj">
+      <h3>AJUSTES <small>(settings)</small></h3>
+      <div class="row"><div id="kFreq"></div><div id="kFine"></div></div>
+      <div class="row" style="margin-top:6px"><div id="kAmp"></div><div id="kOff"></div><div id="kPh"></div></div>
+    </div>
+    <div class="sec">
+      <h3>SALIDAS <small>(outputs)</small></h3>
+      <div class="outs">
+        <div class="out"><div class="bnc" id="bncO1"></div><span>OUT 1 <small style="font-weight:600">(salida 1)</small> → CH1</span><button class="btn tg" data-t="out0" data-help="<b>OUTPUT (salida)</b><br>Activa o corta la salida 1. Con la salida cortada el osciloscopio ve 0 V."><span class="led"></span>OUTPUT <small style="font-weight:600;opacity:.8">(salida)</small></button></div>
+        <div class="out"><div class="bnc" id="bncO2"></div><span>OUT 2 <small style="font-weight:600">(salida 2)</small> → CH2</span><button class="btn tg" data-t="out1" data-help="<b>OUTPUT (salida)</b><br>Activa o corta la salida 2."><span class="led"></span>OUTPUT <small style="font-weight:600;opacity:.8">(salida)</small></button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OSCILOSCOPIO -->
+  <section class="inst scope" id="scope">
+    <i class="screw a"></i><i class="screw b"></i><i class="screw c"></i><i class="screw d"></i>
+    <div class="brand"><span>OS-2020 · OSCILOSCOPIO ANALÓGICO<br><span class="sub">2 CHANNEL OSCILLOSCOPE · 20 MHz</span></span>
+      <button class="pbtn tg" data-t="spow" data-help="<b>POWER (encendido)</b><br>Enciende o apaga el osciloscopio. Al encender, el tubo tarda un momento en calentar."><span class="led g"></span>POWER<small style="font-weight:600;opacity:.7">(encendido)</small></button></div>
+    <div class="scope-body">
+      <div>
+        <div class="bezel">
+          <div class="screen" id="screen"><div class="crt">
+            <canvas id="cvGrid"></canvas><canvas id="cvBloom"></canvas><canvas id="cvTrace"></canvas><canvas id="cvOver"></canvas>
+          </div></div>
+          <div class="screen-lbl"><span>8 × 10 DIV <small>(divisiones)</small></span><span>CRT · fósforo P31</span></div>
+        </div>
+        <div class="sec">
+          <h3>DISPLAY <small>(pantalla)</small></h3>
+          <div class="row">
+            <div id="kInt"></div><div id="kFoc"></div>
+            <div class="col"><span class="glbl">TRACE<small>(grosor del trazo)</small></span>
+              <div class="seg" data-k="trace" data-help="<b>TRACE (trazo)</b><br>Grosor de la línea dibujada."><button class="btn" data-v="1">1</button><button class="btn" data-v="2">2</button><button class="btn" data-v="3">3</button></div></div>
+            <div class="col"><span class="glbl">PHOSPHOR<small>(color del fósforo)</small></span>
+              <div class="seg" data-k="phos" data-help="<b>Fósforo</b><br>COLOR: cada canal con su color (didáctico).<br>P31: verde único, como un osciloscopio analógico real."><button class="btn" data-v="color">COLOR</button><button class="btn" data-v="p31">P31</button></div></div>
+            <div class="col">
+              <button class="btn tg" data-t="readout" data-help="<b>READOUT (lectura en pantalla)</b><br>Muestra en pantalla las escalas: V/div de cada canal, tiempo/div (M) y el disparo (T)."><span class="led g"></span>READOUT <small style="font-weight:600;opacity:.8">(lectura)</small></button>
+              <button class="btn tg" data-t="meas" data-help="<b>MEASURE (medidas automáticas)</b><br>Muestra Vpp, máximo, mínimo, frecuencia y período. Útil para verificar sus mediciones manuales."><span class="led g"></span>MEASURE <small style="font-weight:600;opacity:.8">(medidas)</small></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec">
+          <h3>VERTICAL <small>(amplitud · eje Y)</small></h3>
+          <div class="split">
+            <div><span class="chtag c1">CH1</span><div id="kV1"></div><div id="kP1"></div>
+              <div class="seg" data-k="coup0" data-help="<b>Acoplamiento (coupling)</b><br><b>AC</b> (alterna): quita la componente continua.<br><b>DC</b> (continua): muestra la señal completa.<br><b>GND</b> (tierra): desconecta la entrada y muestra la línea de 0 V."><button class="btn" data-v="AC">AC</button><button class="btn" data-v="DC">DC</button><button class="btn" data-v="GND">GND</button></div>
+              <span class="cap">AC (alterna) · DC (continua) · GND (tierra)</span></div>
+            <div><span class="chtag c2">CH2</span><div id="kV2"></div><div id="kP2"></div>
+              <div class="seg" data-k="coup1" data-help="<b>Acoplamiento (coupling)</b><br><b>AC</b> (alterna): quita la componente continua.<br><b>DC</b> (continua): muestra la señal completa.<br><b>GND</b> (tierra): muestra la línea de 0 V."><button class="btn" data-v="AC">AC</button><button class="btn" data-v="DC">DC</button><button class="btn" data-v="GND">GND</button></div>
+              <span class="cap">AC (alterna) · DC (continua) · GND (tierra)</span>
+              <button class="btn tg" data-t="inv" data-help="<b>INV (invertir)</b><br>Invierte el canal 2 (lo multiplica por −1). Equivale a desfasarlo 180°."><span class="led"></span>INV <small style="font-weight:600;opacity:.8">(invertir)</small></button></div>
+          </div>
+          <div class="col" style="margin-top:10px">
+            <span class="glbl">MODE<small>(modo vertical)</small></span>
+            <div class="seg" data-k="mode" data-help="<b>MODE (modo)</b><br><b>CH1/CH2</b>: solo un canal.<br><b>DUAL</b>: ambos a la vez.<br><b>ADD</b>: suma CH1 + CH2.<br><b>X-Y</b>: CH1 mueve el haz en horizontal y CH2 en vertical (figuras de Lissajous)."><button class="btn" data-v="CH1">CH1</button><button class="btn" data-v="CH2">CH2</button><button class="btn" data-v="DUAL">DUAL</button><button class="btn" data-v="ADD">ADD</button><button class="btn" data-v="XY">X-Y</button></div>
+            <span class="cap">DUAL (ambos canales) · ADD (suma) · X-Y (Lissajous)</span>
+          </div>
+        </div>
+        <div class="sec">
+          <h3>HORIZONTAL <small>(tiempo · eje X)</small></h3>
+          <div class="row"><div id="kT"></div><div id="kH"></div></div>
+        </div>
+        <div class="sec">
+          <h3>TRIGGER <small>(disparo · sincronismo)</small></h3>
+          <div class="row">
+            <div id="kLvl"></div>
+            <div class="col">
+              <span class="glbl">SOURCE<small>(fuente)</small></span>
+              <div class="seg" data-k="src" data-help="<b>SOURCE (fuente)</b><br>Canal que se usa como referencia para sincronizar el dibujo."><button class="btn" data-v="0">CH1</button><button class="btn" data-v="1">CH2</button></div>
+              <span class="glbl">SLOPE<small>(pendiente)</small></span>
+              <div class="seg" data-k="slope" data-help="<b>SLOPE (pendiente)</b><br>↑ +: dispara cuando la señal cruza el nivel subiendo.<br>↓ −: cuando lo cruza bajando."><button class="btn" data-v="1">↑ +</button><button class="btn" data-v="-1">↓ −</button></div>
+            </div>
+            <div class="col">
+              <span class="glbl">MODE<small>(modo de disparo)</small></span>
+              <div class="seg" data-k="tmode" data-help="<b>AUTO (automático)</b>: si no hay disparo, igual dibuja (la imagen corre).<br><b>NORM (normal)</b>: solo dibuja cuando hay disparo; si no, la pantalla queda vacía."><button class="btn" data-v="AUTO">AUTO</button><button class="btn" data-v="NORM">NORM</button></div>
+              <span class="cap">AUTO (automático) · NORM (normal)</span>
+              <div class="ledwrap" data-help="<b>TRIG'D (disparado)</b><br>Encendido = la imagen está sincronizada (estable)."><span class="led g" id="ledTrig"></span>TRIG'D <small style="font-weight:600;opacity:.7">(disparado)</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sec" style="margin-bottom:0">
+      <h3>INPUTS <small>(entradas · 1 MΩ // 20 pF)</small></h3>
+      <div class="inputs">
+        <div class="out"><div class="bnc" id="bncI1"></div><span>CH1 (X) INPUT <small style="font-weight:600">(entrada)</small></span></div>
+        <div class="out"><div class="bnc" id="bncI2"></div><span>CH2 (Y) INPUT <small style="font-weight:600">(entrada)</small></span></div>
+      </div>
+    </div>
+  </section>
+</div>
+</section>
+
+<!-- GUÍA -->
+<section id="guia" class="doc">
+  <h2>📘 Cómo usar el laboratorio</h2>
+  <p class="lead">Guía paso a paso. Al pasar el mouse sobre cualquier control del banco aparece una ayuda breve. Los nombres en inglés son los que verá impresos en los equipos reales; entre paréntesis va su significado en español.</p>
+
+  <h3>1. ¿Qué hace cada equipo?</h3>
+  <p>El <b>generador de funciones</b> fabrica una señal eléctrica: usted decide su forma, su frecuencia (cuántas veces se repite por segundo), su amplitud (qué tan grande es) y su offset (cuánto está desplazada hacia arriba o abajo). Los cables llevan la salida <b>OUT 1</b> a la entrada <b>CH1</b> y la <b>OUT 2</b> a la <b>CH2</b> del osciloscopio.</p>
+  <p>El <b>osciloscopio</b> dibuja esa señal: <b>voltaje en el eje vertical</b> y <b>tiempo en el eje horizontal</b>. No muestra números por sí solo: usted <b>cuenta divisiones</b> de la cuadrícula y las multiplica por la escala elegida en las perillas.</p>
+
+  <h3>2. Cómo leer la pantalla</h3>
+  <div class="figwrap">
+    <svg id="figSine" width="360" height="290" viewBox="-14 -14 370 290" aria-label="Lectura de una señal senoidal en la cuadrícula"></svg>
+    <div class="txt">
+      <p>La pantalla tiene <b>10 divisiones horizontales</b> y <b>8 verticales</b>. Cada división (cuadro grande) tiene 5 subdivisiones en los ejes centrales, es decir, cada marca pequeña vale 0,2 división.</p>
+      <p>En el ejemplo, con <span class="k">VOLTS/DIV</span> <span class="es">(voltios por división)</span> = 1 V y <span class="k">TIME/DIV</span> <span class="es">(tiempo por división)</span> = 0,2 ms:</p>
+      <ul>
+        <li>De pico a pico hay 6 divisiones → <b>Vpp = 6 × 1 V = 6 V</b></li>
+        <li>Un período ocupa 5 divisiones → <b>T = 5 × 0,2 ms = 1 ms</b></li>
+        <li>Frecuencia → <b>f = 1 / T = 1 / 0,001 s = 1000 Hz</b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="formula">
+    <div><b>V = div × VOLTS/DIV</b><span>Voltaje a partir de divisiones verticales.</span></div>
+    <div><b>t = div × TIME/DIV</b><span>Tiempo a partir de divisiones horizontales.</span></div>
+    <div><b>f = 1 / T</b><span>Frecuencia (Hz) a partir del período (s).</span></div>
+    <div><b>Vp = Vpp / 2</b><span>Voltaje de pico (desde el centro de la onda).</span></div>
+    <div><b>Vrms = Vp / √2</b><span>Valor eficaz, solo para señal senoidal (≈ 0,707·Vp).</span></div>
+    <div><b>φ = 360° × Δt / T</b><span>Desfase entre dos señales de igual frecuencia.</span></div>
+  </div>
+  <div class="tipbox">💡 Para medir con precisión, procure que la señal ocupe <b>la mayor parte de la pantalla</b> (unas 6 divisiones de alto) y que se vean <b>1 a 3 períodos</b>. Con <span class="k">POSITION</span> <span class="es">(posición)</span> puede subir, bajar o correr la señal para alinearla con las líneas de la cuadrícula.</div>
+
+  <h3>3. Generador de funciones</h3>
+  <table>
+    <tr><th>Control</th><th>En español</th><th>Para qué sirve</th></tr>
+    <tr><td><span class="k">POWER</span></td><td class="es">encendido</td><td>Prende o apaga el equipo.</td></tr>
+    <tr><td><span class="k">CH1</span> <span class="k">CH2</span></td><td class="es">canal 1 / canal 2</td><td>El generador tiene dos salidas. Este selector elige cuál se está editando con las perillas.</td></tr>
+    <tr><td>Forma de onda</td><td class="es">waveform</td><td>Senoidal, triangular, cuadrada o diente de sierra.</td></tr>
+    <tr><td>FRECUENCIA</td><td class="es">frequency</td><td>De 1 Hz a 1 MHz. La perilla es logarítmica: cada tramo multiplica la frecuencia.</td></tr>
+    <tr><td>FINO</td><td class="es">fine</td><td>Ajuste fino de ±5 % sobre la frecuencia.</td></tr>
+    <tr><td>AMPLITUD</td><td class="es">amplitude</td><td>Tamaño de la señal, en voltios <b>pico a pico</b> (Vpp), de 10 mV a 15 V.</td></tr>
+    <tr><td>OFFSET</td><td class="es">desplazamiento DC</td><td>Suma un voltaje continuo: sube o baja toda la señal (−10 V a +10 V).</td></tr>
+    <tr><td>FASE</td><td class="es">phase</td><td>Adelanta la señal en grados (0° a 360°). Sirve para comparar dos canales.</td></tr>
+    <tr><td><span class="k">OUTPUT</span></td><td class="es">salida</td><td>Habilita o corta la salida de cada canal. LED rojo encendido = salida activa.</td></tr>
+  </table>
+  <p>Truco: haga clic sobre cualquier número del display verde para escribirlo exacto. Se aceptan prefijos: <code>k</code> (kilo, ×1000), <code>M</code> (mega, ×1 000 000), <code>m</code> (mili, ÷1000), <code>u</code> o <code>µ</code> (micro).</p>
+
+  <h3>4. Osciloscopio</h3>
+  <p><b>Bloque VERTICAL</b> <span class="es">(amplitud, eje Y)</span></p>
+  <table>
+    <tr><th>Control</th><th>En español</th><th>Para qué sirve</th></tr>
+    <tr><td><span class="k">VOLTS/DIV</span></td><td class="es">voltios por división</td><td>Cuántos voltios vale cada cuadro vertical. Girar a la derecha = menos V/div = la señal se ve más grande.</td></tr>
+    <tr><td><span class="k">POSITION</span></td><td class="es">posición</td><td>Sube o baja la traza. No cambia la señal, solo dónde se dibuja.</td></tr>
+    <tr><td><span class="k">AC</span></td><td class="es">corriente alterna</td><td>Bloquea la parte continua (offset) con un condensador interno. Útil para ver una ondulación pequeña montada sobre un voltaje grande. Bajo ~10 Hz deforma la señal.</td></tr>
+    <tr><td><span class="k">DC</span></td><td class="es">corriente continua</td><td>Muestra la señal completa, incluido el offset. Es el modo recomendado por defecto.</td></tr>
+    <tr><td><span class="k">GND</span></td><td class="es">tierra</td><td>Desconecta la señal y dibuja la línea de 0 V. Se usa para ubicar dónde está el cero antes de medir.</td></tr>
+    <tr><td><span class="k">INV</span></td><td class="es">invertir</td><td>Da vuelta el canal 2 (lo multiplica por −1).</td></tr>
+    <tr><td><span class="k">CH1</span> <span class="k">CH2</span></td><td class="es">canal 1 / 2</td><td>Muestra solo ese canal.</td></tr>
+    <tr><td><span class="k">DUAL</span></td><td class="es">doble</td><td>Muestra los dos canales a la vez para compararlos.</td></tr>
+    <tr><td><span class="k">ADD</span></td><td class="es">sumar</td><td>Dibuja CH1 + CH2 (con la escala de CH1). Con INV activo, dibuja CH1 − CH2.</td></tr>
+    <tr><td><span class="k">X-Y</span></td><td class="es">modo X-Y</td><td>CH1 mueve el punto horizontalmente y CH2 verticalmente. Produce las figuras de Lissajous.</td></tr>
+  </table>
+  <p><b>Bloque HORIZONTAL</b> <span class="es">(tiempo, eje X)</span></p>
+  <table>
+    <tr><th>Control</th><th>En español</th><th>Para qué sirve</th></tr>
+    <tr><td><span class="k">TIME/DIV</span></td><td class="es">tiempo por división</td><td>Cuánto tiempo vale cada cuadro horizontal (0,1 µs a 0,2 s). Girar a la derecha = más rápido = se ven menos ciclos. Con 10 ms/div o más se ve el punto recorriendo la pantalla, como en un equipo real.</td></tr>
+    <tr><td><span class="k">POSITION X</span></td><td class="es">posición horizontal</td><td>Corre la imagen hacia los lados.</td></tr>
+  </table>
+  <p><b>Bloque TRIGGER</b> <span class="es">(disparo o sincronismo)</span></p>
+  <p>El disparo es lo que hace que la imagen <b>se quede quieta</b>. El osciloscopio espera a que la señal cruce cierto voltaje (el <b>nivel</b>) en cierta dirección (la <b>pendiente</b>) y recién ahí empieza a dibujar. Como eso ocurre siempre en el mismo punto de la onda, cada barrido cae encima del anterior.</p>
+  <table>
+    <tr><th>Control</th><th>En español</th><th>Para qué sirve</th></tr>
+    <tr><td><span class="k">LEVEL</span></td><td class="es">nivel</td><td>Voltaje en que se dispara. Debe estar <b>dentro</b> del rango de la señal. Se ve como la flecha «T» en el borde derecho.</td></tr>
+    <tr><td><span class="k">SOURCE</span></td><td class="es">fuente</td><td>Canal que se usa como referencia para disparar.</td></tr>
+    <tr><td><span class="k">SLOPE ↑ / ↓</span></td><td class="es">pendiente</td><td>Disparar cuando la señal sube (+) o cuando baja (−).</td></tr>
+    <tr><td><span class="k">AUTO</span></td><td class="es">automático</td><td>Si no hay disparo, dibuja igual (la imagen corre, pero al menos se ve algo).</td></tr>
+    <tr><td><span class="k">NORM</span></td><td class="es">normal</td><td>Solo dibuja cuando hay disparo. Sin disparo, la pantalla queda vacía.</td></tr>
+    <tr><td><span class="k">TRIG'D</span></td><td class="es">disparado</td><td>LED verde encendido = la imagen está sincronizada.</td></tr>
+  </table>
+  <p><b>Bloque DISPLAY</b> <span class="es">(pantalla)</span></p>
+  <table>
+    <tr><th>Control</th><th>En español</th><th>Para qué sirve</th></tr>
+    <tr><td><span class="k">INTENSITY</span></td><td class="es">intensidad</td><td>Brillo del haz.</td></tr>
+    <tr><td><span class="k">FOCUS</span></td><td class="es">enfoque</td><td>Nitidez de la línea. En el centro queda bien definida.</td></tr>
+    <tr><td><span class="k">TRACE</span></td><td class="es">trazo</td><td>Grosor de la línea.</td></tr>
+    <tr><td><span class="k">READOUT</span></td><td class="es">lectura en pantalla</td><td>Escribe en pantalla las escalas en uso (ver tabla siguiente).</td></tr>
+    <tr><td><span class="k">MEASURE</span></td><td class="es">medidas</td><td>Medición automática de Vpp, máximo, mínimo, frecuencia y período. Úsela para <b>comprobar</b> sus cálculos, no para reemplazarlos.</td></tr>
+  </table>
+  <p><b>Qué significa el texto de la pantalla (readout)</b></p>
+  <table>
+    <tr><th>Texto</th><th>Significado</th></tr>
+    <tr><td><code>CH1 1 V DC</code></td><td>Canal 1 a 1 V por división, acoplamiento DC.</td></tr>
+    <tr><td><code>M 500 µs</code></td><td>Base de tiempo principal (<i>main</i>): 500 µs por división.</td></tr>
+    <tr><td><code>T:CH1 ↑ 0 V</code></td><td>Dispara con el CH1, en pendiente de subida, a 0 V.</td></tr>
+    <tr><td>Flechas <code>1▸</code> <code>2▸</code></td><td>Dónde está el 0 V de cada canal.</td></tr>
+    <tr><td>Flecha <code>◂T</code></td><td>Dónde está el nivel de disparo.</td></tr>
+  </table>
+
+  <h3>5. Receta: ver una señal estable en 6 pasos</h3>
+  <ol class="steps">
+    <li>Encienda ambos equipos y verifique que la salida del generador (<span class="k">OUTPUT</span>) esté activa.</li>
+    <li>Ponga el canal en <span class="k">GND</span> <span class="es">(tierra)</span> y con <span class="k">POSITION</span> ubique la línea de 0 V en la línea central. Luego vuelva a <span class="k">DC</span>.</li>
+    <li>Gire <span class="k">VOLTS/DIV</span> hasta que la señal ocupe unas 4 a 6 divisiones de alto, sin salirse de la pantalla.</li>
+    <li>Gire <span class="k">TIME/DIV</span> hasta ver entre 1 y 3 ciclos completos.</li>
+    <li>Si la imagen corre o tiembla, mueva <span class="k">LEVEL</span> <span class="es">(nivel)</span> hasta que quede dentro de la señal y se encienda <span class="k">TRIG'D</span>.</li>
+    <li>Cuente divisiones y aplique las fórmulas. Si quiere, verifique con <span class="k">MEASURE</span>.</li>
+  </ol>
+
+  <h3>6. Problemas frecuentes</h3>
+  <table>
+    <tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr>
+    <tr><td>No se ve nada</td><td>Equipo o salida apagada, canal en GND, traza fuera de pantalla o modo NORM sin disparo.</td><td>Revise POWER y OUTPUT, pase a DC, centre con POSITION, use AUTO.</td></tr>
+    <tr><td>La imagen corre o se ven varias ondas encimadas</td><td>Sin disparo: el nivel está fuera de la señal.</td><td>Ajuste LEVEL hasta que TRIG'D encienda.</td></tr>
+    <tr><td>Se ve una franja o banda llena</td><td>TIME/DIV demasiado lento: caben miles de ciclos en pantalla.</td><td>Gire TIME/DIV a la derecha.</td></tr>
+    <tr><td>Se ve una línea casi recta</td><td>VOLTS/DIV muy grande o TIME/DIV demasiado rápido.</td><td>Disminuya VOLTS/DIV o aumente TIME/DIV.</td></tr>
+    <tr><td>La señal se sale por arriba o abajo</td><td>VOLTS/DIV muy pequeño o mucho offset.</td><td>Aumente VOLTS/DIV o use POSITION.</td></tr>
+    <tr><td>La cuadrada se ve "inclinada"</td><td>Acoplamiento AC con baja frecuencia.</td><td>Use DC.</td></tr>
+  </table>
+
+  <h3>7. Manejo de las perillas</h3>
+  <ul>
+    <li><b>Arrastrar</b> hacia arriba o a la derecha aumenta; hacia abajo o a la izquierda disminuye.</li>
+    <li>Mantener <b>Shift</b> mientras arrastra = ajuste fino.</li>
+    <li><b>Rueda del mouse</b> o <b>flechas del teclado</b> (con la perilla seleccionada) = paso a paso.</li>
+    <li><b>Doble clic</b> = vuelve al valor inicial.</li>
+    <li>Mientras arrastra aparece una burbuja con el valor actual.</li>
+  </ul>
+</section>
+
+<!-- EJERCICIOS -->
+<section id="ejercicios" class="doc">
+  <h2>📝 Ejercicios prácticos</h2>
+  <p class="lead">Cada ejercicio prepara los equipos automáticamente. Se abre un panel en la esquina con el procedimiento, las preguntas (con corrección inmediata) y la resolución paso a paso. En los ejercicios con 🔒 el generador queda oculto: la señal se debe descubrir solo con el osciloscopio.</p>
+  <p class="progress" id="progress"></p>
+  <div class="exgrid" id="exGrid"></div>
+</section>
+<footer>Laboratorio virtual · simulación con fines educativos</footer>
+</main>
+
+<div id="dock"></div>
+<div id="tip"></div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const VDIV=[20,10,5,2,1,.5,.2,.1,.05,.02,.01];
+const TDIV=[.2,.1,.05,.02,.01,5e-3,2e-3,1e-3,5e-4,2e-4,1e-4,5e-5,2e-5,1e-5,5e-6,2e-6,1e-6,5e-7,2e-7,1e-7];
+const WNAME={sine:'SENOIDAL',triangle:'TRIANGULAR',square:'CUADRADA',saw:'DIENTE SIERRA'};
+const FC=10, TAU=1/(2*Math.PI*FC);
+
+function si(v,u,d=3){if(v===0)return '0 '+u;const a=Math.abs(v);
+  for(const [m,p] of [[1e6,'M'],[1e3,'k'],[1,''],[1e-3,'m'],[1e-6,'µ']]) if(a>=m*.9995) return +(v/m).toPrecision(d)+' '+p+u;
+  return +(v/1e-9).toPrecision(d)+' n'+u;}
+function fix(v,u,d=5){const a=Math.abs(v);let m=1,p='';
+  if(a>=1e6){m=1e6;p='M'}else if(a>=1e3){m=1e3;p='k'}else if(a>=1||a===0){}else if(a>=1e-3){m=1e-3;p='m'}else{m=1e-6;p='µ'}
+  return (v/m).toPrecision(d)+' '+p+u;}
+const MUL={'':1,p:1e-12,n:1e-9,u:1e-6,'µ':1e-6,m:1e-3,k:1e3,K:1e3,M:1e6};
+function parseSI(s,scale=1){s=String(s).trim().replace(',','.');const m=s.match(/^([-+]?\d*\.?\d+(?:e[-+]?\d+)?)\s*([pnuµmkKM]?)/);if(!m)return NaN;
+  return parseFloat(m[1])*(m[2]?MUL[m[2]]:scale);}
+
+/* ---------- estado ---------- */
+const DEF_GEN=()=>[{wave:'sine',freq:1000,fine:1,amp:4,off:0,ph:0,on:true},{wave:'sine',freq:1000,fine:1,amp:2,off:0,ph:90,on:true}];
+const DEF_SC=()=>({vd:[4,4],pos:[1.5,-1.5],coup:['DC','DC'],inv:false,mode:'DUAL',td:8,hpos:0,src:0,lvl:0,slope:1,tmode:'AUTO',int:.8,focus:0,trace:2,readout:true,meas:false,phos:'color'});
+const gen=DEF_GEN(), sc=DEF_SC();
+let gs=0, genPow=true, scopePow=true, hidden=false, scopeOnAt=performance.now(), scopeOffAt=-1e9;
+const effF=i=>clamp(gen[i].freq*gen[i].fine,1,1e6);
+
+/* ---------- perilla ---------- */
+class Knob{
+  constructor(id,o){
+    this.o=o;const w=document.getElementById(id);w.className='kw';if(o.help)w.dataset.help=o.help;
+    w.innerHTML=`<div class="lbl">${o.label}${o.es?`<small>(${o.es})</small>`:''}</div><div class="knob ${o.size||'m'}" tabindex="0" role="slider" aria-label="${o.label}"><div class="ticks"></div><div class="rot"><div class="skirt"></div><div class="cap"><i></i></div></div><span class="bubble"></span></div><div class="val"></div>`;
+    this.k=w.querySelector('.knob');this.rot=w.querySelector('.rot');this.val=w.querySelector('.val');this.bub=w.querySelector('.bubble');
+    if(o.cap)this.k.style.setProperty('--cap',o.cap);
+    const nt=o.steps?o.steps.length:11,t=w.querySelector('.ticks');
+    for(let i=0;i<nt;i++){const b=document.createElement('b');b.style.transform=`rotate(${-135+270*i/(nt-1)}deg)`;t.appendChild(b);}
+    if(o.steps)this.setIdx(o.idx??0,true);else this.setVal(o.value,true);
+    this.def=this.n;
+    let sx,sy,sn,si0,drag=false;
+    this.k.addEventListener('pointerdown',e=>{e.preventDefault();this.k.setPointerCapture(e.pointerId);sx=e.clientX;sy=e.clientY;sn=this.n;si0=this.idx;drag=true;this.k.classList.add('drag');this.k.focus({preventScroll:true});hideTip();});
+    this.k.addEventListener('pointermove',e=>{if(!drag)return;const d=(e.clientX-sx)-(e.clientY-sy);
+      if(o.steps)this.setIdx(si0+Math.round(d/(e.shiftKey?60:26)));else this.setN(sn+d/(e.shiftKey?1400:240));});
+    const end=()=>{drag=false;this.k.classList.remove('drag')};
+    this.k.addEventListener('pointerup',end);this.k.addEventListener('pointercancel',end);
+    this.k.addEventListener('wheel',e=>{e.preventDefault();this.bump(e.deltaY<0?1:-1,e.shiftKey)},{passive:false});
+    this.k.addEventListener('keydown',e=>{const m={ArrowUp:1,ArrowRight:1,ArrowDown:-1,ArrowLeft:-1}[e.key];if(m){e.preventDefault();this.bump(m,e.shiftKey)}});
+    this.k.addEventListener('dblclick',()=>this.setN(this.def));
+  }
+  bump(d,f){if(this.o.steps)this.setIdx(this.idx+d);else this.setN(this.n+d*(f?.002:.012));}
+  setN(n,silent){n=clamp(n,0,1);if(this.o.steps)return this.setIdx(Math.round(n*(this.o.steps.length-1)),silent);
+    const o=this.o;this.n=n;this.v=o.log?o.min*Math.pow(o.max/o.min,n):o.min+(o.max-o.min)*n;if(!silent)o.on(this.v);this.draw();}
+  setVal(v,silent){const o=this.o;this.n=clamp(o.log?Math.log(v/o.min)/Math.log(o.max/o.min):(v-o.min)/(o.max-o.min),0,1);this.v=v;if(!silent)o.on(v);this.draw();}
+  setIdx(i,silent){const L=this.o.steps.length;i=clamp(i,0,L-1);const ch=i!==this.idx;this.idx=i;this.n=i/(L-1);this.v=this.o.steps[i];if(!silent&&ch)this.o.on(this.v,i);this.draw();}
+  draw(){this.rot.style.transform=`rotate(${-135+270*this.n}deg)`;const f=this.o.fmt?this.o.fmt(this.v):'';this.val.textContent=f;
+    this.bub.textContent=this.o.tip?this.o.tip(this.v):f;this.k.setAttribute('aria-valuetext',this.bub.textContent);}
+}
+
+/* ---------- generador ---------- */
+const fAmp=a=>a>=1?a.toFixed(3)+' Vpp':(a*1000).toFixed(1)+' mVpp';
+const kFreq=new Knob('kFreq',{label:'Frecuencia',es:'frequency',size:'l',min:1,max:1e6,log:true,value:1000,tip:()=>fix(effF(gs),'Hz'),help:'<b>Frecuencia</b><br>Cuántos ciclos por segundo tiene la señal (1 Hz a 1 MHz). Perilla logarítmica.',on:v=>{gen[gs].freq=v;updLCD()}});
+const kFine=new Knob('kFine',{label:'Fino',es:'fine',size:'s',min:.95,max:1.05,value:1,tip:()=>fix(effF(gs),'Hz'),help:'<b>Fino</b><br>Ajuste fino de frecuencia (±5 %).',on:v=>{gen[gs].fine=v;updLCD()}});
+const kAmp=new Knob('kAmp',{label:'Amplitud',es:'pico a pico',min:.01,max:15,log:true,value:4,tip:v=>fAmp(v),help:'<b>Amplitud</b><br>Tamaño de la señal en voltios pico a pico (Vpp).',on:v=>{gen[gs].amp=v;updLCD()}});
+const kOff=new Knob('kOff',{label:'Offset',es:'desplaz. DC',min:-10,max:10,value:0,tip:v=>(v>=0?'+':'')+v.toFixed(2)+' V',help:'<b>OFFSET (desplazamiento DC)</b><br>Suma un voltaje continuo: sube o baja toda la señal.',on:v=>{gen[gs].off=v;updLCD()}});
+const kPh=new Knob('kPh',{label:'Fase',es:'phase',min:0,max:360,value:0,tip:v=>v.toFixed(1)+'°',help:'<b>Fase</b><br>Adelanta la señal en grados. Útil para comparar CH1 y CH2.',on:v=>{gen[gs].ph=v;updLCD()}});
+
+function updLCD(){const g=gen[gs],L=$('#lcd');L.classList.toggle('dark',!genPow);
+  $('#lcdCh').textContent='CH'+(gs+1);
+  const o=$('#lcdOut');o.textContent=g.on?'SALIDA ON':'SALIDA OFF';o.className=g.on?'':'warn';
+  if(hidden){['#lcdWave','#lcdF','#lcdA','#lcdO','#lcdP'].forEach(s=>$(s).textContent='? ? ? ?');}
+  else{$('#lcdWave').textContent=WNAME[g.wave];$('#lcdF').textContent=fix(effF(gs),'Hz');$('#lcdA').textContent=fAmp(g.amp);
+    $('#lcdO').textContent=(g.off>=0?'+':'')+g.off.toFixed(3)+' V';$('#lcdP').textContent=g.ph.toFixed(1)+'°';}
+  $('#gen').classList.toggle('locked',hidden);}
+function syncGen(){const g=gen[gs];kFreq.setVal(g.freq,true);kFine.setVal(g.fine,true);kAmp.setVal(g.amp,true);kOff.setVal(g.off,true);kPh.setVal(g.ph,true);updLCD();refreshSeg();refreshT();}
+
+$$('.ed').forEach(el=>el.addEventListener('click',()=>{
+  if(hidden||!genPow||el.querySelector('input'))return;const f=el.dataset.f;hideTip();
+  const inp=document.createElement('input');inp.className='lcdin';inp.placeholder=el.textContent;el.textContent='';el.appendChild(inp);inp.focus();
+  let done=false;const fin=ok=>{if(done)return;done=true;
+    if(ok){const v=parseSI(inp.value);if(!isNaN(v)){const g=gen[gs];
+      if(f==='freq'){g.freq=clamp(v,1,1e6);g.fine=1}else if(f==='amp')g.amp=clamp(v,.01,15);else if(f==='off')g.off=clamp(v,-10,10);else g.ph=((v%360)+360)%360;
+      syncGen();}}
+    updLCD();};
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')fin(true);if(e.key==='Escape')fin(false)});
+  inp.addEventListener('blur',()=>fin(true));
+}));
+$('#reveal').addEventListener('click',()=>{hidden=false;syncGen();});
+
+/* ---------- osciloscopio: controles ---------- */
+const fV=v=>si(v,'V')+'/div';
+const kV1=new Knob('kV1',{label:'Volts/Div',es:'voltios/div',steps:VDIV,idx:sc.vd[0],cap:'#ffe45c',fmt:fV,help:'<b>VOLTS/DIV (voltios por división)</b><br>Cuántos voltios vale cada cuadro vertical del CH1. A la derecha: la señal se ve más grande.',on:(v,i)=>{sc.vd[0]=i;kLvl.draw()}});
+const kP1=new Knob('kP1',{label:'Position',es:'posición',size:'s',min:-6,max:6,value:sc.pos[0],tip:v=>v.toFixed(2)+' div',help:'<b>POSITION (posición vertical)</b><br>Sube o baja la traza del CH1.',on:v=>sc.pos[0]=v});
+const kV2=new Knob('kV2',{label:'Volts/Div',es:'voltios/div',steps:VDIV,idx:sc.vd[1],cap:'#55e3ff',fmt:fV,help:'<b>VOLTS/DIV (voltios por división)</b><br>Escala vertical del CH2.',on:(v,i)=>{sc.vd[1]=i;kLvl.draw()}});
+const kP2=new Knob('kP2',{label:'Position',es:'posición',size:'s',min:-6,max:6,value:sc.pos[1],tip:v=>v.toFixed(2)+' div',help:'<b>POSITION (posición vertical)</b><br>Sube o baja la traza del CH2.',on:v=>sc.pos[1]=v});
+const kT=new Knob('kT',{label:'Time/Div',es:'tiempo/div',size:'l',steps:TDIV,idx:sc.td,fmt:v=>si(v,'s')+'/div',help:'<b>TIME/DIV (tiempo por división)</b><br>Cuánto tiempo vale cada cuadro horizontal. A la derecha: barrido más rápido, se ven menos ciclos.',on:(v,i)=>{sc.td=i;clearTrace()}});
+const kH=new Knob('kH',{label:'Position X',es:'posición horiz.',size:'s',min:-5,max:5,value:0,tip:v=>v.toFixed(2)+' div',help:'<b>POSITION X (posición horizontal)</b><br>Corre la imagen a izquierda o derecha.',on:v=>sc.hpos=v});
+const kLvl=new Knob('kLvl',{label:'Level',es:'nivel',min:-4,max:4,value:0,fmt:v=>si(v*VDIV[sc.vd[sc.src]],'V'),help:'<b>LEVEL (nivel de disparo)</b><br>Voltaje en el que comienza cada barrido. Debe quedar dentro de la señal para que la imagen esté quieta.',on:v=>sc.lvl=v});
+const kInt=new Knob('kInt',{label:'Intensity',es:'brillo',size:'s',min:.15,max:1,value:.8,tip:v=>Math.round(v*100)+' %',help:'<b>INTENSITY (intensidad)</b><br>Brillo del haz.',on:v=>sc.int=v});
+const kFoc=new Knob('kFoc',{label:'Focus',es:'enfoque',size:'s',min:-1,max:1,value:0,tip:v=>Math.abs(v)<.05?'enfocado':'desenfocado',help:'<b>FOCUS (enfoque)</b><br>Nitidez del trazo. Centrado = línea nítida.',on:v=>{sc.focus=v;applyFocus()}});
+function applyFocus(){const b=(Math.abs(sc.focus)*2.4).toFixed(2);$('#cvTrace').style.filter=`blur(${b}px)`;}
+function syncScope(){kV1.setIdx(sc.vd[0],true);kV2.setIdx(sc.vd[1],true);kP1.setVal(sc.pos[0],true);kP2.setVal(sc.pos[1],true);kT.setIdx(sc.td,true);kH.setVal(sc.hpos,true);kLvl.setVal(sc.lvl,true);kInt.setVal(sc.int,true);kFoc.setVal(sc.focus,true);applyFocus();refreshSeg();refreshT();}
+
+function getK(k){return{coup0:sc.coup[0],coup1:sc.coup[1],mode:sc.mode,src:sc.src,slope:sc.slope,tmode:sc.tmode,trace:sc.trace,phos:sc.phos,wave:gen[gs].wave,gs}[k];}
+function setK(k,v){switch(k){
+  case'coup0':sc.coup[0]=v;break;case'coup1':sc.coup[1]=v;break;
+  case'mode':sc.mode=v;clearTrace();break;case'src':sc.src=+v;kLvl.draw();break;
+  case'slope':sc.slope=+v;break;case'tmode':sc.tmode=v;break;case'trace':sc.trace=+v;break;case'phos':sc.phos=v;break;
+  case'wave':if(hidden)return;gen[gs].wave=v;updLCD();break;case'gs':gs=+v;syncGen();break;}
+  refreshSeg();}
+function refreshSeg(){$$('.seg[data-k]').forEach(g=>{const c=String(getK(g.dataset.k));g.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===c))});}
+$$('.seg[data-k]').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(b)setK(g.dataset.k,b.dataset.v)}));
+const tget={inv:()=>sc.inv,readout:()=>sc.readout,meas:()=>sc.meas,out0:()=>gen[0].on,out1:()=>gen[1].on,gpow:()=>genPow,spow:()=>scopePow};
+const tflip={inv:()=>sc.inv=!sc.inv,readout:()=>sc.readout=!sc.readout,meas:()=>sc.meas=!sc.meas,out0:()=>gen[0].on=!gen[0].on,out1:()=>gen[1].on=!gen[1].on,
+  gpow:()=>{genPow=!genPow;if(genPow){const l=$('#lcd');l.classList.remove('boot');void l.offsetWidth;l.classList.add('boot')}},
+  spow:()=>{scopePow=!scopePow;if(scopePow)scopeOnAt=performance.now();else scopeOffAt=performance.now();}};
+function refreshT(){$$('[data-t]').forEach(b=>b.classList.toggle('on',tget[b.dataset.t]()));$('#screen').classList.toggle('off',!scopePow);}
+$$('[data-t]').forEach(b=>b.addEventListener('click',()=>{tflip[b.dataset.t]();refreshT();updLCD()}));
+
+/* ---------- señales ---------- */
+function wv(type,p){p-=Math.floor(p);switch(type){
+  case'sine':return Math.sin(2*Math.PI*p);case'square':return p<.5?1:-1;
+  case'triangle':return p<.25?4*p:p<.75?2-4*p:4*p-4;default:return 2*p-1;}}
+function chV(c,t){const g=gen[c],cp=sc.coup[c];if(cp==='GND'||!g.on||!genPow)return 0;
+  const f=effF(c),A=g.amp/2,p=f*t+g.ph/360;
+  if(cp==='DC')return A*wv(g.wave,p)+g.off;
+  if(g.wave==='square'){const T=1/f,k=Math.exp(-T/2/TAU),y0=2*A/(1+k),q=p-Math.floor(p);
+    return q<.5?y0*Math.exp(-q*T/TAU):-y0*Math.exp(-(q-.5)*T/TAU);}
+  const m=f/FC,gain=m/Math.hypot(1,m),lead=Math.atan(1/m)/(2*Math.PI);
+  return A*gain*wv(g.wave,p+lead);}
+const chD=(c,t)=>(c===1&&sc.inv)?-chV(1,t):chV(c,t);
+function stats(c,t0){const T=1/effF(c);let lo=Infinity,hi=-Infinity;for(let k=0;k<256;k++){const v=chD(c,t0+T*k/256);if(v<lo)lo=v;if(v>hi)hi=v;}return{lo,hi};}
+const col=c=>sc.phos==='p31'?'#8dffb0':['#ffe45c','#55e3ff','#ff7ad9'][c];
+
+/* ---------- canvas ---------- */
+const cg=$('#cvGrid'),cb=$('#cvBloom'),ct=$('#cvTrace'),co=$('#cvOver');
+const gx=cg.getContext('2d'),bx=cb.getContext('2d'),tx=ct.getContext('2d'),ox=co.getContext('2d');
+let W=1,H=1,DPR=1,INT=1;
+const sweep={active:false,t0:0,col:0,trig:false};
+function resize(){const r=cg.parentElement.getBoundingClientRect();DPR=Math.min(window.devicePixelRatio||1,2);
+  W=Math.max(1,Math.round(r.width*DPR));H=Math.max(1,Math.round(r.height*DPR));
+  for(const c of[cg,ct,co]){c.width=W;c.height=H}cb.width=Math.max(1,W>>1);cb.height=Math.max(1,H>>1);drawGrid();sweep.active=false;}
+function drawGrid(){gx.clearRect(0,0,W,H);const dx=W/10,dy=H/8;gx.strokeStyle='rgba(160,210,180,.26)';gx.lineWidth=DPR;
+  gx.beginPath();for(let i=0;i<=10;i++){const x=Math.min(W-.5,Math.round(i*dx)+.5);gx.moveTo(x,0);gx.lineTo(x,H)}
+  for(let j=0;j<=8;j++){const y=Math.min(H-.5,Math.round(j*dy)+.5);gx.moveTo(0,y);gx.lineTo(W,y)}gx.stroke();
+  gx.beginPath();const tl=dy*.07;for(let i=0;i<=50;i++){const x=i*dx/5;gx.moveTo(x,H/2-tl);gx.lineTo(x,H/2+tl)}
+  for(let j=0;j<=40;j++){const y=j*dy/5;gx.moveTo(W/2-tl,y);gx.lineTo(W/2+tl,y)}gx.stroke();
+  gx.setLineDash([3*DPR,4*DPR]);gx.beginPath();for(const y of[H/2-2.5*dy,H/2+2.5*dy]){gx.moveTo(0,y);gx.lineTo(W,y)}gx.stroke();gx.setLineDash([]);}
+function clearTrace(){tx.clearRect(0,0,W,H);sweep.active=false;}
+new ResizeObserver(resize).observe($('#screen'));
+
+const yOf=(v,vd,pos)=>H/2-(v/vd+pos)*H/8;
+function buildPath(fn,vd,pos,f,rng,t0,c0,c1,cols){
+  const tdv=TDIV[sc.td],dtc=10*tdv/cols,ratio=dtc*f,nz=.7*DPR,cw=W/cols;
+  const Y=v=>clamp(yOf(v,vd,pos),-H*.2,H*1.2)+(Math.random()-.5)*nz;
+  let first=true;
+  for(let c=c0;c<c1;c++){const x=c*cw,tc=t0+(c/cols*10-sc.hpos)*tdv;
+    if(ratio>1.2){const a=Y(c%2?rng.lo:rng.hi),b=Y(c%2?rng.hi:rng.lo);if(first){tx.moveTo(x,a);first=false}else tx.lineTo(x,a);tx.lineTo(x,b);}
+    else{const s=clamp(Math.ceil(ratio*48),1,24);
+      for(let k=0;k<s;k++){const y=Y(fn(tc+dtc*k/s)),xx=x+cw*k/s;if(first){tx.moveTo(xx,y);first=false}else tx.lineTo(xx,y);}}}
+  return ratio>1.2;}
+function stroke(color,dim){const lw=(sc.trace*.8+.4)*DPR,a=(dim?.55:1)*INT;
+  tx.lineJoin='round';tx.lineCap='round';tx.strokeStyle=color;
+  tx.globalAlpha=.16*a;tx.lineWidth=lw*4.5;tx.stroke();
+  tx.globalAlpha=Math.min(1,1.15*a);tx.lineWidth=lw;tx.stroke();
+  tx.globalAlpha=Math.min(1,.55*a);tx.strokeStyle='#fff';tx.lineWidth=Math.max(.6,lw*.35);tx.stroke();tx.globalAlpha=1;}
+function drawChannels(t0,c0,c1,cols,rng){
+  const vd1=VDIV[sc.vd[0]],vd2=VDIV[sc.vd[1]],m=sc.mode;
+  if(m==='CH1'||m==='DUAL'){tx.beginPath();const d=buildPath(t=>chD(0,t),vd1,sc.pos[0],effF(0),rng[0],t0,c0,c1,cols);stroke(col(0),d)}
+  if(m==='CH2'||m==='DUAL'){tx.beginPath();const d=buildPath(t=>chD(1,t),vd2,sc.pos[1],effF(1),rng[1],t0,c0,c1,cols);stroke(col(1),d)}
+  if(m==='ADD'){tx.beginPath();const d=buildPath(t=>chD(0,t)+chD(1,t),vd1,sc.pos[0],Math.max(effF(0),effF(1)),{lo:rng[0].lo+rng[1].lo,hi:rng[0].hi+rng[1].hi},t0,c0,c1,cols);stroke(col(2),d)}}
+function drawXY(simT){const f1=effF(0),f2=effF(1),fmin=Math.min(f1,f2),fmax=Math.max(f1,f2);
+  const cyc=Math.min(fmax/fmin*2,400),D=cyc/fmax,N=clamp(Math.ceil(cyc*60),400,8000),vd1=VDIV[sc.vd[0]],vd2=VDIV[sc.vd[1]],nz=.7*DPR;
+  tx.beginPath();for(let k=0;k<=N;k++){const t=simT+D*k/N;
+    const x=clamp(W/2+(chD(0,t)/vd1+sc.hpos)*W/10,-W*.2,W*1.2)+(Math.random()-.5)*nz,y=clamp(yOf(chD(1,t),vd2,sc.pos[1]),-H*.2,H*1.2)+(Math.random()-.5)*nz;
+    k?tx.lineTo(x,y):tx.moveTo(x,y);}
+  stroke(col(0));}
+function findTrig(base){const c=sc.src,g=gen[c];if(!genPow||!g.on||sc.coup[c]==='GND')return null;
+  const T=1/effF(c),L=sc.lvl*VDIV[sc.vd[c]],N=256;let prev=chV(c,base);
+  for(let k=1;k<=N;k++){const t=base+T*k/N,v=chV(c,t);
+    if(sc.slope>0?(prev<L&&v>=L):(prev>L&&v<=L)){const fr=clamp((L-prev)/((v-prev)||1e-12),0,1);return t-T/N*(1-fr);}prev=v;}
+  return null;}
+
+/* ---------- readout ---------- */
+function glowDot(x,y,r,c){const g=ox.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,'#fff');g.addColorStop(.3,c);g.addColorStop(1,'transparent');ox.fillStyle=g;ox.fillRect(x-r,y-r,2*r,2*r);}
+function drawOver(trig,rng,head,warm){
+  ox.clearRect(0,0,W,H);const fs=Math.round(Math.max(9,W/DPR/62)*DPR),pad=6*DPR;
+  ox.font=`${fs}px ui-monospace,Consolas,monospace`;ox.textBaseline='top';
+  if(warm<.45){const p=warm/.45,w=W*Math.pow(p,1.6);ox.globalCompositeOperation='lighter';ox.globalAlpha=1-p*.7;
+    const g=ox.createLinearGradient(0,H/2-6*DPR,0,H/2+6*DPR);g.addColorStop(0,'transparent');g.addColorStop(.5,'#eafff0');g.addColorStop(1,'transparent');
+    ox.fillStyle=g;ox.fillRect(W/2-w/2,H/2-6*DPR,w,12*DPR);glowDot(W/2,H/2,(10+30*(1-p))*DPR,'#9dffc0');ox.globalAlpha=1;ox.globalCompositeOperation='source-over';}
+  const m=sc.mode,show=[m==='CH1'||m==='DUAL'||m==='ADD'||m==='XY',m==='CH2'||m==='DUAL'||m==='XY'];
+  if(head){ox.globalCompositeOperation='lighter';for(const[x,y,c]of head)glowDot(x,y,8*DPR,c);ox.globalCompositeOperation='source-over';}
+  if(!sc.readout||warm<.6)return;
+  ox.globalAlpha=(.55+.4*sc.int)*clamp((warm-.6)/.4,0,1);
+  const mk=(y,c,txt,right)=>{ox.fillStyle=c;ox.beginPath();if(right){ox.moveTo(W-1,y);ox.lineTo(W-9*DPR,y-5*DPR);ox.lineTo(W-9*DPR,y+5*DPR)}else{ox.moveTo(1,y-5*DPR);ox.lineTo(9*DPR,y);ox.lineTo(1,y+5*DPR)}ox.fill();
+    ox.fillText(txt,right?W-9*DPR-ox.measureText(txt).width-2*DPR:11*DPR,y-fs/2);};
+  if(m!=='XY'){[0,1].forEach(c=>{if(show[c])mk(clamp(H/2-sc.pos[c]*H/8,6*DPR,H-6*DPR),col(c),String(c+1))});
+    mk(clamp(H/2-(sc.lvl+sc.pos[sc.src])*H/8,6*DPR,H-6*DPR),col(sc.src),'T',true);}
+  let x=pad;const y=H-fs-pad,put=(s,c)=>{ox.fillStyle=c;ox.fillText(s,x,y);x+=ox.measureText(s).width+12*DPR};
+  put(`CH1 ${si(VDIV[sc.vd[0]],'V')} ${sc.coup[0]}`,col(0));
+  put(`CH2 ${si(VDIV[sc.vd[1]],'V')} ${sc.coup[1]}${sc.inv?' INV':''}`,col(1));
+  put(m==='XY'?'X-Y':`M ${si(TDIV[sc.td],'s')}`,'#dfe');
+  if(m!=='XY'){const s=`T:CH${sc.src+1} ${sc.slope>0?'↑':'↓'} ${si(sc.lvl*VDIV[sc.vd[sc.src]],'V')}${trig==null?' ¡sin disparo!':''}`;
+    ox.fillStyle=trig==null?'#ff8a6b':'#dfe';ox.fillText(s,Math.max(x,W-pad-ox.measureText(s).width),y);}
+  if(sc.meas){[0,1].forEach(c=>{const yy=pad+c*fs*1.35,g=gen[c];ox.fillStyle=col(c);
+    if(!genPow||!g.on||sc.coup[c]==='GND'){ox.fillText(`CH${c+1}  sin señal`,pad,yy);return}
+    const r=rng[c],f=effF(c);
+    ox.fillText(`CH${c+1}  Vpp ${si(r.hi-r.lo,'V')}  Máx ${si(r.hi,'V')}  Mín ${si(r.lo,'V')}  f ${si(f,'Hz',4)}  T ${si(1/f,'s',4)}`,pad,yy);});}
+  ox.globalAlpha=1;}
+
+/* ---------- bucle ---------- */
+let simT=0,last=performance.now(),wasOn=true;
+function loop(now){
+  const dt=Math.min(.1,(now-last)/1000);last=now;simT+=dt;
+  if(!scopePow){
+    if(wasOn){tx.clearRect(0,0,W,H);wasOn=false}
+    bx.clearRect(0,0,cb.width,cb.height);ox.clearRect(0,0,W,H);
+    const e=(now-scopeOffAt)/380;if(e<1){const w=W*(1-e)*(1-e);ox.globalCompositeOperation='lighter';ox.fillStyle=`rgba(220,255,230,${1-e})`;ox.fillRect(W/2-w/2,H/2-1.5*DPR,w,3*DPR);glowDot(W/2,H/2,14*DPR*(1-e*.5),'#9dffc0');ox.globalCompositeOperation='source-over';}
+    $('#ledTrig').classList.remove('on');requestAnimationFrame(loop);return;}
+  wasOn=true;
+  const warm=clamp((now-scopeOnAt)/1700,0,1);INT=sc.int*(warm<.35?0:Math.pow((warm-.35)/.65,1.5))*(.97+Math.random()*.03);
+  const cols=Math.max(50,Math.round(W/DPR)),span=10*TDIV[sc.td],slow=span>=.1&&sc.mode!=='XY';
+  tx.globalCompositeOperation='destination-out';tx.fillStyle=`rgba(0,0,0,${slow?.03:.55})`;tx.fillRect(0,0,W,H);tx.globalCompositeOperation='source-over';
+  const rng=[stats(0,simT),stats(1,simT)];let trig=null,head=null;
+  if(sc.mode==='XY'){drawXY(simT);trig=0;sweep.active=false;}
+  else if(!slow){sweep.active=false;trig=findTrig(simT);const t0=trig!=null?trig:(sc.tmode==='AUTO'?simT:null);if(t0!=null)drawChannels(t0,0,cols,cols,rng);}
+  else{
+    if(!sweep.active){const tg=findTrig(simT);
+      if(tg!=null){sweep.t0=tg;sweep.trig=true;sweep.active=true}else if(sc.tmode==='AUTO'){sweep.t0=simT;sweep.trig=false;sweep.active=true}
+      sweep.col=0;}
+    if(sweep.active){trig=sweep.trig?sweep.t0:null;const prog=clamp((simT-sweep.t0)/span,0,1),c1=Math.round(prog*cols);
+      if(c1>sweep.col){drawChannels(sweep.t0,Math.max(0,sweep.col-1),c1,cols,rng);sweep.col=c1;}
+      if(prog>0&&prog<1&&INT>.05){const cc=Math.max(0,c1-1),t=sweep.t0+(cc/cols*10-sc.hpos)*TDIV[sc.td],x=cc*W/cols,m=sc.mode;head=[];
+        if(m==='CH1'||m==='DUAL')head.push([x,yOf(chD(0,t),VDIV[sc.vd[0]],sc.pos[0]),col(0)]);
+        if(m==='CH2'||m==='DUAL')head.push([x,yOf(chD(1,t),VDIV[sc.vd[1]],sc.pos[1]),col(1)]);
+        if(m==='ADD')head.push([x,yOf(chD(0,t)+chD(1,t),VDIV[sc.vd[0]],sc.pos[0]),col(2)]);}
+      if(prog>=1)sweep.active=false;}
+    else trig=null;}
+  bx.clearRect(0,0,cb.width,cb.height);bx.drawImage(ct,0,0,cb.width,cb.height);
+  $('#ledTrig').classList.toggle('on',trig!=null&&warm>.6);
+  drawOver(trig,rng,head,warm);
+  requestAnimationFrame(loop);}
+
+/* ---------- cables ---------- */
+function drawCables(){const svg=$('#cables'),bench=$('.bench'),b=bench.getBoundingClientRect(),g=$('#gen').getBoundingClientRect(),s=$('#scope').getBoundingClientRect();
+  const side=g.right<=s.left+4&&Math.abs(g.top-s.top)<40;bench.classList.toggle('wired',side);if(!side){svg.innerHTML='';$$('.bnc').forEach(e=>e.classList.remove('plug'));return}
+  const c=id=>{const r=document.getElementById(id).getBoundingClientRect();return[r.left+r.width/2-b.left,r.top+r.height/2-b.top]};
+  let h='<defs><filter id="cblur" x="-20%" y="-20%" width="140%" height="160%"><feGaussianBlur stdDeviation="4"/></filter></defs>';
+  [['bncO1','bncI1','#e6c933'],['bncO2','bncI2','#3fc7e6']].forEach(([a,z,cl],i)=>{const[x1,y1]=c(a),[x2,y2]=c(z),sag=Math.max(y1,y2)+52+i*16;
+    const d=`M${x1} ${y1} C${x1} ${sag},${x2} ${sag},${x2} ${y2}`;
+    h+=`<path d="${d}" stroke="#000" stroke-width="10" fill="none" opacity=".45" transform="translate(0,8)" filter="url(#cblur)"/>`+
+       `<path d="${d}" stroke="#111" stroke-width="8" fill="none" stroke-linecap="round"/>`+
+       `<path d="${d}" stroke="${cl}" stroke-width="5" fill="none" stroke-linecap="round"/>`+
+       `<path d="${d}" stroke="#fff" stroke-opacity=".35" stroke-width="1.3" fill="none" transform="translate(-1,-1.6)"/>`;
+    for(const id of[a,z]){const e=document.getElementById(id);e.classList.add('plug');e.style.setProperty('--pc',cl);}});
+  svg.setAttribute('width',b.width);svg.setAttribute('height',b.height);svg.innerHTML=h;}
+new ResizeObserver(()=>requestAnimationFrame(drawCables)).observe($('.bench'));
+window.addEventListener('resize',drawCables);
+
+/* ---------- tooltip ---------- */
+const tip=$('#tip');let tipT=0;
+function hideTip(){clearTimeout(tipT);tip.classList.remove('show');}
+document.addEventListener('pointerover',e=>{if(e.pointerType==='touch')return;const el=e.target.closest('[data-help]');hideTip();if(!el||el.closest('.knob.drag'))return;
+  tipT=setTimeout(()=>{tip.innerHTML=el.dataset.help;tip.classList.add('show');const r=el.getBoundingClientRect(),tw=tip.offsetWidth,th=tip.offsetHeight;
+    let x=clamp(r.left+r.width/2-tw/2,8,innerWidth-tw-8),y=r.top-th-10;if(y<70)y=r.bottom+10;tip.style.left=x+'px';tip.style.top=y+'px';},450);});
+document.addEventListener('pointerdown',hideTip);document.addEventListener('scroll',hideTip,{passive:true});
+
+/* ---------- figura de la guía ---------- */
+(function(){const s=$('#figSine'),d=30;let h='';
+  for(let i=0;i<=10;i++)h+=`<line x1="${i*d}" y1="0" x2="${i*d}" y2="240" stroke="#2c4a38" stroke-width="${i===5?1.5:1}"/>`;
+  for(let j=0;j<=8;j++)h+=`<line x1="0" y1="${j*d}" x2="300" y2="${j*d}" stroke="#2c4a38" stroke-width="${j===4?1.5:1}"/>`;
+  let p='';for(let x=0;x<=300;x+=2){const y=120-90*Math.sin(2*Math.PI*(x-0)/150);p+=(x?'L':'M')+x+' '+y.toFixed(1);}
+  h+=`<path d="${p}" stroke="#ffe45c" stroke-width="5" fill="none" opacity=".25"/><path d="${p}" stroke="#ffe45c" stroke-width="2" fill="none"/>`;
+  h+=`<defs><marker id="ar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#fff"/></marker></defs>`;
+  h+=`<line x1="0" y1="30" x2="330" y2="30" stroke="#fff" stroke-dasharray="3 4" opacity=".5"/><line x1="0" y1="210" x2="330" y2="210" stroke="#fff" stroke-dasharray="3 4" opacity=".5"/>`;
+  h+=`<line x1="318" y1="32" x2="318" y2="208" stroke="#fff" stroke-width="1.6" marker-start="url(#ar)" marker-end="url(#ar)"/><text x="322" y="124" fill="#fff" font-size="13" font-family="system-ui" transform="rotate(-90 322 124)" text-anchor="middle">Vpp = 6 div</text>`;
+  h+=`<line x1="270" y1="118" x2="270" y2="32" stroke="#55e3ff" stroke-width="1.6" marker-end="url(#ar)"/><text x="276" y="80" fill="#55e3ff" font-size="12" font-family="system-ui">Vp</text>`;
+  h+=`<line x1="37.5" y1="30" x2="37.5" y2="-6" stroke="#fff" stroke-dasharray="2 3" opacity=".6"/><line x1="187.5" y1="30" x2="187.5" y2="-6" stroke="#fff" stroke-dasharray="2 3" opacity=".6"/>`;
+  h+=`<line x1="40" y1="-4" x2="185" y2="-4" stroke="#ff9ad9" stroke-width="1.6" marker-start="url(#ar)" marker-end="url(#ar)"/><text x="112" y="14" fill="#ff9ad9" font-size="13" font-family="system-ui" text-anchor="middle">T = 5 div</text>`;
+  h+=`<text x="4" y="256" fill="#9fb0ba" font-size="11" font-family="system-ui">1 V/div · 0,2 ms/div</text>`;
+  s.innerHTML=h;})();
+
+/* ---------- ejercicios ---------- */
+const EX=[
+{id:'e1',titulo:'Primer contacto: leer la pantalla',nivel:'Básico',controles:'VOLTS/DIV, TIME/DIV, MEASURE',
+ objetivo:'Aprender a convertir divisiones de la cuadrícula en voltios y segundos.',
+ setup:{gen:[{wave:'sine',freq:1000,amp:4},{on:false}],sc:{vd:[4,4],pos:[0,0],mode:'CH1',td:9}},
+ pasos:['Observe la señal amarilla. Está configurada en 1 V/div y 0,2 ms/div (lo indica el texto inferior de la pantalla).','Cuente cuántas divisiones (cuadros) hay entre el punto más alto y el más bajo.','Cuente cuántas divisiones ocupa un ciclo completo (de un pico al siguiente).','Calcule y responda. Al final active MEASURE para comprobar.'],
+ preguntas:[{q:'¿Cuántas divisiones verticales hay de pico a pico?',ans:4,unit:'div',ej:'4'},{q:'¿Cuál es el voltaje pico a pico (Vpp)?',ans:4,unit:'V',ej:'4'},{q:'¿Cuántas divisiones horizontales ocupa un período?',ans:5,unit:'div'},{q:'¿Cuál es el período T?',ans:1e-3,unit:'ms',scale:1e-3,ej:'1'},{q:'¿Cuál es la frecuencia?',ans:1000,unit:'Hz',ej:'1000 o 1k'},{q:'¿Cuál es el voltaje eficaz (Vrms)? (señal senoidal)',ans:1.414,unit:'V',tol:.03,pista:'Vrms = Vp / √2, y Vp = Vpp / 2.'}],
+ resolucion:`<ol><li>De pico a pico hay <b>4 divisiones</b>. Vpp = 4 div × 1 V/div = <b>4 V</b>.</li><li>Un período ocupa <b>5 divisiones</b>. T = 5 div × 0,2 ms/div = <b>1 ms</b>.</li><li>f = 1 / T = 1 / 0,001 s = <b>1000 Hz</b> (1 kHz).</li><li>Vp = Vpp / 2 = 2 V. Vrms = 2 / √2 ≈ <b>1,414 V</b>.</li></ol><p>Este es el procedimiento base de todos los ejercicios: <b>contar divisiones × escala</b>.</p>`},
+{id:'e2',titulo:'Señal misteriosa: ajustar las escalas',nivel:'Básico',controles:'VOLTS/DIV, TIME/DIV',
+ objetivo:'Partir de una pantalla mal configurada y llegar a una imagen medible.',
+ setup:{hide:true,gen:[{wave:'sine',freq:2500,amp:6},{on:false}],sc:{vd:[0,4],pos:[0,0],mode:'CH1',td:2}},
+ pasos:['La pantalla muestra una franja delgada: las escalas están muy mal elegidas.','Gire VOLTS/DIV a la derecha hasta que la señal ocupe unas 6 divisiones de alto.','Gire TIME/DIV a la derecha hasta ver entre 1 y 3 ciclos.','Mida y responda.'],
+ preguntas:[{q:'¿Cuál es el voltaje pico a pico?',ans:6,unit:'V'},{q:'¿Cuál es el período?',ans:4e-4,unit:'ms',scale:1e-3,ej:'0.4',tol:.06},{q:'¿Cuál es la frecuencia?',ans:2500,unit:'Hz',ej:'2.5k',tol:.06}],
+ resolucion:`<ol><li>Con <b>1 V/div</b> la señal ocupa <b>6 divisiones</b> → Vpp = 6 × 1 V = <b>6 V</b>.</li><li>Con <b>0,1 ms/div</b> un período ocupa <b>4 divisiones</b> → T = 4 × 0,1 ms = <b>0,4 ms</b>.</li><li>f = 1 / 0,0004 s = <b>2500 Hz</b>.</li></ol><p>¿Por qué se veía una franja? Con 50 ms/div la pantalla abarca 0,5 s, y en ese tiempo hay 1250 ciclos: el ojo ve una banda llena. La regla: ajustar primero la escala vertical, después la horizontal.</p>`},
+{id:'e3',titulo:'Componente continua: AC vs DC',nivel:'Básico',controles:'GND, AC, DC, POSITION, LEVEL',
+ objetivo:'Distinguir la parte alterna y la parte continua (offset) de una señal.',
+ setup:{hide:true,gen:[{wave:'square',freq:500,amp:2,off:3},{on:false}],sc:{vd:[4,4],pos:[0,0],coup:['AC','DC'],mode:'CH1',td:8}},
+ pasos:['El CH1 está en AC. Ponga GND y verifique que la línea de 0 V quede en el centro (use POSITION si no).','Vuelva a AC: mida el Vpp.','Cambie a DC: la señal sube. Cuente cuántas divisiones subió su centro respecto del 0 V.','En DC la imagen corre: suba LEVEL hasta que TRIG\'D encienda (el nivel debe quedar dentro de la señal).'],
+ preguntas:[{q:'¿Cuál es el voltaje pico a pico?',ans:2,unit:'V'},{q:'¿Cuál es el offset (valor de la línea central de la señal en DC)?',ans:3,unit:'V',pista:'Mida en DC dónde está el centro de la cuadrada respecto de la flecha «1▸» (0 V).'},
+  {q:'Con acoplamiento AC la señal aparece centrada en 0 V porque…',type:'choice',opts:['el generador deja de entregar offset','el osciloscopio bloquea la componente continua con un condensador en serie','el disparo está mal ajustado'],ans:1},
+  {q:'En DC, ¿por qué el nivel de disparo en 0 V no funciona?',type:'choice',opts:['Porque la señal nunca cruza 0 V: va de 2 V a 4 V','Porque las cuadradas no se pueden disparar','Porque falta activar INV'],ans:0}],
+ resolucion:`<ol><li>En AC la cuadrada ocupa <b>2 divisiones</b> → Vpp = <b>2 V</b>.</li><li>En DC el centro de la señal sube <b>3 divisiones</b> → offset = <b>+3 V</b>. La señal real va de 2 V a 4 V.</li><li>AC introduce un condensador en serie que deja pasar lo que varía y bloquea lo constante.</li><li>Como la señal en DC nunca baja de 2 V, un nivel de disparo de 0 V nunca se cruza. Con LEVEL ≈ 3 V la imagen se estabiliza.</li></ol><p><b>Conclusión:</b> use DC para conocer la señal completa y AC para ampliar una variación pequeña montada sobre un voltaje continuo grande.</p>`},
+{id:'e4',titulo:'Acoplamiento AC en baja frecuencia',nivel:'Intermedio',controles:'AC, DC, TIME/DIV',
+ objetivo:'Ver la limitación del acoplamiento AC con señales lentas.',
+ setup:{gen:[{wave:'square',freq:5,amp:4},{on:false}],sc:{vd:[4,4],pos:[0,0],coup:['AC','DC'],mode:'CH1',td:2}},
+ pasos:['Hay una cuadrada de 5 Hz en AC y 50 ms/div. Observe el punto recorriendo la pantalla (barrido lento).','Fíjese en la parte superior de cada semiciclo.','Cambie a DC y compare.','Suba la frecuencia del generador a 500 Hz, ponga TIME/DIV en 0,5 ms y vuelva a probar AC.'],
+ preguntas:[{q:'En AC, ¿qué ocurre con la parte superior de la cuadrada?',type:'choice',opts:['Se mantiene plana','Decae (se inclina) hacia cero','Se duplica'],ans:1},
+  {q:'¿Esa inclinación existe en la señal del generador?',type:'choice',opts:['Sí, el generador la produce','No, la produce el acoplamiento AC del osciloscopio'],ans:1},
+  {q:'Para observar señales de menos de ~20 Hz, ¿qué acoplamiento conviene?',type:'choice',opts:['AC','DC'],ans:1}],
+ resolucion:`<p>El acoplamiento AC es un <b>filtro pasa-altos</b> (aquí con corte en ~10 Hz). En una cuadrada de 5 Hz cada semiciclo dura 100 ms, mucho más que la constante de tiempo del filtro (~16 ms), por eso el condensador se descarga y la parte plana cae hacia cero.</p><p>En DC la cuadrada se ve perfecta: la deformación la produce el instrumento, no la señal. A 500 Hz el semiciclo dura 1 ms y el condensador casi no alcanza a descargarse, así que en AC se ve bien.</p><p><b>Regla práctica:</b> para señales lentas, use siempre DC.</p>`},
+{id:'e5',titulo:'Estabilizar la imagen: el disparo',nivel:'Intermedio',controles:'LEVEL, SLOPE, AUTO / NORM',
+ objetivo:'Entender por qué una imagen "corre" y cómo la fija el trigger (disparo).',
+ setup:{gen:[{wave:'sine',freq:1000,amp:2},{on:false}],sc:{vd:[5,4],pos:[0,0],mode:'CH1',td:9,lvl:3}},
+ pasos:['La imagen se ve corrida y el LED TRIG\'D está apagado. Observe la flecha «T» del borde derecho: es el nivel de disparo.','Mida el valor máximo de la señal.','Pase a NORM: observe qué pasa.','Vuelva a AUTO y baje LEVEL hasta que la flecha T quede dentro de la señal.','Cambie SLOPE entre ↑ y ↓ y observe dónde empieza el dibujo a la izquierda.'],
+ preguntas:[{q:'¿Por qué la imagen no está quieta al inicio?',type:'choice',opts:['La frecuencia del generador es inestable','El nivel de disparo está fuera del rango de la señal','El canal está en GND'],ans:1},
+  {q:'¿Cuál es el valor máximo (pico) de la señal?',ans:1,unit:'V',pista:'Con 0,5 V/div la señal sube 2 divisiones sobre el cero.'},
+  {q:'En NORM, con el nivel fuera de la señal, ¿qué pasa?',type:'choice',opts:['La traza desaparece','La traza se ve el doble de grande','No cambia nada'],ans:0},
+  {q:'Con SLOPE ↓ (−) la traza comienza a la izquierda…',type:'choice',opts:['subiendo','bajando'],ans:1}],
+ resolucion:`<ol><li>El nivel estaba en 1,5 V (3 div × 0,5 V/div), pero la señal solo llega a <b>1 V</b> (2 div). Nunca cruza el nivel, entonces no hay disparo.</li><li>En <b>AUTO</b> el osciloscopio dibuja igual, pero cada barrido empieza en un punto distinto de la onda: la imagen corre.</li><li>En <b>NORM</b> espera el disparo, que nunca llega: la pantalla queda vacía.</li><li>Con el nivel entre −1 V y +1 V se enciende TRIG'D y la imagen se fija.</li><li>SLOPE define si se dispara en el flanco de subida o de bajada: con ↓ el dibujo empieza bajando.</li></ol>`},
+{id:'e6',titulo:'Desfase entre dos señales',nivel:'Intermedio',controles:'DUAL, TIME/DIV, POSITION X',
+ objetivo:'Medir el desfase en grados entre dos señales de igual frecuencia.',
+ setup:{hide:true,gen:[{wave:'sine',freq:1000,amp:4,ph:0},{wave:'sine',freq:1000,amp:4,ph:60}],sc:{vd:[4,4],pos:[0,0],mode:'DUAL',td:10,hpos:2}},
+ pasos:['Ambos canales están superpuestos en el centro y a la misma escala, con 0,1 ms/div.','Mida el período T de las señales.','Mida la distancia horizontal Δt entre los cruces por cero <b>en subida</b> de CH2 (celeste) y CH1 (amarilla). Use las subdivisiones de 0,2 div.','Calcule φ = 360° × Δt / T.'],
+ preguntas:[{q:'¿Cuál es el período T?',ans:1e-3,unit:'ms',scale:1e-3},{q:'¿Cuál es Δt entre los cruces por cero?',ans:1.6667e-4,unit:'ms',scale:1e-3,tol:.1,ej:'0.17'},{q:'¿Cuál es el desfase φ?',ans:60,unit:'°',tol:.1},{q:'¿Qué señal adelanta?',type:'choice',opts:['CH1 (amarilla)','CH2 (celeste)'],ans:1}],
+ resolucion:`<ol><li>Un período ocupa 10 divisiones → T = 10 × 0,1 ms = <b>1 ms</b>.</li><li>El CH2 cruza por cero subiendo ≈ <b>1,67 div</b> antes que el CH1 → Δt ≈ 1,67 × 0,1 ms ≈ <b>0,167 ms</b>.</li><li>φ = 360° × 0,167 / 1 ≈ <b>60°</b>.</li><li>La que cruza primero (más a la izquierda) <b>adelanta</b>: el CH2.</li></ol><p>Tip: active MEASURE para confirmar que ambas tienen la misma frecuencia; el desfase solo tiene sentido en ese caso.</p>`},
+{id:'e7',titulo:'Figuras de Lissajous (modo X-Y)',nivel:'Avanzado',controles:'X-Y, VOLTS/DIV',
+ objetivo:'Determinar una frecuencia desconocida comparándola con una conocida.',
+ setup:{hide:true,gen:[{wave:'sine',freq:1000,amp:4},{wave:'sine',freq:3000,amp:4,ph:90}],sc:{vd:[4,4],pos:[0,0],mode:'XY',td:9}},
+ pasos:['El osciloscopio está en X-Y: CH1 (1 kHz, conocida) mueve el haz en horizontal y CH2 (desconocida) en vertical.','Cuente cuántas veces la figura toca el borde superior (tangencias horizontales).','Cuente cuántas veces toca el borde lateral derecho (tangencias verticales).','Aplique: f<sub>Y</sub> / f<sub>X</sub> = tangencias horizontales / tangencias verticales.'],
+ preguntas:[{q:'¿Cuántas tangencias en el borde superior?',ans:3,unit:'',tol:0},{q:'¿Cuántas tangencias en el borde lateral?',ans:1,unit:'',tol:0},{q:'Si CH1 = 1 kHz, ¿cuál es la frecuencia del CH2?',ans:3000,unit:'Hz',ej:'3k'}],
+ resolucion:`<ol><li>La figura toca arriba <b>3 veces</b> y al lado <b>1 vez</b>.</li><li>f<sub>Y</sub> / f<sub>X</sub> = 3 / 1 → f<sub>CH2</sub> = 3 × 1 kHz = <b>3 kHz</b>.</li></ol><p>Si la relación de frecuencias es exacta, la figura queda quieta. Si no lo es, la figura "gira" lentamente: así se calibraban frecuencias antes de existir los frecuencímetros digitales. Pruebe revelar el generador y mover el ajuste FINO del CH2.</p>`},
+{id:'e8',titulo:'Suma, inversión y cancelación',nivel:'Intermedio',controles:'ADD, INV, FASE',
+ objetivo:'Usar ADD e INV para sumar y restar señales.',
+ setup:{gen:[{wave:'sine',freq:1000,amp:1.5},{wave:'sine',freq:1000,amp:1.5,ph:0}],sc:{vd:[5,5],pos:[0,0],mode:'DUAL',td:9}},
+ pasos:['Ambos canales tienen la misma señal (1,5 Vpp, 1 kHz, misma fase).','Pase a modo ADD y mida el Vpp de la suma.','Active INV (inversión del CH2) manteniendo ADD.','Desactive INV y, en el generador, ponga la FASE del CH2 en 180°.'],
+ preguntas:[{q:'Vpp de la suma en ADD:',ans:3,unit:'V'},{q:'Vpp con ADD + INV:',ans:0,abs:.05,unit:'V'},{q:'Invertir una señal senoidal equivale a desfasarla…',type:'choice',opts:['90°','180°','360°'],ans:1},{q:'Vpp en ADD con fase 180° en CH2 (sin INV):',ans:0,abs:.05,unit:'V'}],
+ resolucion:`<ol><li>Dos señales iguales en fase se suman: 1,5 + 1,5 = <b>3 Vpp</b> (6 div a 0,5 V/div).</li><li>Con INV, ADD calcula CH1 − CH2: señales idénticas se cancelan → <b>0 V</b> (línea plana).</li><li>Multiplicar una senoidal por −1 es lo mismo que desfasarla <b>180°</b>.</li><li>Por eso, con fase 180° y sin INV, la suma también da <b>0 V</b>.</li></ol><p>Este principio (restar dos señales) es la base de la medición diferencial y de la cancelación de ruido.</p>`},
+{id:'e9',titulo:'Señal pequeña y rápida',nivel:'Avanzado',controles:'VOLTS/DIV, TIME/DIV, LEVEL',
+ objetivo:'Configurar el osciloscopio desde cero para una señal de pocos milivoltios y alta frecuencia.',
+ setup:{hide:true,gen:[{wave:'triangle',freq:20000,amp:.05},{on:false}],sc:{vd:[4,4],pos:[0,0],mode:'CH1',td:7}},
+ pasos:['A 1 V/div la señal parece una línea casi plana.','Reduzca VOLTS/DIV hasta que ocupe varias divisiones.','Ajuste TIME/DIV para ver 1 o 2 ciclos.','Si la imagen no está quieta, revise LEVEL (con escalas tan sensibles, el nivel debe ser pequeño).','Identifique la forma de onda y mida.'],
+ preguntas:[{q:'¿Qué forma de onda es?',type:'choice',opts:['Senoidal','Triangular','Cuadrada','Diente de sierra'],ans:1},{q:'¿Cuál es el Vpp?',ans:.05,unit:'mV',scale:1e-3,ej:'50'},{q:'¿Cuál es el período?',ans:5e-5,unit:'µs',scale:1e-6,ej:'50'},{q:'¿Cuál es la frecuencia?',ans:20000,unit:'Hz',ej:'20k'}],
+ resolucion:`<ol><li>Con <b>10 mV/div</b> la señal ocupa <b>5 divisiones</b> → Vpp = 5 × 10 mV = <b>50 mV</b>.</li><li>Con <b>10 µs/div</b> un período ocupa <b>5 divisiones</b> → T = <b>50 µs</b>.</li><li>f = 1 / 50 µs = <b>20 kHz</b>.</li><li>La forma es <b>triangular</b>: rampas rectas que suben y bajan con la misma pendiente.</li></ol><p>Ojo con los prefijos: m = 10⁻³, µ = 10⁻⁶, k = 10³.</p>`}
+];
+
+let done=new Set();try{done=new Set(JSON.parse(localStorage.getItem('oscDone')||'[]'))}catch(e){}
+const saveDone=()=>{try{localStorage.setItem('oscDone',JSON.stringify([...done]))}catch(e){}};
+function renderCards(){$('#exGrid').innerHTML=EX.map((e,i)=>`<article class="exc ${done.has(e.id)?'done':''}"><div class="exh"><span class="lvl lv-${e.nivel}">${e.nivel}</span>${done.has(e.id)?'<span class="ok">✓ Completado</span>':''}${e.setup.hide?'<span title="Generador oculto">🔒</span>':''}</div><h4>${i+1}. ${e.titulo}</h4><p>${e.objetivo}</p><p class="mini">Controles: ${e.controles}</p><button class="go" data-i="${i}">Preparar ejercicio →</button></article>`).join('');
+  $('#progress').innerHTML=`Progreso: <b>${done.size}</b> de ${EX.length} ejercicios completados.`;}
+$('#exGrid').addEventListener('click',e=>{const b=e.target.closest('.go');if(b)openEx(+b.dataset.i)});
+
+function applySetup(s){const dg=DEF_GEN();
+  for(let i=0;i<2;i++)Object.assign(gen[i],{wave:'sine',freq:1000,fine:1,amp:2,off:0,ph:0,on:true},s?(s.gen[i]||{}):dg[i]);
+  Object.assign(sc,DEF_SC(),s?{pos:[0,0],mode:'CH1',...s.sc}:{});
+  genPow=true;if(!scopePow){scopePow=true;scopeOnAt=performance.now();}
+  hidden=!!(s&&s.hide);gs=0;syncGen();syncScope();clearTrace();}
+
+let cur=-1,res=[];
+const dock=$('#dock');
+function qHTML(q,k){if(q.type==='choice')return `<div class="q" data-k="${k}"><p><b>${k+1}.</b> ${q.q}</p><div class="qa">${q.opts.map((o,j)=>`<label><input type="radio" name="q${k}" value="${j}"> ${o}</label>`).join('')}<button class="chk">Comprobar</button></div><div class="fb"></div></div>`;
+  return `<div class="q" data-k="${k}"><p><b>${k+1}.</b> ${q.q}</p><div class="qa"><input type="text" inputmode="decimal" placeholder="${q.ej?'ej: '+q.ej:''}"><span class="u">${q.unit||''}</span><button class="chk">Comprobar</button></div><div class="fb"></div></div>`;}
+function openEx(i){const e=EX[i];cur=i;res=e.preguntas.map(()=>false);applySetup(e.setup);
+  dock.innerHTML=`<div class="dk-h"><b>Ejercicio ${i+1}: ${e.titulo}</b><button class="dk-min" title="Minimizar">–</button><button class="dk-x" title="Cerrar">×</button></div>
+  <div class="dk-b"><p><b>Objetivo:</b> ${e.objetivo}</p>${e.setup.hide?'<p class="note">🔒 El generador está oculto. Descubra la señal solo con el osciloscopio.</p>':''}
+  <h5>Procedimiento</h5><ol>${e.pasos.map(p=>`<li>${p}</li>`).join('')}</ol>
+  <h5>Preguntas</h5>${e.preguntas.map(qHTML).join('')}<div id="celebr"></div>
+  <details class="sol"><summary>Ver resolución paso a paso</summary>${e.resolucion}</details>
+  <div class="dk-f"><button class="again">↺ Volver a preparar</button>${i<EX.length-1?'<button class="next">Siguiente ejercicio →</button>':''}</div></div>`;
+  dock.classList.add('open');dock.classList.remove('min');$('#lab').scrollIntoView({behavior:'smooth'});}
+dock.addEventListener('click',e=>{const t=e.target;
+  if(t.closest('.dk-x')){dock.classList.remove('open');return}
+  if(t.closest('.dk-min')||(t.closest('.dk-h')&&!t.closest('button'))){dock.classList.toggle('min');return}
+  if(t.closest('.again')){openEx(cur);return}
+  if(t.closest('.next')){openEx(cur+1);return}
+  const b=t.closest('.chk');if(!b)return;const qd=b.closest('.q'),k=+qd.dataset.k,q=EX[cur].preguntas[k],fb=qd.querySelector('.fb');let ok=false;
+  if(q.type==='choice'){const r=qd.querySelector('input:checked');if(!r){fb.className='fb bad';fb.textContent='Seleccione una opción.';return}ok=+r.value===q.ans;}
+  else{const v=parseSI(qd.querySelector('input').value,q.scale||1);if(isNaN(v)){fb.className='fb bad';fb.textContent='Ingrese un número (puede usar prefijos: k, m, µ…).';return}
+    ok=q.abs!=null?Math.abs(v-q.ans)<=q.abs:Math.abs(v-q.ans)<=Math.abs(q.ans)*(q.tol??.05)+1e-12;}
+  res[k]=ok;fb.className='fb '+(ok?'good':'bad');fb.textContent=ok?'✓ Correcto.':'✗ Revise la medición.'+(q.pista?' Pista: '+q.pista:'');
+  if(res.every(Boolean)){done.add(EX[cur].id);saveDone();renderCards();$('#celebr').innerHTML='<div class="celebrate">🎉 ¡Ejercicio completado! Revise la resolución para confirmar el razonamiento.</div>';}});
+$('#resetAll').addEventListener('click',()=>{applySetup(null);dock.classList.remove('open');$('#lab').scrollIntoView({behavior:'smooth'})});
+
+renderCards();syncGen();refreshSeg();refreshT();resize();drawCables();setTimeout(drawCables,300);requestAnimationFrame(loop);
+</script>
+</body>
+</html>
