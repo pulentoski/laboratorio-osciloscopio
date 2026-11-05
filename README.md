@@ -1,6 +1,6 @@
 # Laboratorio Virtual · Generador de Funciones y Osciloscopio
 
-Simulador web pedagógico de un banco de pruebas: generador de funciones de 2 canales, osciloscopio analógico de 2 canales y analizador de espectro, controlados con perillas y botones como en un equipo real. Incluye guía de uso y ejercicios prácticos con corrección automática.
+Simulador web pedagógico de un banco de pruebas: generador de funciones de 2 canales con modulación, osciloscopio analógico de 2 canales, caja de pruebas (circuito bajo prueba) y analizador de espectro, controlados con perillas y botones como en un equipo real. Incluye guía de uso y ejercicios prácticos con corrección automática.
 
 Todo funciona en un solo archivo (`index.html`), sin dependencias ni servidor.
 
@@ -28,10 +28,25 @@ Todo funciona en un solo archivo (`index.html`), sin dependencias ni servidor.
 - Traza WRITE / MAX HOLD / AVG, piso de ruido dependiente de RBW y atenuación, tiempo de barrido realista.
 - Espectro calculado por serie de Fourier de cada forma de onda, con distorsión armónica del generador y fuga del oscilador local en 0 Hz.
 
+**Modulación**
+- AM (fm, profundidad m), FM (fm, desviación Δf, espectro de Bessel) y LoRa (chirp con BW 7,8k–500 kHz y SF 7–12).
+
+**Caja de pruebas (circuito bajo prueba)**
+- Directo, pasa-bajos y pasa-altos de 2º orden, canal telefónico (300 Hz – 3,4 kHz), cable coaxial RG-58 y amplificador que satura a ±5 V.
+- Conector T para ver la entrada en CH2 y la salida en CH1.
+- Ruido (Vrms), interferencia (por ejemplo 50 Hz de la red) y cálculo de SNR.
+
 **Pedagogía**
 - Nombres de controles en inglés con su traducción al español y ayuda emergente.
 - Guía: lectura de pantalla, fórmulas, tabla de cada control, receta de 6 pasos, problemas frecuentes y sección del analizador de espectro (dBm, armónicos, RBW).
-- 16 ejercicios (básico a avanzado; 7 de ellos con el analizador de espectro) que configuran los equipos automáticamente, con preguntas corregidas al instante y resolución paso a paso. Algunos ocultan el generador para medir una señal desconocida.
+- 25 ejercicios (básico a avanzado) sobre medición, analizador, filtros, saturación, AM, FM, ruido, interferencia y LoRa que configuran los equipos automáticamente, con preguntas corregidas al instante y resolución paso a paso. Algunos ocultan el generador para medir una señal desconocida.
+
+**Modo evaluación**
+- Problemas con valores distintos por estudiante (según nombre y código del profesor), nota en escala 1,0–7,0 (60 %), descarga de resultado .txt y verificador para el profesor que vuelve a corregir.
+
+**Otros**
+- Capturas PNG de las pantallas con fecha y configuración.
+- Diseño adaptado a celulares y tablets.
 
 ## Estructura
 

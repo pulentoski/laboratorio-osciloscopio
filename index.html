@@ -224,13 +224,70 @@ details.sol p,details.sol li{font-size:13.5px}
 .sed .lcdin{width:100%;color:#ffd23f;border-color:#ffd23f;background:#1a1a0e}
 .sabtns{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:6px}
 .sabtns .btn{border-radius:6px;box-shadow:0 2px 5px rgba(0,0,0,.5),0 0 0 1px #15171a}
+/* caja de pruebas */
+.inst{min-width:0}
+.hide{display:none!important}
+.dutp{color:#1f2622;background:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 3px),linear-gradient(#cfd8cf,#a1ada2)}
+.dutp .sec{background:rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.12)}
+.dutp .btn{background:linear-gradient(#5d6166,#33363a)}
+.dutp .btn.on{background:linear-gradient(#202326,#3a3e42)}
+.dut-body{display:grid;grid-template-columns:minmax(300px,1.2fr) minmax(280px,1fr);gap:16px}
+@media(max-width:940px){.dut-body{grid-template-columns:1fr}}
+.dutflow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font:700 11px system-ui;margin:0 10px 12px}
+.dutflow .bx{padding:6px 10px;border-radius:6px;background:#2b3035;color:#e9eef1}
+.dutflow .bx.mid{background:#2f6b45}
+.seg.wrap{flex-wrap:wrap}
+.kw.off{opacity:.28;pointer-events:none;filter:grayscale(1)}
+.dutlock{display:none;margin:0 0 10px;padding:9px 11px;border-radius:8px;background:#2a2318;color:#ffd99a;font:600 12px/1.4 system-ui;border:1px solid #6b5420}
+.dutp.locked .dutlock{display:block}
+.dutp.locked .dutsel{filter:blur(5px) grayscale(1);opacity:.45;pointer-events:none}
+#dutLcd .lrow{flex-wrap:wrap}
+.brbtns{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+/* evaluación */
+.evalcard{background:#14202a;border:1px solid #2f5d80;border-radius:12px;padding:16px 18px;margin:18px 0}
+.evalcard h3{margin-top:0;border:0}
+.evf{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.evf label,.evteach label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:#a9b8c1;flex:1 1 200px}
+.evf input,.evteach input,.evteach textarea{background:#0a0e10;border:1px solid #3a4a55;border-radius:6px;color:#fff;padding:8px 10px;font:14px system-ui}
+.evteach textarea{width:100%;min-height:150px;margin:8px 0;font:12px ui-monospace,Consolas,monospace}
+.evteach{margin-top:14px}.evteach summary{cursor:pointer;color:#9fdcff;font-weight:600}
+.evres{margin-top:12px;background:#0f171d;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 14px}
+.evres .nota{font-size:30px;font-weight:800;color:#fff}
+.evres table{font-size:13px}
+.evbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+body.evalon #reveal{display:none}
+body.evalon .exgrid{opacity:.35;pointer-events:none}
+/* móvil */
+@media(max-width:700px){
+ main{padding:10px}
+ html{scroll-padding-top:120px}
+ .top .in{padding:8px 10px}
+ .top h1{font-size:14px}.top h1 small{display:none}
+ .nav{flex-wrap:nowrap;overflow-x:auto;width:100%;padding-bottom:2px}
+ .nav a,.nav button{white-space:nowrap;padding:6px 10px;font-size:12px}
+ .inst{padding:10px}
+ .gen,.scope{flex:1 1 100%;max-width:100%}
+ .bench{gap:14px}
+ .brand{margin:0 4px 8px;flex-wrap:wrap}
+ .knob.l{--s:62px}.knob.m{--s:46px}.knob.s{--s:36px}
+ .kw{min-width:50px}
+ .split{gap:6px}
+ .btn{padding:7px 6px;font-size:9.5px}
+ .doc{padding:18px 14px;margin-top:24px}
+ .doc table{display:block;overflow-x:auto}
+ .doc td:first-child{white-space:normal}
+ #dock{left:0;right:0;bottom:0;width:100%;max-height:58vh;border-radius:14px 14px 0 0}
+ .saedit{gap:5px}.saedit>div{padding:5px 6px;font-size:11px}
+ .lrow.big{font-size:17px}
+ .lcd{padding:8px 9px}
+}
 footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;font-size:12px}
 </style>
 </head>
 <body>
 <div class="top"><div class="in">
   <h1>Laboratorio Virtual · Generador de Funciones y Osciloscopio<small>Simulador pedagógico de banco de pruebas</small></h1>
-  <nav class="nav"><a href="#lab">🔬 Laboratorio</a><a href="#sa">📡 Analizador</a><a href="#guia">📘 Cómo usar</a><a href="#ejercicios">📝 Ejercicios</a><button id="resetAll" data-help="Vuelve todos los equipos a su configuración inicial.">↺ Restablecer</button></nav>
+  <nav class="nav"><a href="#lab">🔬 Laboratorio</a><a href="#dutp">📦 Caja de pruebas</a><a href="#sa">📡 Analizador</a><a href="#guia">📘 Cómo usar</a><a href="#ejercicios">📝 Ejercicios</a><button data-snap="both" data-help="Descarga una imagen PNG con las pantallas del osciloscopio y del analizador, con fecha y configuración.">📷 Captura</button><button id="resetAll" data-help="Vuelve todos los equipos a su configuración inicial.">↺ Restablecer</button></nav>
 </div></div>
 
 <main>
@@ -248,6 +305,7 @@ footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;f
       <div class="lrow"><span class="lk">AMPL <small>(pico a pico)</small></span><span class="ed" data-f="amp" id="lcdA" data-help="Clic para escribir la amplitud pico a pico. Ej: <b>500m</b> = 0,5 V."></span></div>
       <div class="lrow"><span class="lk">OFFSET <small>(nivel DC)</small></span><span class="ed" data-f="off" id="lcdO" data-help="Clic para escribir el offset (componente continua). Ej: <b>-2.5</b>."></span></div>
       <div class="lrow"><span class="lk">FASE</span><span class="ed" data-f="ph" id="lcdP" data-help="Clic para escribir la fase en grados (0 a 360)."></span></div>
+      <div class="lrow"><span class="lk">MOD <small>(modulación)</small></span><span id="lcdM"></span></div>
     </div>
     <div class="lockmsg">🔒 <b>Señal desconocida.</b> El generador está oculto: mida la señal solo con el osciloscopio.<br><button id="reveal">Revelar valores del generador</button></div>
     <div class="sec adj">
@@ -266,6 +324,15 @@ footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;f
       <h3>AJUSTES <small>(settings)</small></h3>
       <div class="row"><div id="kFreq"></div><div id="kFine"></div></div>
       <div class="row" style="margin-top:6px"><div id="kAmp"></div><div id="kOff"></div><div id="kPh"></div></div>
+    </div>
+    <div class="sec adj">
+      <h3>MODULATION <small>(modulación · solo portadora senoidal)</small></h3>
+      <div class="row" style="justify-content:center"><div class="col"><div class="seg" data-k="mod" data-help="<b>MODULATION (modulación)</b><br><b>AM</b>: varía la amplitud de la portadora.<br><b>FM</b>: varía su frecuencia.<br><b>LoRa</b>: la frecuencia barre de forma lineal (chirp), como los equipos LoRa/LoRaWAN."><button class="btn" data-v="off">OFF</button><button class="btn" data-v="am">AM</button><button class="btn" data-v="fm">FM</button><button class="btn" data-v="lora">LoRa</button></div><span class="cap">AM (amplitud) · FM (frecuencia) · LoRa (chirp)</span></div></div>
+      <div class="row modam" style="margin-top:6px"><div id="kMf"></div><div id="kMd"></div></div>
+      <div class="row modlora" style="margin-top:6px">
+        <div class="col"><span class="glbl">BW<small>(ancho de banda)</small></span><div class="seg" data-k="lbw" data-help="<b>BW (ancho de banda LoRa)</b><br>Cuánto barre la frecuencia en cada símbolo."><button class="btn" data-v="7812.5">7,8k</button><button class="btn" data-v="125000">125k</button><button class="btn" data-v="250000">250k</button><button class="btn" data-v="500000">500k</button></div></div>
+        <div class="col"><span class="glbl">SF<small>(factor de dispersión)</small></span><div class="seg" data-k="sf" data-help="<b>SF (spreading factor)</b><br>Duración de cada símbolo: Ts = 2^SF / BW. Mayor SF = más alcance y menos velocidad."><button class="btn" data-v="7">7</button><button class="btn" data-v="8">8</button><button class="btn" data-v="9">9</button><button class="btn" data-v="10">10</button><button class="btn" data-v="11">11</button><button class="btn" data-v="12">12</button></div></div>
+      </div>
     </div>
     <div class="sec">
       <h3>RANGE <small>(rango de frecuencia)</small></h3>
@@ -287,7 +354,7 @@ footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;f
   <section class="inst scope" id="scope">
     <i class="screw a"></i><i class="screw b"></i><i class="screw c"></i><i class="screw d"></i>
     <div class="brand"><span>OS-2020 · OSCILOSCOPIO ANALÓGICO<br><span class="sub">2 CHANNEL OSCILLOSCOPE · 20 MHz</span></span>
-      <button class="pbtn tg" data-t="spow" data-help="<b>POWER (encendido)</b><br>Enciende o apaga el osciloscopio. Al encender, el tubo tarda un momento en calentar."><span class="led g"></span>POWER<small style="font-weight:600;opacity:.7">(encendido)</small></button></div>
+      <span class="brbtns"><button class="pbtn" data-snap="scope" data-help="Descarga la pantalla del osciloscopio como imagen PNG.">📷 PNG</button><button class="pbtn tg" data-t="spow" data-help="<b>POWER (encendido)</b><br>Enciende o apaga el osciloscopio. Al encender, el tubo tarda un momento en calentar."><span class="led g"></span>POWER<small style="font-weight:600;opacity:.7">(encendido)</small></button></span></div>
     <div class="scope-body">
       <div>
         <div class="bezel">
@@ -363,10 +430,44 @@ footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;f
   </section>
 </div>
 <div class="bench2">
+  <section class="inst dutp" id="dutp">
+    <i class="screw a"></i><i class="screw b"></i><i class="screw c"></i><i class="screw d"></i>
+    <div class="brand"><span>CB-1 · CAJA DE PRUEBAS<br><span class="sub">DEVICE UNDER TEST (circuito bajo prueba) · se conecta entre OUT 1 y el CH1 / analizador</span></span></div>
+    <div class="dutflow"><span class="bx">Generador OUT 1</span>→<span class="bx mid" id="dutName">Directo (sin circuito)</span>→<span class="bx">CH1 + analizador</span><span class="cap" id="teeCap" style="color:#1f4d2b;opacity:1"></span></div>
+    <div class="dut-body">
+      <div>
+        <div class="dutlock">📦 <b>Caja misteriosa.</b> No se sabe qué circuito hay adentro: descúbralo comparando la entrada (CH2) con la salida (CH1) a distintas frecuencias.</div>
+        <div class="sec dutsel">
+          <h3>CIRCUIT <small>(circuito)</small></h3>
+          <div class="col"><div class="seg wrap" data-k="dut" data-help="<b>Circuito bajo prueba</b><br>Elija qué hay entre el generador y el osciloscopio: nada (directo), un filtro, un canal telefónico, un cable largo o un amplificador."><button class="btn" data-v="none">DIRECTO</button><button class="btn" data-v="lp">PASA-BAJOS</button><button class="btn" data-v="hp">PASA-ALTOS</button><button class="btn" data-v="tel">CANAL TELEFÓNICO</button><button class="btn" data-v="cable">CABLE COAXIAL</button><button class="btn" data-v="amp">AMPLIFICADOR</button></div></div>
+          <div class="row" style="margin-top:8px"><div id="kDfc"></div><div id="kDlen"></div><div id="kDg"></div></div>
+        </div>
+        <div class="sec">
+          <h3>PROBE <small>(conexión de prueba)</small></h3>
+          <div class="row" style="align-items:center;justify-content:flex-start"><button class="btn tg" data-t="tee" data-help="<b>Conector T</b><br>Lleva la señal que <b>entra</b> al circuito al CH2. Así el CH2 muestra la entrada y el CH1 la salida, y se pueden comparar."><span class="led g"></span>CONECTOR T <small style="font-weight:600;opacity:.8">(CH2 = entrada)</small></button><span class="cap" style="text-align:left;max-width:320px">Con el conector T: CH2 (celeste) = entrada del circuito · CH1 (amarillo) = salida.</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="sec">
+          <h3>NOISE &amp; INTERFERENCE <small>(ruido e interferencia en el camino al CH1)</small></h3>
+          <div class="row"><div id="kNoise"></div><div id="kIamp"></div><div id="kIfreq"></div></div>
+        </div>
+        <div class="lcd" id="dutLcd" style="margin:4px 3px 0">
+          <div class="lrow"><span class="lk">CIRCUITO</span><span id="dlC"></span></div>
+          <div class="lrow"><span class="lk">SEÑAL <small>(salida)</small></span><span id="dlS"></span></div>
+          <div class="lrow"><span class="lk">RUIDO</span><span id="dlN"></span></div>
+          <div class="lrow"><span class="lk">INTERF.</span><span id="dlI"></span></div>
+          <div class="lrow big"><span class="lk">SNR</span><span id="dlR"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="bench2">
   <section class="inst sa" id="sa">
     <i class="screw a"></i><i class="screw b"></i><i class="screw c"></i><i class="screw d"></i>
     <div class="brand"><span>SA-3000 · ANALIZADOR DE ESPECTRO<br><span class="sub" id="saRange">SPECTRUM ANALYZER · 0 – 6 MHz · 50 Ω</span></span>
-      <button class="pbtn tg" data-t="sapow" data-help="<b>POWER (encendido)</b><br>Enciende o apaga el analizador de espectro."><span class="led g"></span>POWER<small style="font-weight:600;opacity:.7">(encendido)</small></button></div>
+      <span class="brbtns"><button class="pbtn" data-snap="sa" data-help="Descarga la pantalla del analizador como imagen PNG.">📷 PNG</button><button class="pbtn tg" data-t="sapow" data-help="<b>POWER (encendido)</b><br>Enciende o apaga el analizador de espectro."><span class="led g"></span>POWER<small style="font-weight:600;opacity:.7">(encendido)</small></button></span></div>
     <div class="sa-body">
       <div>
         <div class="lcdbez"><div class="sascreen" id="sascreen"><canvas id="cvSA"></canvas></div></div>
@@ -542,6 +643,7 @@ footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;f
     <li><b>Rueda del mouse</b> o <b>flechas del teclado</b> (con la perilla seleccionada) = paso a paso.</li>
     <li><b>Doble clic</b> = vuelve al valor inicial.</li>
     <li>Mientras arrastra aparece una burbuja con el valor actual.</li>
+    <li>En celular o tablet: arrastre la perilla con el dedo hacia arriba o abajo. El panel de ejercicios aparece en la parte inferior.</li>
   </ul>
   <h3>8. Analizador de espectro</h3>
   <p>El osciloscopio muestra la señal en el <b>tiempo</b>. El analizador de espectro muestra la misma señal en <b>frecuencia</b>: dibuja un pico por cada frecuencia que la señal contiene, y la altura del pico es su <b>potencia en dBm</b>. Una senoidal pura da un solo pico; cualquier otra forma da varios (sus armónicos).</p>
@@ -583,12 +685,87 @@ footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;f
     <li>Ajuste <span class="k">REF LEVEL</span> para que el pico quede cerca del borde superior sin cortarse.</li>
     <li>Lea frecuencia y potencia en el marcador. Para armónicos use <span class="k">Δ MKR</span> y <span class="k">NEXT PEAK</span>.</li>
   </ol>
+
+  <h3>9. Caja de pruebas (circuito bajo prueba)</h3>
+  <p>La caja <b>CB-1</b> se conecta entre la salida <b>OUT 1</b> del generador y el <b>CH1</b> del osciloscopio (y el analizador). Sirve para lo que se hace en la vida real: <b>inyectar una señal conocida en un circuito y ver qué sale</b>. Comparando la entrada con la salida se sabe qué hace el circuito o si está fallando.</p>
+  <table>
+    <tr><th>Circuito</th><th>Qué hace</th><th>Ejemplo real</th></tr>
+    <tr><td>Directo</td><td>No modifica la señal.</td><td>Un cable corto ideal.</td></tr>
+    <tr><td>Pasa-bajos</td><td>Deja pasar las frecuencias bajo fc. Sobre fc atenúa 40 dB por década (filtro de 2º orden).</td><td>Filtro anti-ruido, canal de graves.</td></tr>
+    <tr><td>Pasa-altos</td><td>Lo contrario: deja pasar sobre fc y atenúa bajo fc.</td><td>Acoplamiento AC, tweeter.</td></tr>
+    <tr><td>Canal telefónico</td><td>Pasa-banda de 300 Hz a 3,4 kHz.</td><td>Telefonía clásica: por eso la voz suena "a lata".</td></tr>
+    <tr><td>Cable coaxial RG-58</td><td>Atenúa más mientras más largo y más alta la frecuencia (≈ 4,6 dB/100 m a 10 MHz, ≈ 46 dB/100 m a 1 GHz) y retrasa la señal.</td><td>Cable de antena, enlace largo.</td></tr>
+    <tr><td>Amplificador</td><td>Multiplica la señal por la ganancia. Si la salida intenta pasar de ±5 V se corta (satura) y aparecen armónicos.</td><td>Amplificador de audio "forzado".</td></tr>
+  </table>
+  <div class="formula">
+    <div><b>Ganancia = Vsal / Vent</b><span>En veces. Mayor que 1 amplifica, menor que 1 atenúa.</span></div>
+    <div><b>G(dB) = 20·log₁₀(Vsal/Vent)</b><span>×10 = +20 dB · ×0,707 = −3 dB · ×0,1 = −20 dB.</span></div>
+    <div><b>fc: Vsal = 0,707 · Vent</b><span>La frecuencia de corte es el punto de −3 dB.</span></div>
+  </div>
+  <p><b>Conector T</b> <span class="es">(CH2 = entrada)</span>: lleva la señal que entra al circuito al CH2. Así se ven a la vez la entrada (celeste) y la salida (amarilla).</p>
+  <ol class="steps">
+    <li>Elija el circuito y active el <span class="k">CONECTOR T</span>. Ponga el osciloscopio en <span class="k">DUAL</span> y active <span class="k">MEASURE</span>.</li>
+    <li>Cambie la frecuencia del generador (clic en FREC) y anote el Vpp de entrada y de salida.</li>
+    <li>Calcule la ganancia a cada frecuencia: así se obtiene la <b>respuesta en frecuencia</b> del circuito.</li>
+  </ol>
+
+  <h3>10. Modulación (AM, FM y LoRa)</h3>
+  <p>Modular es "montar" una información (la <b>moduladora</b>, de baja frecuencia) sobre una señal de alta frecuencia (la <b>portadora</b>) para poder transmitirla por radio. En el generador, sección <span class="k">MODULATION</span> <span class="es">(modulación)</span>; funciona con portadora senoidal.</p>
+  <table>
+    <tr><th>Tipo</th><th>Qué cambia</th><th>En el osciloscopio</th><th>En el analizador</th></tr>
+    <tr><td>AM</td><td>La amplitud</td><td>Una envolvente que sube y baja</td><td>Portadora + 2 bandas laterales en fc ± fm</td></tr>
+    <tr><td>FM</td><td>La frecuencia</td><td>Amplitud constante; las ondas se aprietan y se estiran</td><td>Muchas líneas separadas fm (funciones de Bessel)</td></tr>
+    <tr><td>LoRa</td><td>La frecuencia barre en línea recta (chirp) de fc − BW/2 a fc + BW/2</td><td>Ondas que se van apretando y vuelven a empezar</td><td>Una banda plana de ancho BW</td></tr>
+  </table>
+  <div class="formula">
+    <div><b>m = (Vmáx − Vmín) / (Vmáx + Vmín)</b><span>Índice AM, con los Vpp máximo y mínimo de la envolvente.</span></div>
+    <div><b>Bandas AM = 20·log₁₀(m/2) dBc</b><span>Con m = 50 %: −12 dB bajo la portadora. Ancho de banda AM = 2·fm.</span></div>
+    <div><b>β = Δf / fm</b><span>Índice FM. Con β = 2,405 la portadora desaparece.</span></div>
+    <div><b>BW ≈ 2·(Δf + fm)</b><span>Regla de Carson: ancho de banda que ocupa una señal FM.</span></div>
+    <div><b>Ts = 2^SF / BW</b><span>Duración de un símbolo LoRa. SF7 a 125 kHz → 1,024 ms.</span></div>
+  </div>
+  <div class="tipbox">💡 Para <b>ver el chirp LoRa en el osciloscopio</b> use una escala reducida: RANGE 1 MHz, FREC 5 kHz, LoRa BW 7,8k, SF 7 y TIME/DIV 2 ms. Verá ondas que se van apretando y vuelven a empezar en cada símbolo. En 915 MHz reales solo se puede medir con el analizador.</div>
+
+  <h3>11. Ruido, interferencia y SNR</h3>
+  <p>El <b>ruido</b> es aleatorio y está en todas las frecuencias: en el osciloscopio hace la línea "peluda" y en el analizador levanta el piso de ruido. La <b>interferencia</b> es otra señal que se cuela, por ejemplo los <b>50 Hz</b> de la red eléctrica. Ambos se ajustan en la caja de pruebas y afectan el camino al CH1.</p>
+  <div class="formula">
+    <div><b>P(dBm) = 10·log₁₀((Vrms² / 50 Ω) / 1 mW)</b><span>Potencia del ruido a partir de su valor eficaz.</span></div>
+    <div><b>SNR(dB) = P_señal − P_ruido</b><span>Relación señal/ruido. Mientras más alta, mejor se recibe.</span></div>
+    <div><b>RBW ÷ 10 → piso −10 dB</b><span>En el analizador, un RBW más angosto deja entrar menos ruido. AVG lo suaviza.</span></div>
+  </div>
+  <p>La pantalla de la caja muestra la potencia de la señal de salida, la del ruido (medida en 20 MHz) y la SNR.</p>
+
+  <h3>12. Capturas para informes</h3>
+  <p>El botón <span class="k">📷 PNG</span> de cada pantalla descarga una imagen con la fecha y la configuración usada. El botón <span class="k">📷 Captura</span> de la barra superior guarda el osciloscopio y el analizador juntos.</p>
+
+  <h3>13. Modo evaluación (para el profesor)</h3>
+  <ol class="steps">
+    <li>Defina un <b>código de evaluación</b> (por ejemplo <code>REDES-2026-S1</code>) y entrégueselo al curso.</li>
+    <li>Cada estudiante entra a <b>Ejercicios → Modo evaluación</b>, escribe su nombre completo y el código. Recibe 6 problemas (osciloscopio, analizador y caja misteriosa) con <b>valores propios</b>: dos estudiantes no tienen los mismos números.</li>
+    <li>Durante la evaluación no se muestran respuestas correctas, y MEASURE y "revelar generador" están deshabilitados.</li>
+    <li>Al finalizar obtiene el puntaje y la <b>nota (1,0 a 7,0 con 60 % de exigencia)</b>, y descarga un archivo .txt que entrega por Moodle o correo.</li>
+    <li>Para revisar, abra <b>"Para el profesor: verificar un resultado"</b>, escriba el código y pegue el texto del estudiante. La página vuelve a generar sus problemas y corrige otra vez las respuestas: si alguien editó el puntaje, aparece una advertencia.</li>
+  </ol>
+  <div class="tipbox">La página no guarda resultados en un servidor: la entrega es el archivo que descarga cada estudiante.</div>
 </section>
 
 <!-- EJERCICIOS -->
 <section id="ejercicios" class="doc">
   <h2>📝 Ejercicios prácticos</h2>
-  <p class="lead">Cada ejercicio prepara los equipos automáticamente. Se abre un panel en la esquina con el procedimiento, las preguntas (con corrección inmediata) y la resolución paso a paso. En los ejercicios con 🔒 el generador queda oculto: la señal se debe descubrir solo midiendo. Los ejercicios 10 al 16 usan el analizador de espectro.</p>
+  <p class="lead">Cada ejercicio prepara los equipos automáticamente. Se abre un panel en la esquina con el procedimiento, las preguntas (con corrección inmediata) y la resolución paso a paso. En los ejercicios con 🔒 el generador queda oculto: la señal se debe descubrir solo midiendo. Los ejercicios 10 al 16 usan el analizador de espectro; del 17 al 25 se usan la caja de pruebas (📦), la modulación (〰) y el ruido.</p>
+  <div class="evalcard" id="evalCard">
+    <h3>🎓 Modo evaluación</h3>
+    <p class="mini" style="color:#b4c2ca">Cada estudiante recibe 6 problemas con valores distintos, calculados a partir de su nombre y del código que entrega el profesor. Durante la evaluación no se muestran respuestas y MEASURE está deshabilitado. Al final se obtiene la nota y un archivo para entregar.</p>
+    <div class="evf"><label>Nombre completo<input id="evName" autocomplete="name"></label><label>Código de evaluación<input id="evCode" placeholder="lo entrega el profesor"></label><button class="go" id="evStart" style="flex:0 0 auto">Comenzar evaluación →</button></div>
+    <div class="fb bad" id="evErr"></div>
+    <div id="evResult"></div>
+    <details class="evteach"><summary>Para el profesor: verificar un resultado</summary>
+      <p class="mini" style="color:#b4c2ca">Escriba el código de evaluación y pegue el texto del archivo que entregó el estudiante. La página vuelve a generar sus problemas y corrige otra vez las respuestas.</p>
+      <label>Código de evaluación<input id="vfCode"></label>
+      <textarea id="vfText" placeholder="Pegue aquí el resultado del estudiante"></textarea>
+      <button class="go" id="vfBtn">Verificar</button><div id="vfOut"></div>
+    </details>
+  </div>
   <p class="progress" id="progress"></p>
   <div class="exgrid" id="exGrid"></div>
 </section>
@@ -617,9 +794,13 @@ function parseSI(s,scale=1){s=String(s).trim().replace(',','.');const m=s.match(
   return parseFloat(m[1])*(m[2]?MUL[m[2]]:scale);}
 
 /* ---------- estado ---------- */
-const DEF_GEN=()=>[{wave:'sine',freq:1000,fine:1,amp:4,off:0,ph:0,on:true},{wave:'sine',freq:1000,fine:1,amp:2,off:0,ph:90,on:true}];
+const DEF_MOD={mod:'off',mf:1000,m:.5,dev:5000,lbw:125000,sf:7};
+const DEF_GEN=()=>[{wave:'sine',freq:1000,fine:1,amp:4,off:0,ph:0,on:true,...DEF_MOD},{wave:'sine',freq:1000,fine:1,amp:2,off:0,ph:90,on:true,...DEF_MOD}];
 const DEF_SC=()=>({vd:[4,4],pos:[1.5,-1.5],coup:['DC','DC'],inv:false,mode:'DUAL',td:8,hpos:0,src:0,lvl:0,slope:1,tmode:'AUTO',int:.8,focus:0,trace:2,readout:true,meas:false,phos:'color'});
 const gen=DEF_GEN(), sc=DEF_SC();
+const DEF_DUT=()=>({type:'none',fc:1000,len:100,gain:20,noise:0,iamp:0,ifreq:50,tee:false,hide:false});
+const dut=DEF_DUT(),RAIL=5,dbLin=d=>Math.pow(10,d/20);
+const EV={active:false,name:'',code:'',probs:[],ans:[],cur:0};
 let gs=0, genPow=true, scopePow=true, hidden=false, scopeOnAt=performance.now(), scopeOffAt=-1e9;
 let free=false;const FMAX=()=>free?6e9:1e6;
 const effF=i=>clamp(gen[i].freq*gen[i].fine,1,FMAX());
@@ -662,15 +843,22 @@ const kFine=new Knob('kFine',{label:'Fino',es:'fine',size:'s',min:.95,max:1.05,v
 const kAmp=new Knob('kAmp',{label:'Amplitud',es:'pico a pico',min:.01,max:15,log:true,value:4,tip:v=>fAmp(v),help:'<b>Amplitud</b><br>Tamaño de la señal en voltios pico a pico (Vpp).',on:v=>{gen[gs].amp=v;updLCD()}});
 const kOff=new Knob('kOff',{label:'Offset',es:'desplaz. DC',min:-10,max:10,value:0,tip:v=>(v>=0?'+':'')+v.toFixed(2)+' V',help:'<b>OFFSET (desplazamiento DC)</b><br>Suma un voltaje continuo: sube o baja toda la señal.',on:v=>{gen[gs].off=v;updLCD()}});
 const kPh=new Knob('kPh',{label:'Fase',es:'phase',min:0,max:360,value:0,tip:v=>v.toFixed(1)+'°',help:'<b>Fase</b><br>Adelanta la señal en grados. Útil para comparar CH1 y CH2.',on:v=>{gen[gs].ph=v;updLCD()}});
+const devMap=n=>10*Math.pow(1e5,n),devInv=v=>clamp(Math.log10(v/10)/5,0,1);
+const kMf=new Knob('kMf',{label:'Moduladora',es:'fm',min:1,max:1e5,log:true,value:1000,fmt:v=>si(v,'Hz',3),help:'<b>Frecuencia moduladora (fm)</b><br>La "información" que se monta sobre la portadora. En AM es la velocidad a la que sube y baja la envolvente.',on:v=>{gen[gs].mf=v;updLCD()}});
+const kMd=new Knob('kMd',{label:'Índice',es:'m (AM) · Δf (FM)',min:0,max:1,value:.5,fmt:n=>gen[gs].mod==='fm'?'Δf '+si(devMap(n),'Hz',3):'m '+Math.round(n*100)+' %',help:'<b>Índice de modulación</b><br><b>AM</b>: profundidad m (0 a 100 %).<br><b>FM</b>: desviación de frecuencia Δf (cuánto se aleja la frecuencia de la portadora).',on:n=>{const g=gen[gs];if(g.mod==='fm')g.dev=devMap(n);else g.m=n;updLCD()}});
 
 function updLCD(){const g=gen[gs],L=$('#lcd');L.classList.toggle('dark',!genPow);
   $('#lcdCh').textContent='CH'+(gs+1);
   const o=$('#lcdOut');o.textContent=g.on?'SALIDA ON':'SALIDA OFF';o.className=g.on?'':'warn';
-  if(hidden){['#lcdWave','#lcdF','#lcdA','#lcdO','#lcdP'].forEach(s=>$(s).textContent='? ? ? ?');}
+  if(hidden){['#lcdWave','#lcdF','#lcdA','#lcdO','#lcdP','#lcdM'].forEach(s=>$(s).textContent='? ? ? ?');}
   else{$('#lcdWave').textContent=WNAME[g.wave];$('#lcdF').textContent=fix(effF(gs),'Hz');$('#lcdA').textContent=fAmp(g.amp);
-    $('#lcdO').textContent=(g.off>=0?'+':'')+g.off.toFixed(3)+' V';$('#lcdP').textContent=g.ph.toFixed(1)+'°';}
+    $('#lcdO').textContent=(g.off>=0?'+':'')+g.off.toFixed(3)+' V';$('#lcdP').textContent=g.ph.toFixed(1)+'°';$('#lcdM').textContent=modTxt(g);}
   $('#gen').classList.toggle('locked',hidden);}
-function syncGen(){const g=gen[gs];kFreq.setVal(g.freq,true);kFine.setVal(g.fine,true);kAmp.setVal(g.amp,true);kOff.setVal(g.off,true);kPh.setVal(g.ph,true);updLCD();refreshSeg();refreshT();}
+function syncGen(){const g=gen[gs];kFreq.setVal(g.freq,true);kFine.setVal(g.fine,true);kAmp.setVal(g.amp,true);kOff.setVal(g.off,true);kPh.setVal(g.ph,true);
+  kMf.setVal(g.mf,true);kMd.setVal(g.mod==='fm'?devInv(g.dev):g.m,true);
+  $('.modam').classList.toggle('hide',!(g.mod==='am'||g.mod==='fm'));$('.modlora').classList.toggle('hide',g.mod!=='lora');
+  updLCD();refreshSeg();refreshT();}
+function modTxt(g){return g.mod==='am'?`AM · fm ${si(g.mf,'Hz',3)} · m ${Math.round(g.m*100)} %`:g.mod==='fm'?`FM · fm ${si(g.mf,'Hz',3)} · Δf ${si(g.dev,'Hz',3)}`:g.mod==='lora'?`LoRa · BW ${si(g.lbw,'Hz')} · SF${g.sf}`:'OFF';}
 
 $$('.ed').forEach(el=>el.addEventListener('click',()=>{
   if(hidden||!genPow||el.querySelector('input'))return;const f=el.dataset.f;hideTip();
@@ -683,7 +871,7 @@ $$('.ed').forEach(el=>el.addEventListener('click',()=>{
   inp.addEventListener('keydown',e=>{if(e.key==='Enter')fin(true);if(e.key==='Escape')fin(false)});
   inp.addEventListener('blur',()=>fin(true));
 }));
-$('#reveal').addEventListener('click',()=>{hidden=false;syncGen();});
+$('#reveal').addEventListener('click',()=>{if(EV.active)return;hidden=false;syncGen();});
 
 /* ---------- osciloscopio: controles ---------- */
 const fV=v=>si(v,'V')+'/div';
@@ -699,20 +887,22 @@ const kFoc=new Knob('kFoc',{label:'Focus',es:'enfoque',size:'s',min:-1,max:1,val
 function applyFocus(){const b=(Math.abs(sc.focus)*2.4).toFixed(2);$('#cvTrace').style.filter=`blur(${b}px)`;}
 function syncScope(){kV1.setIdx(sc.vd[0],true);kV2.setIdx(sc.vd[1],true);kP1.setVal(sc.pos[0],true);kP2.setVal(sc.pos[1],true);kT.setIdx(sc.td,true);kH.setVal(sc.hpos,true);kLvl.setVal(sc.lvl,true);kInt.setVal(sc.int,true);kFoc.setVal(sc.focus,true);applyFocus();refreshSeg();refreshT();}
 
-function getK(k){return{coup0:sc.coup[0],coup1:sc.coup[1],mode:sc.mode,src:sc.src,slope:sc.slope,tmode:sc.tmode,trace:sc.trace,phos:sc.phos,wave:gen[gs].wave,gs,sain:sa.inp,samode:sa.mode,sascale:sa.scale,range:free?'free':'real'}[k];}
+function getK(k){return{coup0:sc.coup[0],coup1:sc.coup[1],mode:sc.mode,src:sc.src,slope:sc.slope,tmode:sc.tmode,trace:sc.trace,phos:sc.phos,wave:gen[gs].wave,gs,sain:sa.inp,samode:sa.mode,sascale:sa.scale,range:free?'free':'real',mod:gen[gs].mod,lbw:gen[gs].lbw,sf:gen[gs].sf,dut:dut.type}[k];}
 function setK(k,v){switch(k){
   case'coup0':sc.coup[0]=v;break;case'coup1':sc.coup[1]=v;break;
   case'mode':sc.mode=v;clearTrace();break;case'src':sc.src=+v;kLvl.draw();break;
   case'slope':sc.slope=+v;break;case'tmode':sc.tmode=v;break;case'trace':sc.trace=+v;break;case'phos':sc.phos=v;break;
-  case'wave':if(hidden)return;gen[gs].wave=v;updLCD();break;case'gs':gs=+v;syncGen();break;
+  case'wave':if(hidden)return;gen[gs].wave=v;if(v!=='sine')gen[gs].mod='off';syncGen();break;
+  case'mod':if(hidden)return;gen[gs].mod=v;if(v!=='off')gen[gs].wave='sine';syncGen();break;case'lbw':if(hidden)return;gen[gs].lbw=+v;updLCD();break;case'sf':if(hidden)return;gen[gs].sf=+v;updLCD();break;
+  case'dut':if(dut.hide)return;dut.type=v;syncDut();break;case'gs':gs=+v;syncGen();break;
   case'sain':sa.inp=v;saReset();break;case'samode':sa.mode=v;saReset();break;case'sascale':sa.scale=+v;break;case'range':setFree(v==='free');break;}
   refreshSeg();}
 function refreshSeg(){$$('.seg[data-k]').forEach(g=>{const c=String(getK(g.dataset.k));g.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===c))});}
 $$('.seg[data-k]').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(b)setK(g.dataset.k,b.dataset.v)}));
-const tget={inv:()=>sc.inv,readout:()=>sc.readout,meas:()=>sc.meas,out0:()=>gen[0].on,out1:()=>gen[1].on,gpow:()=>genPow,spow:()=>scopePow};
-const tflip={inv:()=>sc.inv=!sc.inv,readout:()=>sc.readout=!sc.readout,meas:()=>sc.meas=!sc.meas,out0:()=>gen[0].on=!gen[0].on,out1:()=>gen[1].on=!gen[1].on,
+const tget={tee:()=>dut.tee,inv:()=>sc.inv,readout:()=>sc.readout,meas:()=>sc.meas,out0:()=>gen[0].on,out1:()=>gen[1].on,gpow:()=>genPow,spow:()=>scopePow};
+const tflip={tee:()=>{dut.tee=!dut.tee;dutTxt();},inv:()=>sc.inv=!sc.inv,readout:()=>sc.readout=!sc.readout,meas:()=>{if(EV.active){evNote('MEASURE (medidas automáticas) está deshabilitado durante la evaluación.');return}sc.meas=!sc.meas},out0:()=>gen[0].on=!gen[0].on,out1:()=>gen[1].on=!gen[1].on,
   gpow:()=>{genPow=!genPow;if(genPow){const l=$('#lcd');l.classList.remove('boot');void l.offsetWidth;l.classList.add('boot')}},
-  spow:()=>{scopePow=!scopePow;if(scopePow)scopeOnAt=performance.now();else scopeOffAt=performance.now();}};
+  spow:()=>{if(EV.active&&EV.probs[EV.cur].setup.noScope){evNote('En este problema se mide solo con el analizador.');return}scopePow=!scopePow;if(scopePow)scopeOnAt=performance.now();else scopeOffAt=performance.now();}};
 function refreshT(){$$('[data-t]').forEach(b=>b.classList.toggle('on',tget[b.dataset.t]()));$('#screen').classList.toggle('off',!scopePow);}
 $$('[data-t]').forEach(b=>b.addEventListener('click',()=>{tflip[b.dataset.t]();refreshT();updLCD()}));
 
@@ -725,7 +915,51 @@ function bwSynth(w,f,p){const tp=2*Math.PI*p;if(w==='sine')return bwH(f)*Math.si
   const N=Math.min(Math.ceil(3.5*SCOPE_BW/f),201);let s=0;
   for(let n=1;n<=N;n++){let a;if(w==='square'){if(!(n&1))continue;a=4/(Math.PI*n)}else if(w==='triangle'){if(!(n&1))continue;a=8/(Math.PI*Math.PI*n*n)*(((n-1)/2)%2?-1:1)}else a=-2/(Math.PI*n);
     s+=a*bwH(n*f)*Math.sin(n*tp);}return s;}
-function chV(c,t){const g=gen[c],cp=sc.coup[c];if(cp==='GND'||!g.on||!genPow)return 0;
+const cabs=z=>Math.hypot(z.re,z.im),cmul=(a,b)=>({re:a.re*b.re-a.im*b.im,im:a.re*b.im+a.im*b.re}),cdiv=(a,b)=>{const d=b.re*b.re+b.im*b.im;return{re:(a.re*b.re+a.im*b.im)/d,im:(a.im*b.re-a.re*b.im)/d}};
+function bq(f,f0,Q,hp){const x=f/f0;return cdiv(hp?{re:-x*x,im:0}:{re:1,im:0},{re:1-x*x,im:x/Q});}
+function Hdut(f){switch(dut.type){
+  case'lp':return bq(f,dut.fc,Math.SQRT1_2,false);
+  case'hp':return bq(f,dut.fc,Math.SQRT1_2,true);
+  case'tel':return cmul(cmul(bq(f,300,Math.SQRT1_2,true),bq(f,3400,.5412,false)),bq(f,3400,1.3066,false));
+  case'cable':{const a=1.45*Math.sqrt(f/1e6)*dut.len/100,m=Math.pow(10,-a/20),ph=-2*Math.PI*f*dut.len/(.66*3e8);return{re:m*Math.cos(ph),im:m*Math.sin(ph)};}
+  case'amp':return{re:dbLin(dut.gain),im:0};
+  default:return{re:1,im:0};}}
+function coef(w,n){if(w==='sine')return n===1?1:n===2?.00178:n===3?.000794:0;
+  if(w==='square')return n&1?4/(Math.PI*n):0;
+  if(w==='triangle')return n&1?8/(Math.PI*Math.PI*n*n)*(((n-1)/2)%2?-1:1):0;
+  return -2/(Math.PI*n);}
+const TL=1024,SNT=new Float64Array(TL),CST=new Float64Array(TL);for(let k=0;k<TL;k++){SNT[k]=Math.sin(2*Math.PI*k/TL);CST[k]=Math.cos(2*Math.PI*k/TL);}
+let DT={key:''};
+function dutTable(cp){const g=gen[0],f=effF(0),key=JSON.stringify([g.wave,f,g.amp,g.off,g.ph,dut.type,dut.fc,dut.len,dut.gain,cp]);if(DT.key===key)return DT;
+  const L=TL,A=g.amp/2,hs=[];let dc;
+  if(dut.type==='amp'){const G=dbLin(dut.gain),y=new Float64Array(L);let s0=0;
+    for(let k=0;k<L;k++){y[k]=clamp(G*(A*wv(g.wave,k/L+g.ph/360)+g.off),-RAIL,RAIL);s0+=y[k];}dc=s0/L;
+    for(let n=1;n<L/2;n++){let re=0,im=0;for(let k=0;k<L;k++){const j=(n*k)%L;re+=y[k]*CST[j];im-=y[k]*SNT[j];}const a=2*Math.hypot(re,im)/L;if(a>2e-6*RAIL)hs.push([n,a,Math.atan2(im,re)+Math.PI/2]);}}
+  else{dc=g.off*Hdut(0).re;
+    for(let n=1;n<L/2;n++){const c=coef(g.wave,n);if(!c)continue;const H=Hdut(n*f),a=A*c*cabs(H);if(n>8&&Math.abs(a)<1e-7*A)continue;hs.push([n,a,n*2*Math.PI*g.ph/360+Math.atan2(H.im,H.re)]);}}
+  const tab=new Float64Array(L).fill(cp==='AC'?0:dc);
+  for(const[n,a,ph]of hs){const fn=n*f;let m=a*bwH(fn),q=ph;if(cp==='AC'){const x=fn/FC;m*=x/Math.hypot(1,x);q+=Math.atan(1/x);}if(Math.abs(m)<1e-7)continue;
+    const cq=m*Math.cos(q),sq=m*Math.sin(q);for(let k=0;k<L;k++){const j=(n*k)%L;tab[k]+=SNT[j]*cq+CST[j]*sq;}}
+  let mn=Infinity,mx=-Infinity;for(let k=0;k<L;k++){if(tab[k]<mn)mn=tab[k];if(tab[k]>mx)mx=tab[k];}
+  DT={key,tab,hs,dc,min:mn,max:mx};return DT;}
+function modPhase(g,f,t){if(g.mod==='fm')return f*t+(g.dev/g.mf)*Math.sin(2*Math.PI*g.mf*t)/(2*Math.PI)+g.ph/360;
+  if(g.mod==='lora'){const T=Math.pow(2,g.sf)/g.lbw,k=Math.floor(t/T),u=t-k*T;return k*f*T+(f-g.lbw/2)*u+g.lbw*u*u/(2*T)+g.ph/360;}
+  return f*t+g.ph/360;}
+const modEnv=(g,t)=>g.mod==='am'?1+g.m*Math.cos(2*Math.PI*g.mf*t):1;
+function modV(g,f,t,cp,thru){let a=g.amp/2*modEnv(g,t),ph=modPhase(g,f,t),off=g.off;
+  if(thru){if(dut.type==='amp'){const G=dbLin(dut.gain),o=clamp(G*off,-RAIL,RAIL),v=clamp(G*(a*Math.sin(2*Math.PI*ph)+off),-RAIL,RAIL);return (cp==='AC'?0:o)+(v-o)*bwH(f);}
+    const H=Hdut(f);a*=cabs(H);ph+=Math.atan2(H.im,H.re)/(2*Math.PI);off*=Hdut(0).re;}
+  return (cp==='AC'?0:off)+a*bwH(f)*Math.sin(2*Math.PI*ph);}
+function dutV(t,cp){const g=gen[0];if(g.mod!=='off')return modV(g,effF(0),t,cp,true);
+  const T=dutTable(cp),q=effF(0)*t,x=(q-Math.floor(q))*TL,i=Math.floor(x),fr=x-i;return T.tab[i%TL]*(1-fr)+T.tab[(i+1)%TL]*fr;}
+function intAmp(cp){const fi=dut.ifreq;let a=dut.iamp/2*bwH(fi);if(cp==='AC'){const x=fi/FC;a*=x/Math.hypot(1,x);}return a;}
+const intV=(t,cp)=>intAmp(cp)*Math.sin(2*Math.PI*dut.ifreq*t);
+function gauss(){let u=0;while(!u)u=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*Math.random());}
+const srcOf=c=>(c===1&&dut.tee)?0:c;
+function chSig(c,t){const cp=sc.coup[c];if(cp==='GND'||!genPow)return 0;const s=srcOf(c),g=gen[s];if(!g.on)return 0;
+  if(c===0&&dut.type!=='none')return dutV(t,cp);if(g.mod!=='off')return modV(g,effF(s),t,cp,false);return chBase(s,t,cp);}
+function chV(c,t){let v=chSig(c,t);if(c===0&&dut.iamp>0&&sc.coup[0]!=='GND')v+=intV(t,sc.coup[0]);return v;}
+function chBase(c,t,cp){const g=gen[c];
   const f=effF(c),A=g.amp/2,p=f*t+g.ph/360;
   if(f>1e6)return (cp==='DC'?g.off:0)+A*bwSynth(g.wave,f,p);
   if(cp==='DC')return A*wv(g.wave,p)+g.off;
@@ -734,7 +968,19 @@ function chV(c,t){const g=gen[c],cp=sc.coup[c];if(cp==='GND'||!g.on||!genPow)ret
   const m=f/FC,gain=m/Math.hypot(1,m),lead=Math.atan(1/m)/(2*Math.PI);
   return A*gain*wv(g.wave,p+lead);}
 const chD=(c,t)=>(c===1&&sc.inv)?-chV(1,t):chV(c,t);
-function stats(c,t0){const T=1/effF(c);let lo=Infinity,hi=-Infinity;for(let k=0;k<256;k++){const v=chD(c,t0+T*k/256);if(v<lo)lo=v;if(v>hi)hi=v;}return{lo,hi};}
+function statsCore(c,t0){const cp=sc.coup[c];if(cp==='GND'||!genPow)return{lo:0,hi:0};const s=srcOf(c),g=gen[s];if(!g.on)return{lo:0,hi:0};const f=effF(s);
+  if(g.mod!=='off'){let a=g.amp/2*(g.mod==='am'?1+g.m:1),off=g.off;
+    if(c===0&&dut.type!=='none'){if(dut.type==='amp'){const G=dbLin(dut.gain),o=clamp(G*off,-RAIL,RAIL),h=clamp(G*(off+a),-RAIL,RAIL),l=clamp(G*(off-a),-RAIL,RAIL),b=bwH(f),base=cp==='AC'?0:o;return{lo:base+(l-o)*b,hi:base+(h-o)*b};}
+      a*=cabs(Hdut(f));off*=Hdut(0).re;}
+    a*=bwH(f);const o=cp==='AC'?0:off;return{lo:o-a,hi:o+a};}
+  if(c===0&&dut.type!=='none'){const T=dutTable(cp);return{lo:T.min,hi:T.max};}
+  const T=1/f;let lo=Infinity,hi=-Infinity;for(let k=0;k<256;k++){const v=chBase(s,t0+T*k/256,cp);if(v<lo)lo=v;if(v>hi)hi=v;}return{lo,hi};}
+function stats(c,t0){if(sc.coup[c]==='GND')return{lo:0,hi:0};let r=statsCore(c,t0);if(c===0&&dut.iamp>0){const a=intAmp(sc.coup[0]);r={lo:r.lo-a,hi:r.hi+a};}return (c===1&&sc.inv)?{lo:-r.hi,hi:-r.lo}:r;}
+function bandAt(c,t,core,dtc,fs){const cp=sc.coup[c];if(cp==='GND')return{lo:0,hi:0};const s=srcOf(c),g=gen[s];let lo,hi;
+  if(!genPow||!g.on){lo=hi=0;}else if(fs*dtc<.3){lo=hi=chSig(c,t);}else{lo=core.lo;hi=core.hi;if(g.mod==='am'){const e=(1+g.m*Math.cos(2*Math.PI*g.mf*t))/(1+g.m),mid=(lo+hi)/2,h=(hi-lo)/2*e;lo=mid-h;hi=mid+h;}}
+  if(c===0&&dut.iamp>0){if(dut.ifreq*dtc<.3){const v=intV(t,cp);lo+=v;hi+=v}else{const a=intAmp(cp);lo-=a;hi+=a}}
+  if(c===0&&dut.noise>0){lo-=2*dut.noise;hi+=2*dut.noise}
+  return (c===1&&sc.inv)?{lo:-hi,hi:-lo}:{lo,hi};}
 const col=c=>sc.phos==='p31'?'#8dffb0':['#ffe45c','#55e3ff','#ff7ad9'][c];
 
 /* ---------- canvas ---------- */
@@ -755,12 +1001,12 @@ function clearTrace(){tx.clearRect(0,0,W,H);sweep.active=false;}
 new ResizeObserver(resize).observe($('#screen'));
 
 const yOf=(v,vd,pos)=>H/2-(v/vd+pos)*H/8;
-function buildPath(fn,vd,pos,f,rng,t0,c0,c1,cols){
+function buildPath(fn,vd,pos,f,rng,t0,c0,c1,cols,band){
   const tdv=TDIV[sc.td],dtc=10*tdv/cols,ratio=dtc*f,nz=.7*DPR,cw=W/cols;
   const Y=v=>clamp(yOf(v,vd,pos),-H*.2,H*1.2)+(Math.random()-.5)*nz;
   let first=true;
   for(let c=c0;c<c1;c++){const x=c*cw,tc=t0+(c/cols*10-sc.hpos)*tdv;
-    if(ratio>1.2){const a=Y(c%2?rng.lo:rng.hi),b=Y(c%2?rng.hi:rng.lo);if(first){tx.moveTo(x,a);first=false}else tx.lineTo(x,a);tx.lineTo(x,b);}
+    if(ratio>1.2){const r=band?band(tc,dtc):rng,a=Y(c%2?r.lo:r.hi),b=Y(c%2?r.hi:r.lo);if(first){tx.moveTo(x,a);first=false}else tx.lineTo(x,a);tx.lineTo(x,b);}
     else{const s=clamp(Math.ceil(ratio*48),1,24);
       for(let k=0;k<s;k++){const y=Y(fn(tc+dtc*k/s)),xx=x+cw*k/s;if(first){tx.moveTo(xx,y);first=false}else tx.lineTo(xx,y);}}}
   return ratio>1.2;}
@@ -771,17 +1017,23 @@ function stroke(color,dim){const lw=(sc.trace*.8+.4)*DPR,a=(dim?.55:1)*INT;
   tx.globalAlpha=Math.min(1,.55*a);tx.strokeStyle='#fff';tx.lineWidth=Math.max(.6,lw*.35);tx.stroke();tx.globalAlpha=1;}
 function drawChannels(t0,c0,c1,cols,rng){
   const vd1=VDIV[sc.vd[0]],vd2=VDIV[sc.vd[1]],m=sc.mode;
-  if(m==='CH1'||m==='DUAL'){tx.beginPath();const d=buildPath(t=>chD(0,t),vd1,sc.pos[0],effF(0),rng[0],t0,c0,c1,cols);stroke(col(0),d)}
-  if(m==='CH2'||m==='DUAL'){tx.beginPath();const d=buildPath(t=>chD(1,t),vd2,sc.pos[1],effF(1),rng[1],t0,c0,c1,cols);stroke(col(1),d)}
-  if(m==='ADD'){tx.beginPath();const d=buildPath(t=>chD(0,t)+chD(1,t),vd1,sc.pos[0],Math.max(effF(0),effF(1)),{lo:rng[0].lo+rng[1].lo,hi:rng[0].hi+rng[1].hi},t0,c0,c1,cols);stroke(col(2),d)}}
+  const ns=dut.noise>0?()=>dut.noise*gauss():()=>0;
+  const fr=c=>{const s=srcOf(c);let f=gen[s].on?effF(s):1;if(c===0&&dut.iamp>0)f=Math.max(f,dut.ifreq);return f;};
+  const bandFn=c=>{const s=srcOf(c),g=gen[s];if(!(g.mod!=='off'||(c===0&&(dut.iamp>0||dut.noise>0))))return null;const core=statsCore(c,t0),fs=g.on?effF(s):0;return(t,dtc)=>bandAt(c,t,core,dtc,fs);};
+  if(m==='CH1'||m==='DUAL'){tx.beginPath();const d=buildPath(t=>chD(0,t)+ns(),vd1,sc.pos[0],fr(0),rng[0],t0,c0,c1,cols,bandFn(0));stroke(col(0),d)}
+  if(m==='CH2'||m==='DUAL'){tx.beginPath();const d=buildPath(t=>chD(1,t),vd2,sc.pos[1],fr(1),rng[1],t0,c0,c1,cols,bandFn(1));stroke(col(1),d)}
+  if(m==='ADD'){tx.beginPath();const d=buildPath(t=>chD(0,t)+ns()+chD(1,t),vd1,sc.pos[0],Math.max(effF(0),effF(1)),{lo:rng[0].lo+rng[1].lo,hi:rng[0].hi+rng[1].hi},t0,c0,c1,cols);stroke(col(2),d)}}
 function drawXY(simT){const f1=effF(0),f2=effF(1),fmin=Math.min(f1,f2),fmax=Math.max(f1,f2);
   const cyc=Math.min(fmax/fmin*2,400),D=cyc/fmax,N=clamp(Math.ceil(cyc*60),400,8000),vd1=VDIV[sc.vd[0]],vd2=VDIV[sc.vd[1]],nz=.7*DPR;
   tx.beginPath();for(let k=0;k<=N;k++){const t=simT+D*k/N;
-    const x=clamp(W/2+(chD(0,t)/vd1+sc.hpos)*W/10,-W*.2,W*1.2)+(Math.random()-.5)*nz,y=clamp(yOf(chD(1,t),vd2,sc.pos[1]),-H*.2,H*1.2)+(Math.random()-.5)*nz;
+    const x=clamp(W/2+((chD(0,t)+(dut.noise>0?dut.noise*gauss():0))/vd1+sc.hpos)*W/10,-W*.2,W*1.2)+(Math.random()-.5)*nz,y=clamp(yOf(chD(1,t),vd2,sc.pos[1]),-H*.2,H*1.2)+(Math.random()-.5)*nz;
     k?tx.lineTo(x,y):tx.moveTo(x,y);}
   stroke(col(0));}
-function findTrig(base){const c=sc.src,g=gen[c];if(!genPow||!g.on||sc.coup[c]==='GND')return null;
-  const T=1/effF(c),L=sc.lvl*VDIV[sc.vd[c]],N=256;let prev=chV(c,base);
+function findTrig(base){const c=sc.src,s=srcOf(c),g=gen[s];if(sc.coup[c]==='GND')return null;
+  const sigOn=genPow&&g.on;if(!sigOn&&!(c===0&&dut.iamp>0))return null;
+  if(sigOn&&g.mod!=='off'){const Tm=g.mod==='lora'?Math.pow(2,g.sf)/g.lbw:1/g.mf;base=Math.ceil(base/Tm)*Tm;}
+  let T=1/(sigOn?effF(s):dut.ifreq);if(sigOn&&g.mod==='lora')T=1/Math.max(effF(s)-g.lbw/2,effF(s)*.02,1);else if(sigOn&&g.mod==='fm')T=1/Math.max(effF(s)-g.dev,effF(s)*.02,1);
+  const L=sc.lvl*VDIV[sc.vd[c]],N=256;let prev=chV(c,base);
   for(let k=1;k<=N;k++){const t=base+T*k/N,v=chV(c,t);
     if(sc.slope>0?(prev<L&&v>=L):(prev>L&&v<=L)){const fr=clamp((L-prev)/((v-prev)||1e-12),0,1);return t-T/N*(1-fr);}prev=v;}
   return null;}
@@ -808,13 +1060,14 @@ function drawOver(trig,rng,head,warm){
   put(m==='XY'?'X-Y':`M ${si(TDIV[sc.td],'s')}`,'#dfe');
   if(m!=='XY'){const s=`T:CH${sc.src+1} ${sc.slope>0?'↑':'↓'} ${si(sc.lvl*VDIV[sc.vd[sc.src]],'V')}${trig==null?' ¡sin disparo!':''}`;
     ox.fillStyle=trig==null?'#ff8a6b':'#dfe';ox.fillText(s,Math.max(x,W-pad-ox.measureText(s).width),y);}
-  {const over=[0,1].filter(c=>show[c]&&genPow&&gen[c].on&&sc.coup[c]!=='GND'&&effF(c)>SCOPE_BW);
-   if(over.length){const t=`⚠ ${over.map(c=>'CH'+(c+1)+' '+si(effF(c),'Hz',4)).join(' · ')} supera los 20 MHz del osciloscopio: la señal se atenúa. Mida con el analizador.`;
+  {const tg=[];if(dut.type!=='none'||dut.noise>0||dut.iamp>0)tg.push('CH1 ← CB-1');if(dut.tee)tg.push('CH2 = entrada (T)');if(tg.length){const s2=tg.join('  ·  ');ox.fillStyle='#9fd6ff';ox.fillText(s2,W-pad-ox.measureText(s2).width,y-fs*1.35);}}
+  {const over=[0,1].filter(c=>show[c]&&genPow&&gen[srcOf(c)].on&&sc.coup[c]!=='GND'&&effF(srcOf(c))>SCOPE_BW);
+   if(over.length){const t=`⚠ ${over.map(c=>'CH'+(c+1)+' '+si(effF(srcOf(c)),'Hz',4)).join(' · ')} supera los 20 MHz del osciloscopio: la señal se atenúa. Mida con el analizador.`;
     ox.font=`bold ${fs}px system-ui`;let tw=ox.measureText(t).width;const sc2=Math.min(1,(W-2*pad)/tw);ox.font=`bold ${Math.floor(fs*sc2)}px system-ui`;tw=ox.measureText(t).width;
     ox.fillStyle='rgba(40,8,6,.85)';ox.fillRect(W/2-tw/2-6*DPR,H*.42,tw+12*DPR,fs*1.6);ox.fillStyle='#ff8a6b';ox.fillText(t,W/2-tw/2,H*.42+fs*.3);ox.font=`${fs}px ui-monospace,Consolas,monospace`;}}
-  if(sc.meas){[0,1].forEach(c=>{const yy=pad+c*fs*1.35,g=gen[c];ox.fillStyle=col(c);
+  if(sc.meas){[0,1].forEach(c=>{const yy=pad+c*fs*1.35,g=gen[srcOf(c)];ox.fillStyle=col(c);
     if(!genPow||!g.on||sc.coup[c]==='GND'){ox.fillText(`CH${c+1}  sin señal`,pad,yy);return}
-    const r=rng[c],f=effF(c);
+    const r=rng[c],f=effF(srcOf(c));
     ox.fillText(`CH${c+1}  Vpp ${si(r.hi-r.lo,'V')}  Máx ${si(r.hi,'V')}  Mín ${si(r.lo,'V')}  f ${si(f,'Hz',4)}  T ${si(1/f,'s',4)}`,pad,yy);});}
   ox.globalAlpha=1;}
 
@@ -907,12 +1160,24 @@ function saView(){const span=clamp(sa.span,100,saMax()),cf=clamp(sa.cf,0,saMax()
   const att=clamp(Math.ceil(sa.ref/10)*10,0,40),danl=-125+10*Math.log10(rbw)+att,swt=clamp(.5*span/(rbw*rbw),.03,3);
   return{span,start,stop,cf:start+span/2,rbw,att,danl,swt,d:span/(NPT-1)};}
 function saComps(v){const out=[[0,toW(LOFT)]],m=4*v.rbw,pw=a=>a*a/100;
-  const add=c=>{const g=gen[c];if(!genPow||!g.on)return;const f=effF(c),A=g.amp/2;
-    if(Math.abs(g.off)>1e-9)out.push([0,g.off*g.off/50]);
-    if(g.wave==='sine'){out.push([f,pw(A)],[2*f,pw(A)*rat(-55)],[3*f,pw(A)*rat(-62)]);return;}
+  const add=c=>{const g=gen[c];if(!genPow||!g.on)return;const f=effF(c),A=g.amp/2,thru=c===0&&dut.type!=='none';
+    if(thru&&dut.type==='amp'&&g.mod==='off'){const T=dutTable(sc.coup[0]);if(Math.abs(T.dc)>1e-9)out.push([0,T.dc*T.dc/50]);for(const[n,a]of T.hs)out.push([n*f,pw(a)]);return;}
+    const G=thru&&dut.type==='amp'?dbLin(dut.gain):0,Hm=fr=>thru?cabs(Hdut(fr)):1;
+    const dcv=thru?(G?clamp(G*g.off,-RAIL,RAIL):g.off*Hdut(0).re):g.off;if(Math.abs(dcv)>1e-9)out.push([0,dcv*dcv/50]);
+    if(g.mod!=='off'){for(const[fr,a]of modComps(g,f,A)){const aa=G?Math.min(Math.abs(a)*G,RAIL):Math.abs(a)*Hm(fr);out.push([fr,pw(aa)]);}return;}
+    if(g.wave==='sine'){for(const n of[1,2,3])out.push([n*f,pw(A*coef('sine',n)*Hm(n*f))]);return;}
     const n0=Math.max(1,Math.floor((v.start-m)/f)),n1=Math.min(Math.floor((v.stop+m)/f),n0+200000);
-    for(let n=n0;n<=n1;n++){let a;if(g.wave==='square'){if(!(n&1))continue;a=4/(Math.PI*n)}else if(g.wave==='triangle'){if(!(n&1))continue;a=8/(Math.PI*Math.PI*n*n)}else a=2/(Math.PI*n);out.push([n*f,pw(A*a)]);}};
-  if(sa.inp!=='2')add(0);if(sa.inp!=='1')add(1);return out;}
+    for(let n=n0;n<=n1;n++){const cc=coef(g.wave,n);if(!cc)continue;out.push([n*f,pw(A*cc*Hm(n*f))]);}};
+  if(sa.inp!=='2'){add(0);if(dut.iamp>0)out.push([dut.ifreq,pw(dut.iamp/2)]);}if(sa.inp!=='1')add(1);return out;}
+function besselJ(n,x){const M=Math.max(200,Math.ceil(4*x)+60);let s=0;for(let i=0;i<=M;i++){const u=Math.PI*i/M;s+=(i===0||i===M?.5:1)*Math.cos(n*u-x*Math.sin(u));}return s/M;}
+const MC=new Map();
+function modComps(g,f,A){const k=JSON.stringify([g.mod,f,A,g.mf,g.m,g.dev,g.lbw,g.sf]);if(MC.has(k))return MC.get(k);const out=[];
+  if(g.mod==='am'){out.push([f,A],[f+g.mf,A*g.m/2]);if(f-g.mf>0)out.push([f-g.mf,A*g.m/2]);}
+  else if(g.mod==='fm'){const b=g.dev/g.mf;
+    if(b<=120){const N=Math.ceil(b+8+3*Math.sqrt(b));for(let n=-N;n<=N;n++){const fr=f+n*g.mf;if(fr<=0)continue;out.push([fr,A*Math.abs(besselJ(Math.abs(n),b))]);}}
+    else{const K=400,ws=[];let tot=0;for(let i=0;i<K;i++){const u=-1+(2*i+1)/K,w=1/Math.sqrt(1-u*u);ws.push(w);tot+=w;}for(let i=0;i<K;i++){const fr=f+(-1+(2*i+1)/K)*g.dev;if(fr>0)out.push([fr,A*Math.sqrt(ws[i]/tot)]);}}}
+  else if(g.mod==='lora'){const K=Math.pow(2,g.sf),B=g.lbw;for(let i=0;i<K;i++){const fr=f-B/2+(i+.5)*B/K;if(fr>0)out.push([fr,A/Math.sqrt(K)]);}}
+  if(MC.size>12)MC.clear();MC.set(k,out);return out;}
 function saClean(v){const P=new Float64Array(NPT),k=4*Math.LN2/(v.rbw*v.rbw),reach=3.5*v.rbw;
   for(const[f,p]of saComps(v)){if(f<v.start-reach||f>v.stop+reach)continue;
     const i0=Math.max(0,Math.floor((f-reach-v.start)/v.d)),i1=Math.min(NPT-1,Math.ceil((f+reach-v.start)/v.d));
@@ -922,7 +1187,8 @@ const BANDS=[[535e3,1705e3,'Radio AM'],[88e6,108e6,'Radio FM'],[915e6,928e6,'LoR
 let saKey='',saP=null,saTr=null,saAvg=1,saIdx=0,saT0=performance.now(),saOnAt=performance.now(),saLastV=null;
 function saReset(){saTr=null;}
 const saIdxOf=(v,f)=>clamp(Math.round((f-v.start)/v.d),0,NPT-1);
-const saLevel=(v,f)=>dbm(saP[saIdxOf(v,f)]+toW(v.danl));
+const saNoiseW=v=>toW(v.danl)+(sa.inp!=='2'&&dut.noise>0?dut.noise*dut.noise/50/20e6*v.rbw:0);
+const saLevel=(v,f)=>dbm(saP[saIdxOf(v,f)]+saNoiseW(v));
 const fmtF=f=>fix(f,'Hz',5);
 
 const kCF=new Knob('kCF',{label:'Center',es:'frec. central',size:'l',min:10,max:saMax(),log:true,value:sa.cf,tip:v=>fmtF(v),help:'<b>CENTER (frecuencia central)</b><br>Frecuencia que queda en el centro de la pantalla.',on:v=>{sa.cf=v;}});
@@ -938,7 +1204,7 @@ function setFree(on){free=on;
   $('#genRange').textContent='FUNCTION GENERATOR · 1 Hz – '+(free?'6 GHz (modo libre)':'1 MHz');$('#saRange').textContent='SPECTRUM ANALYZER · 0 – '+(free?'6 GHz':'6 MHz')+' · 50 Ω';
   saReset();syncGen();syncSA();}
 function saSetMk(f){sa.mkF=f;const v=saView();kMk.setVal(clamp((f-v.start)/v.span,0,1),true);}
-function saPeaks(v){const pk=[],floor=toW(v.danl)*4,skip=v.start<3*v.rbw?Math.ceil(3*v.rbw/v.d):0;
+function saPeaks(v){const pk=[],floor=saNoiseW(v)*4,skip=v.start<3*v.rbw?Math.ceil(3*v.rbw/v.d):0;
   for(let i=Math.max(1,skip);i<NPT-1;i++)if(saP[i]>floor&&saP[i]>=saP[i-1]&&saP[i]>saP[i+1])pk.push(i);
   if(skip===0&&saP[0]>floor&&saP[0]>saP[1])pk.push(0);
   if(saP[NPT-1]>floor&&saP[NPT-1]>saP[NPT-2])pk.push(NPT-1);
@@ -964,12 +1230,12 @@ function saFields(force){const v=saView(),t=[fmtF(v.cf),si(v.span,'Hz',4),(sa.re
 const csa=$('#cvSA'),sx=csa.getContext('2d');let SW=1,SH=1,SDPR=1;
 function saResize(){const r=csa.parentElement.getBoundingClientRect();SDPR=Math.min(window.devicePixelRatio||1,2);SW=csa.width=Math.max(1,Math.round(r.width*SDPR));SH=csa.height=Math.max(1,Math.round(r.height*SDPR));}
 new ResizeObserver(saResize).observe($('#sascreen'));
-function saLoop(now){requestAnimationFrame(saLoop);saFields();
+function saLoop(now){requestAnimationFrame(saLoop);saFields();dutLCD();
   const W=SW,H=SH,D=SDPR;sx.fillStyle='#03070b';sx.fillRect(0,0,W,H);
   if(!sa.pow){return;}
-  const v=saView(),key=JSON.stringify([gen,genPow,sa.inp,v.start,v.span,v.rbw,v.att]);
+  const v=saView(),key=JSON.stringify([gen,genPow,sa.inp,v.start,v.span,v.rbw,v.att,dut.type,dut.fc,dut.len,dut.gain,dut.iamp,dut.ifreq]);
   if(key!==saKey){saKey=key;saP=saClean(v);if(!saLastV||saLastV.start!==v.start||saLastV.span!==v.span||saLastV.rbw!==v.rbw)saTr=null;saLastV=v;}
-  const nw=toW(v.danl),smp=i=>saP[i]+nw*(-Math.log(1-Math.random()));
+  const nw=saNoiseW(v),smp=i=>saP[i]+nw*(-Math.log(1-Math.random()));
   if(!saTr){saTr=new Float64Array(NPT);for(let i=0;i<NPT;i++)saTr[i]=smp(i);saAvg=1;saIdx=0;saT0=now;}
   const target=Math.floor((now-saT0)/1000/v.swt*NPT);let n=Math.min(target-saIdx,NPT*2);
   while(n-->0){const i=saIdx%NPT,val=smp(i);if(sa.mode==='MAX')saTr[i]=Math.max(saTr[i],val);else if(sa.mode==='AVG')saTr[i]+=(val-saTr[i])/Math.min(saAvg,24);else saTr[i]=val;if(i===NPT-1)saAvg++;saIdx++;}
@@ -1004,6 +1270,121 @@ function saLoop(now){requestAnimationFrame(saLoop);saFields();
   L(`START ${si(v.start,'Hz',4)}`,pad,yb+fs*1.3,'#8fb3c7');L(`RBW ${si(v.rbw,'Hz')}${sa.rbw==='AUTO'?' (auto)':''}   SWT ${si(v.swt,'s')}`,W-pad,yb+fs*1.3,'#8fb3c7','r');
   if(maxC>sa.ref+.5){sx.font=`bold ${fs}px system-ui`;const t='⚠ SEÑAL SOBRE REF LEVEL — suba REF LEVEL',tw=sx.measureText(t).width;sx.fillStyle='rgba(40,8,6,.85)';sx.fillRect(W/2-tw/2-6*D,y0+fs*.2,tw+12*D,fs*1.5);L(t,W/2-tw/2,y0+fs*.4,'#ff6b5a');}
   sx.globalAlpha=1;}
+
+
+/* ---------- caja de pruebas ---------- */
+const nzMap=n=>n<.02?0:1e-3*Math.pow(1000,(n-.02)/.98),nzInv=v=>v<=0?0:.02+.98*Math.log10(v/1e-3)/3;
+const kDfc=new Knob('kDfc',{label:'Frec. corte',es:'fc',min:10,max:1e8,log:true,value:1000,fmt:v=>si(v,'Hz',3),help:'<b>Frecuencia de corte (fc)</b><br>Donde el filtro deja pasar el 70,7 % del voltaje (−3 dB).',on:v=>{dut.fc=v;dutTxt()}});
+const kDlen=new Knob('kDlen',{label:'Largo',es:'cable RG-58',min:1,max:5000,log:true,value:100,fmt:v=>si(v,'m',3),help:'<b>Largo del cable coaxial</b><br>Más largo y más frecuencia = más pérdida.',on:v=>{dut.len=v;dutTxt()}});
+const kDg=new Knob('kDg',{label:'Ganancia',es:'dB',min:0,max:40,value:20,fmt:v=>'+'+v.toFixed(1)+' dB',help:'<b>Ganancia del amplificador</b><br>20 dB = 10 veces el voltaje. La salida no puede pasar de ±5 V: si lo intenta, se corta (satura).',on:v=>{dut.gain=v;dutTxt()}});
+const kNoise=new Knob('kNoise',{label:'Ruido',es:'Vrms',min:0,max:1,value:0,fmt:n=>{const v=nzMap(n);return v?si(v,'V')+'rms':'OFF'},help:'<b>Ruido</b><br>Ruido aleatorio (blanco, hasta 20 MHz) que se suma en el camino al CH1. Totalmente a la izquierda = sin ruido.',on:n=>{dut.noise=nzMap(n)}});
+const kIamp=new Knob('kIamp',{label:'Interferencia',es:'Vpp',min:0,max:4,value:0,fmt:v=>v<.005?'OFF':si(v,'V')+'pp',help:'<b>Interferencia</b><br>Otra señal que se cuela en el cable, por ejemplo los 50 Hz de la red eléctrica. Totalmente a la izquierda = sin interferencia.',on:v=>{dut.iamp=v<.005?0:v}});
+const kIfreq=new Knob('kIfreq',{label:'Frec. interf.',es:'Hz',min:1,max:6e9,log:true,value:50,fmt:v=>si(v,'Hz',3),help:'<b>Frecuencia de la interferencia</b><br>50 Hz = red eléctrica en Chile.',on:v=>{dut.ifreq=v}});
+function dutName(){if(dut.hide)return 'Caja misteriosa (?)';return{none:'Directo (sin circuito)',lp:'Pasa-bajos · fc '+si(dut.fc,'Hz',3),hp:'Pasa-altos · fc '+si(dut.fc,'Hz',3),tel:'Canal telefónico · 300 Hz – 3,4 kHz',cable:'Cable coaxial RG-58 · '+si(dut.len,'m',3),amp:'Amplificador · +'+dut.gain.toFixed(1)+' dB (±5 V)'}[dut.type];}
+function dutTxt(){$('#dutName').textContent=dutName();$('#teeCap').textContent=dut.tee?'Conector T activo: CH2 = entrada':'';}
+function syncDut(){kDfc.setVal(dut.fc,true);kDlen.setVal(dut.len,true);kDg.setVal(dut.gain,true);kNoise.setVal(nzInv(dut.noise),true);kIamp.setVal(dut.iamp,true);kIfreq.setVal(dut.ifreq,true);
+  $('#kDfc').classList.toggle('off',!(dut.type==='lp'||dut.type==='hp'));$('#kDlen').classList.toggle('off',dut.type!=='cable');$('#kDg').classList.toggle('off',dut.type!=='amp');
+  $('#dutp').classList.toggle('locked',dut.hide);dutTxt();refreshSeg();refreshT();}
+function sigPowW(){const g=gen[0];if(!genPow||!g.on)return 0;const f=effF(0),A=g.amp/2;
+  if(g.mod!=='off'){const k=g.mod==='am'?1+g.m*g.m/2:1;if(dut.type==='amp'){const a=Math.min(dbLin(dut.gain)*A,RAIL);return a*a/100*k;}return A*A/100*k*(dut.type!=='none'?cabs(Hdut(f))**2:1);}
+  if(dut.type!=='none'){let P=0;for(const[,a]of dutTable(sc.coup[0]).hs)P+=a*a/100;return P;}
+  return A*A/50*({sine:.5,square:1,triangle:1/3,saw:1/3}[g.wave]);}
+let dlTxt='';
+function dutLCD(){const Ps=sigPowW(),Pn=dut.noise>0?dut.noise*dut.noise/50:0,h=dut.hide,h2=dut.hide||hidden;
+  const t=[h?'? ? ?':dutName(),h2?'? ? ?':(Ps>0?dbm(Ps).toFixed(2)+' dBm':'sin señal'),Pn>0?si(dut.noise,'V')+'rms · '+dbm(Pn).toFixed(2)+' dBm':'sin ruido',dut.iamp>0?si(dut.ifreq,'Hz',4)+' · '+si(dut.iamp,'V')+'pp':'sin interferencia',h2?'? ? ?':(Pn>0&&Ps>0?(10*Math.log10(Ps/Pn)).toFixed(1)+' dB':'—')];
+  const k=t.join('|');if(k===dlTxt)return;dlTxt=k;['#dlC','#dlS','#dlN','#dlI','#dlR'].forEach((id,i)=>{$(id).textContent=t[i]});}
+
+/* ---------- capturas ---------- */
+const stamp=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}`;};
+const fecha=()=>new Date().toLocaleString('es-CL',{dateStyle:'short',timeStyle:'short'});
+function frameImg(src,w,h,title,foot,draw){const D=Math.max(1,Math.round(w/700)),hh=30*D,fh=26*D,c=document.createElement('canvas');c.width=w;c.height=h+hh+fh;const x=c.getContext('2d');
+  x.fillStyle='#11161a';x.fillRect(0,0,c.width,c.height);x.fillStyle='#e8eef2';x.font=`bold ${13*D}px system-ui,sans-serif`;x.textBaseline='middle';x.fillText(title,10*D,hh/2);
+  x.save();x.translate(0,hh);draw(x);x.restore();x.fillStyle='#b9c7cf';x.font=`${11*D}px ui-monospace,Consolas,monospace`;
+  let fsz=11*D;while(x.measureText(foot).width>w-20*D&&fsz>7*D){fsz--;x.font=`${fsz}px ui-monospace,Consolas,monospace`;}x.fillText(foot,10*D,hh+h+fh/2);return c;}
+function scopeImg(){const who=EV.active?' · '+EV.name:'';
+  const foot=sc.mode==='XY'?`X-Y · CH1 ${si(VDIV[sc.vd[0]],'V')}/div · CH2 ${si(VDIV[sc.vd[1]],'V')}/div`:`CH1 ${si(VDIV[sc.vd[0]],'V')}/div ${sc.coup[0]} · CH2 ${si(VDIV[sc.vd[1]],'V')}/div ${sc.coup[1]}${sc.inv?' INV':''} · ${si(TDIV[sc.td],'s')}/div · ${sc.mode} · Disparo CH${sc.src+1} ${sc.slope>0?'↑':'↓'} ${si(sc.lvl*VDIV[sc.vd[sc.src]],'V')}${dut.type!=='none'&&!dut.hide?' · CB-1: '+dutName():''}`;
+  return frameImg(null,W,H,`Osciloscopio OS-2020 — ${fecha()}${who}`,foot,x=>{x.fillStyle='#04100a';x.fillRect(0,0,W,H);x.drawImage(cg,0,0);x.globalCompositeOperation='lighter';x.globalAlpha=.8;try{x.filter='blur(6px) brightness(1.6)'}catch(e){}x.drawImage(cb,0,0,W,H);try{x.filter='none'}catch(e){}x.globalAlpha=1;x.drawImage(ct,0,0);x.globalCompositeOperation='source-over';x.drawImage(co,0,0);});}
+function saImg(){const v=saView(),who=EV.active?' · '+EV.name:'';
+  return frameImg(null,SW,SH,`Analizador de espectro SA-3000 — ${fecha()}${who}`,`CENTER ${fix(v.cf,'Hz',5)} · SPAN ${si(v.span,'Hz',4)} · RBW ${si(v.rbw,'Hz')} · REF ${sa.ref} dBm · Entrada ${{'1':'OUT 1','2':'OUT 2','12':'OUT 1+2'}[sa.inp]}`,x=>x.drawImage(csa,0,0));}
+function dlBlob(blob,name){const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),5000);}
+function snap(which){let c;
+  if(which==='scope')c=scopeImg();else if(which==='sa')c=saImg();
+  else{const a=scopeImg(),b=saImg(),w=Math.max(a.width,b.width);c=document.createElement('canvas');c.width=w;c.height=a.height+b.height;const x=c.getContext('2d');x.fillStyle='#11161a';x.fillRect(0,0,w,c.height);x.drawImage(a,(w-a.width)/2,0);x.drawImage(b,(w-b.width)/2,a.height);}
+  c.toBlob(b=>dlBlob(b,`laboratorio_${which==='both'?'pantallas':which==='sa'?'analizador':'osciloscopio'}_${stamp()}.png`),'image/png');return c;}
+$$('[data-snap]').forEach(b=>b.addEventListener('click',()=>snap(b.dataset.snap)));
+
+/* ---------- evaluación ---------- */
+function cyrb53(str,seed=0){let h1=0xdeadbeef^seed,h2=0x41c6ce57^seed;for(let i=0;i<str.length;i++){const ch=str.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677);}
+  h1=Math.imul(h1^(h1>>>16),2246822507);h1^=Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507);h2^=Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0);}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const normS=s=>String(s||'').normalize('NFC').trim().replace(/\s+/g,' ').toUpperCase();
+const pick=(r,a)=>a[Math.floor(r()*a.length)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const WAVES_ES={sine:'Senoidal',square:'Cuadrada',triangle:'Triangular',saw:'Diente de sierra'};
+function evProblems(name,code){const r=mulberry32(cyrb53(normS(code)+'|'+normS(name))%4294967296),P=[];
+  {const w=pick(r,['sine','triangle','square']),f=pick(r,[200,250,400,500,800,1000,2000,2500,4000,5000,10000,20000]),a=pick(r,[.4,.5,1,2,3,4,5,6,8]);
+   P.push({titulo:'Señal desconocida',pasos:['El generador está oculto y el osciloscopio está mal ajustado.','Ajuste VOLTS/DIV, TIME/DIV y el disparo (LEVEL) hasta ver la señal quieta.','Mida su voltaje pico a pico y su frecuencia contando divisiones.'],
+     setup:{hide:true,gen:[{wave:w,freq:f,amp:a},{on:false}],sc:{vd:[1,4],mode:'CH1',td:3}},preguntas:[{q:'Voltaje pico a pico (Vpp):',ans:a,unit:'V',tol:.08},{q:'Frecuencia:',ans:f,unit:'Hz',tol:.06}]});}
+  {const w=pick(r,['sine','square']),f=pick(r,[500,1000,2000]),a=pick(r,[1,2,3]),o=pick(r,[-4,-3.5,-3,-2.5,-2,-1.5,1.5,2,2.5,3,3.5,4]);
+   P.push({titulo:'Componente continua (offset)',pasos:['El CH1 está en acoplamiento AC.','Use GND para ubicar el 0 V y luego DC para ver la señal completa.','Mida el offset (dónde queda el centro de la señal respecto de 0 V) y el Vpp.'],
+     setup:{hide:true,gen:[{wave:w,freq:f,amp:a,off:o},{on:false}],sc:{vd:[4,4],mode:'CH1',td:8,coup:['AC','DC']}},preguntas:[{q:'Offset (con signo):',ans:o,unit:'V',abs:.25},{q:'Voltaje pico a pico (Vpp):',ans:a,unit:'V',tol:.08}]});}
+  {const f=pick(r,[50e3,100e3,150e3,200e3,250e3,300e3,400e3,455e3,500e3,600e3,750e3]),a=pick(r,[.2,.5,1,2,4,6,8]),P3=10*Math.log10((a/2)*(a/2)/100/1e-3);
+   P.push({titulo:'Potencia con el analizador',pasos:['El osciloscopio está apagado: mida solo con el analizador de espectro.','Encuentre la señal (FULL SPAN, PEAK, MKR → CF) y haga zoom con SPAN.','Lea su frecuencia y su potencia en dBm.'],
+     setup:{hide:true,noScope:true,gen:[{wave:'sine',freq:f,amp:a},{on:false}],sa:{cf:2.5e6,span:5e6,ref:20,inp:'1'}},preguntas:[{q:'Frecuencia de la señal:',ans:f,unit:'Hz',tol:.02},{q:'Potencia:',ans:+P3.toFixed(2),unit:'dBm',abs:.8}]});}
+  {const w=pick(r,['square','triangle','saw']),f=pick(r,[1000,2000,2500,4000,5000]);
+   P.push({titulo:'Forma de onda por su espectro',pasos:['El osciloscopio está apagado: use solo el analizador.','Observe qué armónicos aparecen (¿solo impares o todos?) y cuánto bajan.','Identifique la forma de onda y su frecuencia fundamental.'],
+     setup:{hide:true,noScope:true,gen:[{wave:w,freq:f,amp:2},{on:false}],sa:{cf:f*5,span:f*10,ref:20,inp:'1'}},preguntas:[{q:'Forma de onda:',type:'choice',opts:['Senoidal','Cuadrada','Triangular','Diente de sierra'],ans:{sine:0,square:1,triangle:2,saw:3}[w]},{q:'Frecuencia fundamental:',ans:f,unit:'Hz',tol:.03}]});}
+  {const ph=pick(r,[30,45,60,90,120,135]),f=pick(r,[1000,2000,5000]);
+   P.push({titulo:'Desfase entre canales',pasos:['Los dos canales tienen la misma frecuencia y amplitud.','Mida el período T y la distancia Δt entre los cruces por cero en subida.','Calcule φ = 360° × Δt / T.'],
+     setup:{hide:true,gen:[{wave:'sine',freq:f,amp:4},{wave:'sine',freq:f,amp:4,ph}],sc:{vd:[4,4],mode:'DUAL',td:{1000:9,2000:10,5000:11}[f]}},preguntas:[{q:'Desfase φ:',ans:ph,unit:'°',tol:.1},{q:'¿Qué canal adelanta?',type:'choice',opts:['CH1 (amarillo)','CH2 (celeste)'],ans:1}]});}
+  {const t=pick(r,['lp','hp','tel','amp']),fc=pick(r,[500,1000,2000,5000]);
+   P.push({titulo:'Caja misteriosa',pasos:['La caja de pruebas tiene un circuito oculto. El conector T está activo: CH2 = entrada, CH1 = salida.','Cambie la frecuencia (y la amplitud) del generador y compare entrada y salida.','Identifique qué circuito es.'],
+     setup:{dhide:true,gen:[{wave:'sine',freq:1000,amp:t==='amp'?1:2},{on:false}],sc:{vd:[3,4],mode:'DUAL',td:9,pos:[1.5,-2]},dut:{type:t,fc,gain:20,tee:true}},preguntas:[{q:'¿Qué circuito hay en la caja?',type:'choice',opts:['Pasa-bajos','Pasa-altos','Pasa-banda (canal telefónico)','Amplificador que satura'],ans:{lp:0,hp:1,tel:2,amp:3}[t]}]});}
+  return P;}
+function checkAns(q,raw){if(raw==null||String(raw).trim()==='')return false;if(q.type==='choice')return +raw===q.ans;
+  const v=parseSI(raw,q.scale||1);if(isNaN(v))return false;return q.abs!=null?Math.abs(v-q.ans)<=q.abs:Math.abs(v-q.ans)<=Math.abs(q.ans)*(q.tol??.05)+1e-12;}
+const notaCL=p=>Math.round((p<.6?1+3*p/.6:4+3*(p-.6)/.4)*10)/10;
+function gradeAll(probs,ans){const items=[];let score=0,total=0;probs.forEach((P,i)=>P.preguntas.forEach((q,k)=>{const raw=(ans[i]||[])[k];const ok=checkAns(q,raw);total++;if(ok)score++;items.push({i,k,q,raw,ok});}));
+  const pct=total?score/total:0;return{items,score,total,pct,nota:notaCL(pct)};}
+const rawTxt=(q,raw)=>raw==null||String(raw).trim()===''?'(sin respuesta)':q.type==='choice'?`opción ${+raw+1}: ${q.opts[+raw]}`:String(raw).trim();
+function evHash(code,name,G){return cyrb53(normS(code)+'|'+normS(name)+'|'+G.items.map(it=>rawTxt(it.q,it.raw)).join('¦')+'|'+G.score).toString(36).toUpperCase();}
+function evText(G){const L=['LABORATORIO VIRTUAL · RESULTADO DE EVALUACIÓN',`Nombre: ${EV.name}`,`Código de evaluación: ${EV.code}`,`Fecha: ${fecha()}`,`Puntaje: ${G.score} / ${G.total} (${(G.pct*100).toFixed(1).replace('.',',')} %)`,`Nota: ${G.nota.toFixed(1).replace('.',',')} (escala 1,0–7,0; exigencia 60 %)`,''];
+  G.items.forEach(it=>L.push(`P${it.i+1}.${it.k+1}: ${rawTxt(it.q,it.raw)}${it.q.unit?` (${it.q.unit})`:''} [${it.ok?'✓':'✗'}]`));
+  L.push('',`Verificación: ${evHash(EV.code,EV.name,G)}`,`Página: ${location.origin}${location.pathname}`);return L.join('\n');}
+function evNote(t){const n=$('#evNote');if(n){n.style.display='block';n.textContent=t;}}
+function evQHTML(q,k,val){if(q.type==='choice')return `<div class="q" data-k="${k}"><p><b>${k+1}.</b> ${q.q}</p><div class="qa">${q.opts.map((o,j)=>`<label><input type="radio" name="eq${k}" value="${j}" ${val!=null&&String(val)===String(j)?'checked':''}> ${o}</label>`).join('')}</div></div>`;
+  return `<div class="q" data-k="${k}"><p><b>${k+1}.</b> ${q.q}</p><div class="qa"><input type="text" inputmode="decimal" value="${esc(val||'')}"><span class="u">${q.unit||''}</span></div></div>`;}
+function openEval(i){EV.cur=i;const P=EV.probs[i];applySetup(P.setup);
+  dock.innerHTML=`<div class="dk-h"><b>Evaluación · Problema ${i+1} de ${EV.probs.length}: ${P.titulo}</b><button class="dk-min" title="Minimizar">–</button></div>
+  <div class="dk-b"><p class="mini" style="color:#8fa1ab;margin:0 0 8px">${esc(EV.name)} · código ${esc(EV.code)}</p>${P.setup.hide?'<p class="note">🔒 Generador oculto.</p>':''}${P.setup.noScope?'<p class="note">📡 Mida solo con el analizador de espectro.</p>':''}${P.setup.dhide?'<p class="note">📦 Circuito oculto en la caja de pruebas.</p>':''}
+  <h5>Procedimiento</h5><ol>${P.pasos.map(p=>`<li>${p}</li>`).join('')}</ol><h5>Respuestas</h5>${P.preguntas.map((q,k)=>evQHTML(q,k,EV.ans[i][k])).join('')}
+  <div class="note" id="evNote" style="display:none;margin-top:8px"></div>
+  <div class="dk-f">${i>0?'<button class="evprev">← Anterior</button>':'<span></span>'}${i<EV.probs.length-1?'<button class="evnext">Siguiente →</button>':'<button class="evfin">Finalizar evaluación</button>'}</div></div>`;
+  dock.classList.add('open');dock.classList.remove('min');$(P.setup.noScope?'#sa':P.setup.dhide?'#lab':'#lab').scrollIntoView({behavior:'smooth'});}
+function evStore(e){if(!EV.active)return;const qd=e.target.closest('.q');if(!qd)return;EV.ans[EV.cur][+qd.dataset.k]=e.target.value;}
+$('#dock').addEventListener('input',evStore);$('#dock').addEventListener('change',evStore);
+function evResultHTML(G,txt,forDock){return `<div class="evres"><div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap"><div><div class="mini" style="color:#8fa1ab">Nota</div><div class="nota">${G.nota.toFixed(1).replace('.',',')}</div></div><div><b>${esc(EV.name)}</b><br>Puntaje ${G.score} / ${G.total} (${(G.pct*100).toFixed(0)} %)</div></div>
+  <table><tr><th>Pregunta</th><th>Respuesta</th><th></th></tr>${G.items.map(it=>`<tr><td>P${it.i+1}.${it.k+1}</td><td>${esc(rawTxt(it.q,it.raw))}</td><td>${it.ok?'<span class="ok">✓</span>':'<span style="color:#ff9a8a">✗</span>'}</td></tr>`).join('')}</table>
+  <div class="evbtns"><button class="go evdl">⬇ Descargar resultado (.txt)</button><button class="go evcp" style="background:#3a4a55">Copiar texto</button>${forDock?'':''}</div><p class="mini" style="color:#8fa1ab;margin-top:8px">Entregue el archivo descargado a su profesor (Moodle o correo).</p><textarea readonly style="position:absolute;left:-9999px" class="evtxt">${esc(txt)}</textarea></div>`;}
+function finishEval(){const G=gradeAll(EV.probs,EV.ans),txt=evText(G);EV.active=false;document.body.classList.remove('evalon');EV.last={G,txt};
+  dock.innerHTML=`<div class="dk-h"><b>Evaluación finalizada</b><button class="dk-min" title="Minimizar">–</button><button class="dk-x" title="Cerrar">×</button></div><div class="dk-b">${evResultHTML(G,txt,true)}</div>`;
+  $('#evResult').innerHTML=evResultHTML(G,txt,false);dock.classList.add('open');dock.classList.remove('min');}
+function evDownload(){if(!EV.last)return;dlBlob(new Blob([EV.last.txt],{type:'text/plain;charset=utf-8'}),`evaluacion_${normS(EV.name).toLowerCase().replace(/[^a-z0-9ñáéíóú]+/g,'_')}_${stamp()}.txt`);}
+async function evCopy(btn){if(!EV.last)return;try{await navigator.clipboard.writeText(EV.last.txt);btn.textContent='✓ Copiado';}catch(e){const ta=btn.closest('.evres').querySelector('.evtxt');ta.select();try{document.execCommand('copy');btn.textContent='✓ Copiado';}catch(_){btn.textContent='No se pudo copiar';}}}
+document.addEventListener('click',e=>{const t=e.target;if(t.closest('.evdl'))evDownload();else if(t.closest('.evcp'))evCopy(t.closest('.evcp'));});
+$('#evStart').addEventListener('click',()=>{const n=$('#evName').value.trim(),c=$('#evCode').value.trim(),er=$('#evErr');
+  if(n.length<3){er.textContent='Escriba su nombre completo.';return}if(c.length<3){er.textContent='Escriba el código de evaluación que entregó el profesor.';return}
+  er.textContent='';Object.assign(EV,{active:true,name:n,code:c,probs:evProblems(n,c),cur:0,last:null});EV.ans=EV.probs.map(P=>P.preguntas.map(()=>null));
+  document.body.classList.add('evalon');$('#evResult').innerHTML='';openEval(0);});
+['#evName','#evCode'].forEach(id=>$(id).addEventListener('input',()=>{$('#evErr').textContent=''}));
+$('#vfBtn').addEventListener('click',()=>{const code=$('#vfCode').value.trim(),txt=$('#vfText').value,out=$('#vfOut');
+  if(!code){out.innerHTML='<p class="fb bad">Escriba el código de evaluación.</p>';return}
+  const nm=(txt.match(/^Nombre:\s*(.+)$/m)||[])[1];if(!nm){out.innerHTML='<p class="fb bad">No se encontró la línea "Nombre:" en el texto.</p>';return}
+  const probs=evProblems(nm,code),ans=probs.map(P=>P.preguntas.map(()=>null));
+  for(const line of txt.split(/\r?\n/)){const m=line.match(/^P(\d+)\.(\d+):\s*(.*?)\s*(?:\([^()]*\))?\s*\[(?:✓|✗)\]\s*$/);if(!m)continue;const i=+m[1]-1,k=+m[2]-1;if(!probs[i]||!probs[i].preguntas[k])continue;let raw=m[3];
+    if(raw==='(sin respuesta)')raw=null;else if(probs[i].preguntas[k].type==='choice'){const mm=raw.match(/opción (\d+)/);raw=mm?String(+mm[1]-1):null;}ans[i][k]=raw;}
+  const G=gradeAll(probs,ans),decl=txt.match(/^Puntaje:\s*(\d+)\s*\/\s*(\d+)/m),ver=(txt.match(/^Verificación:\s*(\S+)/m)||[])[1],okScore=decl&&+decl[1]===G.score,okHash=ver===evHash(code,nm,G);
+  out.innerHTML=`<div class="evres"><p><b>${esc(nm)}</b></p><p>Puntaje recalculado: <b>${G.score} / ${G.total}</b> · Nota <b>${G.nota.toFixed(1).replace('.',',')}</b></p>${okScore&&okHash?'<p class="ok">✓ El resultado coincide: no fue modificado.</p>':`<p style="color:#ff9a8a">⚠ El resultado NO coincide${decl?` (declara ${decl[1]} / ${decl[2]})`:''}. Puede haber sido editado o se usó otro código.</p>`}</div>`;});
 
 /* ---------- ejercicios ---------- */
 const EX=[
@@ -1121,29 +1502,85 @@ const EX=[
   {q:'Frecuencia medida en el analizador:',ans:915e6,unit:'MHz',scale:1e6,tol:.005,ej:'915'},
   {q:'Potencia medida:',ans:3.98,abs:.7,unit:'dBm'},
   {q:'¿La portadora está dentro de la banda LoRa de Chile?',type:'choice',opts:['Sí, en el borde inferior (915 MHz)','No, está fuera'],ans:0}],
- resolucion:`<ol><li>Todo instrumento tiene un <b>ancho de banda</b>. El osciloscopio es de 20 MHz: a esa frecuencia la señal ya se ve un 30 % más chica, y a 915 MHz prácticamente no pasa nada.</li><li>Para RF se usa el <b>analizador de espectro</b>: muestra la portadora en <b>915 MHz</b> con <b>+3,98 dBm</b> (1 Vpp sobre 50 Ω).</li><li>La banda <b>AU915</b> (915–928 MHz) es la que usan en Chile los equipos LoRa/LoRaWAN; 915 MHz es su borde inferior.</li><li>Los pequeños picos en 1,83 y 2,75 GHz son los armónicos del generador. En un transmisor real deben estar bajo el límite que exige la norma para no interferir otros servicios.</li></ol><p>Regla práctica: para ver la <b>forma</b> de una señal, el osciloscopio debe tener un ancho de banda de al menos 3 a 5 veces su frecuencia.</p>`}
+ resolucion:`<ol><li>Todo instrumento tiene un <b>ancho de banda</b>. El osciloscopio es de 20 MHz: a esa frecuencia la señal ya se ve un 30 % más chica, y a 915 MHz prácticamente no pasa nada.</li><li>Para RF se usa el <b>analizador de espectro</b>: muestra la portadora en <b>915 MHz</b> con <b>+3,98 dBm</b> (1 Vpp sobre 50 Ω).</li><li>La banda <b>AU915</b> (915–928 MHz) es la que usan en Chile los equipos LoRa/LoRaWAN; 915 MHz es su borde inferior.</li><li>Los pequeños picos en 1,83 y 2,75 GHz son los armónicos del generador. En un transmisor real deben estar bajo el límite que exige la norma para no interferir otros servicios.</li></ol><p>Regla práctica: para ver la <b>forma</b> de una señal, el osciloscopio debe tener un ancho de banda de al menos 3 a 5 veces su frecuencia.</p>`},
+{id:'e17',titulo:'Filtro pasa-bajos: frecuencia de corte',nivel:'Intermedio',controles:'Caja de pruebas, conector T, FREC, MEASURE',
+ objetivo:'Encontrar la frecuencia de corte (−3 dB) de un filtro midiendo entrada y salida.',
+ setup:{dhide:true,gen:[{wave:'sine',freq:100,amp:4},{on:false}],sc:{vd:[4,4],mode:'DUAL',td:6,pos:[1.5,-2],meas:true},dut:{type:'lp',fc:2000,tee:true}},
+ pasos:['La caja tiene un filtro pasa-bajos con fc desconocida. El conector T está activo: CH2 (celeste) = entrada, CH1 (amarillo) = salida. MEASURE está activo.','A 100 Hz la salida mide lo mismo que la entrada (4 Vpp).','Suba la frecuencia del generador (clic en FREC y escriba, por ejemplo, 500, 1k, 1.5k…) y ajuste TIME/DIV para ver pocas ondas.','Busque la frecuencia a la que la salida mide 0,707 × 4 = 2,83 Vpp: esa es fc.','Ponga el generador en 10 × fc y mida la salida.'],
+ preguntas:[{q:'Frecuencia de corte fc:',ans:2000,unit:'Hz',tol:.08,ej:'2k'},{q:'En fc, la salida respecto de la entrada está…',type:'choice',opts:['−3 dB (70,7 %)','−6 dB (50 %)','−20 dB (10 %)'],ans:0},{q:'A 10 × fc la salida mide aprox. (Vpp):',ans:.04,unit:'V',tol:.15,ej:'0.04'},{q:'Eso equivale a una atenuación de…',type:'choice',opts:['−3 dB','−20 dB','−40 dB'],ans:2}],
+ resolucion:`<ol><li>La salida baja a 2,83 Vpp en <b>2 kHz</b>: esa es la frecuencia de corte.</li><li>En fc la salida es 0,707 veces la entrada: 20·log₁₀(0,707) = <b>−3 dB</b> (la mitad de la potencia).</li><li>A 20 kHz (10·fc) la salida es ≈ 0,04 Vpp: 20·log₁₀(0,04/4) = <b>−40 dB</b>. Un filtro de 2º orden cae 40 dB por década.</li></ol><p>Note también el <b>desfase</b> entre entrada y salida: en fc la salida va 90° atrasada.</p>`},
+{id:'e18',titulo:'Canal telefónico: por qué la voz suena "a lata"',nivel:'Intermedio',controles:'Caja de pruebas, conector T, FREC',
+ objetivo:'Medir la respuesta en frecuencia de un canal telefónico (300 Hz – 3,4 kHz).',
+ setup:{gen:[{wave:'sine',freq:1000,amp:2},{on:false}],sc:{vd:[4,4],mode:'DUAL',td:9,pos:[1.5,-2],meas:true},dut:{type:'tel',tee:true}},
+ pasos:['La caja simula un canal telefónico. CH2 = entrada (2 Vpp), CH1 = salida.','Mida la salida a 1 kHz.','Cambie a 5 kHz (FREC 5k) y ajuste TIME/DIV. Mida la salida.','Cambie a 100 Hz y mida.','Pruebe otras frecuencias para encontrar el rango que pasa sin pérdida.'],
+ preguntas:[{q:'Vpp de salida a 1 kHz:',ans:1.99,unit:'V',tol:.05},{q:'Vpp de salida a 5 kHz:',ans:.418,unit:'V',tol:.08},{q:'Vpp de salida a 100 Hz:',ans:.221,unit:'V',tol:.08},{q:'¿Qué rango de frecuencias deja pasar el canal?',type:'choice',opts:['20 Hz – 20 kHz','300 Hz – 3,4 kHz','3,4 kHz – 20 kHz'],ans:1},{q:'¿Por qué la voz por teléfono suena "a lata"?',type:'choice',opts:['Porque el canal agrega ruido','Porque se pierden los agudos (sobre 3,4 kHz) y los graves (bajo 300 Hz)','Porque el canal amplifica la voz'],ans:1}],
+ resolucion:`<ol><li>A 1 kHz pasa casi todo: ≈ <b>1,99 Vpp</b>.</li><li>A 5 kHz la salida cae a ≈ <b>0,42 Vpp</b> (−13,6 dB) y a 100 Hz a ≈ <b>0,22 Vpp</b> (−19 dB).</li><li>El canal es un <b>pasa-banda de 300 Hz a 3,4 kHz</b>: suficiente para entender la voz, pero sin graves ni agudos.</li></ol><p>Relación con la telefonía digital: la voz se muestrea a 8 kHz y por el teorema de Nyquist solo se pueden transmitir frecuencias bajo 4 kHz. Por eso el filtro corta en 3,4 kHz.</p>`},
+{id:'e19',titulo:'Amplificador: ganancia y saturación',nivel:'Intermedio',controles:'Caja de pruebas (amplificador), AMPLITUD, analizador',
+ objetivo:'Medir la ganancia de un amplificador y ver qué pasa cuando se satura.',
+ setup:{gen:[{wave:'sine',freq:1000,amp:.5},{on:false}],sc:{vd:[3,6],mode:'DUAL',td:9,pos:[1.5,-2],meas:true},dut:{type:'amp',gain:20,tee:true},sa:{cf:5000,span:1e4,ref:30,inp:'1'}},
+ pasos:['CH2 = entrada (0,2 V/div) y CH1 = salida (2 V/div). Mida el Vpp de entrada y de salida.','Calcule la ganancia en veces y en dB.','Suba la AMPLITUD del generador a 2 Vpp (clic en AMPL y escriba 2). Observe la salida en el osciloscopio.','Baje al analizador y observe qué picos nuevos aparecen.'],
+ preguntas:[{q:'Ganancia (en veces):',ans:10,unit:'',tol:.06},{q:'Ganancia en dB:',ans:20,unit:'dB',abs:1},{q:'Con 2 Vpp de entrada, Vpp de salida:',ans:10,unit:'V',tol:.06},{q:'Al saturar, en el analizador aparecen picos en…',type:'choice',opts:['2f, 4f, 6f (pares)','3f, 5f, 7f (impares)','Ninguno nuevo'],ans:1}],
+ resolucion:`<ol><li>0,5 Vpp entran y salen 5 Vpp: ganancia <b>×10</b> = 20·log₁₀(10) = <b>+20 dB</b>.</li><li>Con 2 Vpp la salida "debería" ser 20 Vpp, pero el amplificador solo llega a ±5 V: se corta arriba y abajo y mide <b>10 Vpp</b>. Eso es <b>saturación</b> (clipping).</li><li>Al cortarse simétricamente, la senoidal se parece a una cuadrada: aparecen armónicos <b>impares</b> (3, 5, 7 kHz). Así suena "distorsionado" un parlante forzado.</li></ol>`},
+{id:'e20',titulo:'Caja misteriosa',nivel:'Avanzado',controles:'Caja de pruebas, conector T, FREC',
+ objetivo:'Descubrir qué circuito hay dentro de la caja midiendo su respuesta.',
+ setup:{dhide:true,gen:[{wave:'sine',freq:1000,amp:2},{on:false}],sc:{vd:[4,4],mode:'DUAL',td:9,pos:[1.5,-2],meas:true},dut:{type:'hp',fc:5000,tee:true}},
+ pasos:['La caja está cerrada. CH2 = entrada, CH1 = salida.','Pruebe frecuencias bajas (100 Hz, 1 kHz) y altas (10 kHz, 100 kHz, 1 MHz). Ajuste TIME/DIV en cada caso.','Observe si la salida se atenúa en bajas, en altas o en ambas.','Busque la frecuencia donde la salida es 0,707 veces la entrada.'],
+ preguntas:[{q:'¿Qué circuito hay en la caja?',type:'choice',opts:['Pasa-bajos','Pasa-altos','Pasa-banda (canal telefónico)','Amplificador'],ans:1},{q:'Frecuencia de corte aproximada:',ans:5000,unit:'Hz',tol:.1,ej:'5k'}],
+ resolucion:`<ol><li>A 1 kHz la salida es muy pequeña (≈ 0,08 Vpp) y sobre 20 kHz pasa casi completa: es un <b>pasa-altos</b>.</li><li>La salida mide 0,707 × 2 = 1,41 Vpp en <b>5 kHz</b>: esa es fc.</li></ol><p>Este es el trabajo real de diagnóstico: con un generador y un osciloscopio se averigua qué hace un circuito sin abrirlo.</p>`},
+{id:'e21',titulo:'Modulación AM',nivel:'Intermedio',controles:'Modulación AM, osciloscopio, analizador',
+ objetivo:'Medir la portadora, la moduladora y el índice de una señal AM en el tiempo y en frecuencia.',
+ setup:{gen:[{wave:'sine',freq:100000,amp:2,mod:'am',mf:2000,m:.5},{on:false}],sc:{vd:[4,4],mode:'CH1',td:9},sa:{cf:1e5,span:2e4,ref:10,inp:'1'}},
+ pasos:['El generador entrega una portadora de 100 kHz modulada en AM. En el osciloscopio se ve la envolvente.','Mida el Vpp máximo y el Vpp mínimo de la envolvente y calcule m.','En el analizador use PEAK, Δ MKR y NEXT PEAK para medir la portadora y las bandas laterales.'],
+ preguntas:[{q:'Frecuencia de la portadora:',ans:1e5,unit:'Hz',tol:.02,ej:'100k'},{q:'Frecuencia moduladora (separación entre portadora y banda lateral):',ans:2000,unit:'Hz',tol:.05},{q:'¿Cuántos dB bajo la portadora están las bandas laterales?',ans:12.04,unit:'dB',abs:.8},{q:'Índice de modulación m:',ans:50,unit:'%',abs:5},{q:'Ancho de banda que ocupa la señal AM:',ans:4000,unit:'Hz',tol:.05}],
+ resolucion:`<ol><li>Portadora: <b>100 kHz</b>. Bandas laterales en 98 y 102 kHz → moduladora <b>2 kHz</b>.</li><li>Envolvente: Vmáx = 3 Vpp, Vmín = 1 Vpp → m = (3 − 1)/(3 + 1) = <b>50 %</b>.</li><li>Bandas: 20·log₁₀(m/2) = 20·log₁₀(0,25) = <b>−12 dB</b> respecto de la portadora.</li><li>Ancho de banda AM = 2 × fm = <b>4 kHz</b>. Por eso las radios AM se separan cada 9–10 kHz.</li></ol>`},
+{id:'e22',titulo:'Modulación FM y regla de Carson',nivel:'Avanzado',controles:'Modulación FM, índice (Δf), analizador',
+ objetivo:'Ver el espectro de una señal FM y calcular su ancho de banda.',
+ setup:{gen:[{wave:'sine',freq:500000,amp:2,mod:'fm',mf:5000,dev:25000},{on:false}],sc:{vd:[4,4],mode:'CH1',td:11},sa:{cf:5e5,span:1e5,ref:10,inp:'1',rbw:1000}},
+ pasos:['El generador entrega una portadora de 500 kHz con FM: fm = 5 kHz y Δf = 25 kHz (se ve en el display del generador).','Mire el osciloscopio: ¿cambia la amplitud?','En el analizador observe las líneas separadas 5 kHz alrededor de la portadora.','Gire la perilla ÍNDICE (con Shift para ajuste fino) hasta que desaparezca el pico central.'],
+ preguntas:[{q:'Índice β = Δf / fm:',ans:5,unit:'',abs:.3},{q:'Ancho de banda según Carson:',ans:60000,unit:'Hz',tol:.05,ej:'60k'},{q:'En el osciloscopio, la amplitud de la señal FM…',type:'choice',opts:['sube y baja como en AM','es constante'],ans:1},{q:'¿Con qué Δf desaparece la portadora (β = 2,405)?',ans:12025,unit:'Hz',tol:.06,ej:'12k'}],
+ resolucion:`<ol><li>β = 25 kHz / 5 kHz = <b>5</b>.</li><li>Carson: BW ≈ 2·(Δf + fm) = 2·(25 + 5) = <b>60 kHz</b>. Fuera de ese rango las líneas son muy pequeñas.</li><li>En FM la amplitud es <b>constante</b>: la información va en la frecuencia. Por eso FM resiste mejor el ruido de amplitud.</li><li>La portadora sigue la función de Bessel J₀(β), que vale cero en β = 2,405 → Δf = 2,405 × 5 kHz ≈ <b>12 kHz</b>.</li></ol><p>Una radio FM comercial usa Δf = 75 kHz y fm hasta 15 kHz → BW ≈ 180 kHz; por eso las emisoras se separan 200 kHz.</p>`},
+{id:'e23',titulo:'Ruido y relación señal/ruido (SNR)',nivel:'Intermedio',controles:'Caja de pruebas (ruido), analizador, AVG',
+ objetivo:'Calcular la SNR de una señal con ruido y ver cómo el RBW cambia el piso de ruido.',
+ setup:{gen:[{wave:'sine',freq:10000,amp:2},{on:false}],sc:{vd:[5,4],mode:'CH1',td:10},dut:{noise:.1},sa:{cf:1e4,span:2e4,ref:20,inp:'1',rbw:1000}},
+ pasos:['La señal de 10 kHz, 2 Vpp, tiene 0,1 Vrms de ruido: mire cómo se ve "peluda" en el osciloscopio.','En el analizador mida la potencia de la señal con PEAK.','Calcule la potencia del ruido: P = Vrms² / 50 Ω, en dBm.','Calcule la SNR y compárela con la pantalla de la caja.','Gire RBW de 1 kHz a 100 Hz y observe el piso de ruido. Pruebe también TRACE → AVG.'],
+ preguntas:[{q:'Potencia de la señal:',ans:10,unit:'dBm',abs:.7},{q:'Potencia del ruido:',ans:-6.99,unit:'dBm',abs:.5},{q:'SNR:',ans:16.99,unit:'dB',abs:.7},{q:'Al bajar el RBW 10 veces, el piso de ruido del analizador…',type:'choice',opts:['sube 10 dB','baja 10 dB','no cambia'],ans:1}],
+ resolucion:`<ol><li>Señal: 2 Vpp → 0,707 Vrms → 10 mW → <b>+10 dBm</b>.</li><li>Ruido: 0,1² / 50 = 0,2 mW → <b>−6,99 dBm</b>.</li><li>SNR = 10 − (−6,99) = <b>17 dB</b>: la señal tiene 50 veces más potencia que el ruido.</li><li>El analizador mide el ruido dentro del RBW: 10 veces menos RBW deja entrar 10 veces menos ruido → el piso <b>baja 10 dB</b>, mientras la señal (una sola frecuencia) se mantiene.</li></ol>`},
+{id:'e24',titulo:'Interferencia de 50 Hz',nivel:'Básico',controles:'Caja de pruebas (interferencia), osciloscopio, analizador',
+ objetivo:'Detectar y medir una interferencia de la red eléctrica que se cuela en una señal.',
+ setup:{gen:[{wave:'sine',freq:10000,amp:1},{on:false}],sc:{vd:[5,4],mode:'CH1',td:6},dut:{iamp:.5,ifreq:50},sa:{cf:500,span:1000,ref:10,inp:'1'}},
+ pasos:['La señal de 10 kHz "baila" hacia arriba y abajo en el osciloscopio: algo se le está sumando.','Con 2 ms/div se ve que la señal sigue una onda lenta.','En el analizador (0 a 1 kHz) busque el pico con PEAK. Ignore el pico de 0 Hz del propio analizador.','Mida su frecuencia y su potencia.'],
+ preguntas:[{q:'Frecuencia de la interferencia:',ans:50,unit:'Hz',tol:.05},{q:'Potencia de la interferencia:',ans:-2.04,unit:'dBm',abs:.7},{q:'¿Cuál es su origen más probable?',type:'choice',opts:['La red eléctrica (50 Hz en Chile)','Una radio FM','El Wi-Fi'],ans:0}],
+ resolucion:`<ol><li>El analizador muestra un pico en <b>50 Hz</b>: la frecuencia de la red eléctrica en Chile.</li><li>0,5 Vpp → 0,177 Vrms → 0,625 mW → <b>−2 dBm</b>.</li><li>Es el típico "zumbido" (hum) que se mete por cables sin blindaje, tierras mal hechas o fuentes cercanas. Se combate con cable coaxial, buena tierra o un filtro pasa-altos.</li></ol>`},
+{id:'e25',titulo:'Señal LoRa real a 915 MHz',nivel:'Avanzado',controles:'RANGE (modo libre), modulación LoRa, analizador',
+ objetivo:'Medir el ancho de banda de una señal LoRa en la banda AU915 de Chile y calcular el tiempo de símbolo.',
+ setup:{free:true,gen:[{wave:'sine',freq:915e6,amp:1,mod:'lora',lbw:125000,sf:7},{on:false}],sc:{vd:[4,4],mode:'CH1',td:19},sa:{cf:915e6,span:5e5,ref:0,inp:'1',mode:'MAX'}},
+ pasos:['El generador emite LoRa en 915 MHz con BW 125 kHz y SF 7. El analizador está en MAX HOLD.','Mida el ancho de la banda plana: ponga el marcador en un borde, active Δ MKR y lleve el marcador al otro borde.','Calcule el tiempo de símbolo Ts = 2^SF / BW.','Cambie SF a 12 en el generador y calcule de nuevo.'],
+ preguntas:[{q:'Ancho de banda ocupado:',ans:125000,unit:'Hz',tol:.1,ej:'125k'},{q:'Tiempo de símbolo con SF 7:',ans:1.024e-3,unit:'ms',scale:1e-3,tol:.03,ej:'1.024'},{q:'Tiempo de símbolo con SF 12:',ans:32.768e-3,unit:'ms',scale:1e-3,tol:.03},{q:'Subir el SF de 7 a 12…',type:'choice',opts:['aumenta la velocidad y reduce el alcance','reduce la velocidad y aumenta el alcance','no cambia nada'],ans:1}],
+ resolucion:`<ol><li>LoRa ocupa una banda plana de <b>125 kHz</b> (de 914,94 a 915,06 MHz): la frecuencia barre todo ese ancho en cada símbolo (chirp).</li><li>Ts = 2⁷ / 125 000 = <b>1,024 ms</b>.</li><li>Con SF 12: Ts = 4096 / 125 000 = <b>32,8 ms</b>, 32 veces más largo.</li><li>Símbolos más largos son más fáciles de detectar bajo el ruido: <b>más alcance, pero menos velocidad</b>. Por eso LoRa llega a kilómetros con pocos bytes por segundo.</li></ol>`}
 ];
 
 let done=new Set();try{done=new Set(JSON.parse(localStorage.getItem('oscDone')||'[]'))}catch(e){}
 const saveDone=()=>{try{localStorage.setItem('oscDone',JSON.stringify([...done]))}catch(e){}};
-function renderCards(){$('#exGrid').innerHTML=EX.map((e,i)=>`<article class="exc ${done.has(e.id)?'done':''}"><div class="exh"><span class="lvl lv-${e.nivel}">${e.nivel}</span>${done.has(e.id)?'<span class="ok">✓ Completado</span>':''}${e.setup.hide?'<span title="Generador oculto">🔒</span>':''}</div><h4>${i+1}. ${e.titulo}</h4><p>${e.objetivo}</p><p class="mini">${e.sa?'📡 ':''}Controles: ${e.controles}</p><button class="go" data-i="${i}">Preparar ejercicio →</button></article>`).join('');
+function renderCards(){$('#exGrid').innerHTML=EX.map((e,i)=>`<article class="exc ${done.has(e.id)?'done':''}"><div class="exh"><span class="lvl lv-${e.nivel}">${e.nivel}</span>${done.has(e.id)?'<span class="ok">✓ Completado</span>':''}${e.setup.hide?'<span title="Generador oculto">🔒</span>':''}${e.setup.dhide?'<span title="Circuito oculto">📦</span>':''}</div><h4>${i+1}. ${e.titulo}</h4><p>${e.objetivo}</p><p class="mini">${e.sa?'📡 ':''}${e.setup.dut?'📦 ':''}${e.setup.gen&&e.setup.gen[0]&&e.setup.gen[0].mod?'〰 ':''}Controles: ${e.controles}</p><button class="go" data-i="${i}">Preparar ejercicio →</button></article>`).join('');
   $('#progress').innerHTML=`Progreso: <b>${done.size}</b> de ${EX.length} ejercicios completados.`;}
 $('#exGrid').addEventListener('click',e=>{const b=e.target.closest('.go');if(b)openEx(+b.dataset.i)});
 
 function applySetup(s){const dg=DEF_GEN();
-  for(let i=0;i<2;i++)Object.assign(gen[i],{wave:'sine',freq:1000,fine:1,amp:2,off:0,ph:0,on:true},s?(s.gen[i]||{}):dg[i]);
+  for(let i=0;i<2;i++)Object.assign(gen[i],{wave:'sine',freq:1000,fine:1,amp:2,off:0,ph:0,on:true,...DEF_MOD},s?(s.gen[i]||{}):dg[i]);
   Object.assign(sc,DEF_SC(),s?{pos:[0,0],mode:'CH1',...s.sc}:{});
-  genPow=true;if(!scopePow){scopePow=true;scopeOnAt=performance.now();}
-  hidden=!!(s&&s.hide);gs=0;syncGen();syncScope();clearTrace();
-  setFree(!!(s&&s.free));Object.assign(sa,DEF_SA(),s&&s.sa?s.sa:{});if(s&&s.sa){const v0=saView();sa.mkF=v0.start+v0.span*.1;}saOnAt=performance.now();saReset();syncSA();}
+  Object.assign(dut,DEF_DUT(),s&&s.dut?s.dut:{});dut.hide=!!(s&&s.dhide);
+  genPow=true;if(s&&s.noScope){scopePow=false;scopeOffAt=-1e9;}else if(!scopePow){scopePow=true;scopeOnAt=performance.now();}
+  hidden=!!(s&&s.hide);gs=0;setFree(!!(s&&s.free));
+  Object.assign(sa,DEF_SA(),s&&s.sa?s.sa:{});if(s&&s.sa){const v0=saView();sa.mkF=v0.start+v0.span*.1;}saOnAt=performance.now();saReset();
+  syncGen();syncScope();syncDut();syncSA();clearTrace();}
 
 let cur=-1,res=[];
 const dock=$('#dock');
 function qHTML(q,k){if(q.type==='choice')return `<div class="q" data-k="${k}"><p><b>${k+1}.</b> ${q.q}</p><div class="qa">${q.opts.map((o,j)=>`<label><input type="radio" name="q${k}" value="${j}"> ${o}</label>`).join('')}<button class="chk">Comprobar</button></div><div class="fb"></div></div>`;
   return `<div class="q" data-k="${k}"><p><b>${k+1}.</b> ${q.q}</p><div class="qa"><input type="text" inputmode="decimal" placeholder="${q.ej?'ej: '+q.ej:''}"><span class="u">${q.unit||''}</span><button class="chk">Comprobar</button></div><div class="fb"></div></div>`;}
-function openEx(i){const e=EX[i];cur=i;res=e.preguntas.map(()=>false);applySetup(e.setup);
+function openEx(i){if(EV.active)return;const e=EX[i];cur=i;res=e.preguntas.map(()=>false);applySetup(e.setup);
   dock.innerHTML=`<div class="dk-h"><b>Ejercicio ${i+1}: ${e.titulo}</b><button class="dk-min" title="Minimizar">–</button><button class="dk-x" title="Cerrar">×</button></div>
-  <div class="dk-b"><p><b>Objetivo:</b> ${e.objetivo}</p>${e.setup.hide?`<p class="note">🔒 El generador está oculto. Descubra la señal solo con ${e.sa?'el analizador de espectro':'el osciloscopio'}.</p>`:''}
+  <div class="dk-b"><p><b>Objetivo:</b> ${e.objetivo}</p>${e.setup.hide?`<p class="note">🔒 El generador está oculto. Descubra la señal solo con ${e.sa?'el analizador de espectro':'el osciloscopio'}.</p>`:''}${e.setup.dhide?'<p class="note">📦 El circuito de la caja de pruebas está oculto.</p>':''}
   <h5>Procedimiento</h5><ol>${e.pasos.map(p=>`<li>${p}</li>`).join('')}</ol>
   <h5>Preguntas</h5>${e.preguntas.map(qHTML).join('')}<div id="celebr"></div>
   <details class="sol"><summary>Ver resolución paso a paso</summary>${e.resolucion}</details>
@@ -1152,6 +1589,11 @@ function openEx(i){const e=EX[i];cur=i;res=e.preguntas.map(()=>false);applySetup
 dock.addEventListener('click',e=>{const t=e.target;
   if(t.closest('.dk-x')){dock.classList.remove('open');return}
   if(t.closest('.dk-min')||(t.closest('.dk-h')&&!t.closest('button'))){dock.classList.toggle('min');return}
+  if(t.closest('.evprev')){openEval(EV.cur-1);return}
+  if(t.closest('.evnext')){openEval(EV.cur+1);return}
+  if(t.closest('.evfin')){const f=t.closest('.dk-f');f.innerHTML='<span style="font-size:13px">¿Finalizar? Ya no podrá cambiar respuestas.</span><button class="evback">Volver</button><button class="evconf" style="background:#2f7bd1">Sí, finalizar</button>';return}
+  if(t.closest('.evback')){openEval(EV.cur);return}
+  if(t.closest('.evconf')){finishEval();return}
   if(t.closest('.again')){openEx(cur);return}
   if(t.closest('.next')){openEx(cur+1);return}
   const b=t.closest('.chk');if(!b)return;const qd=b.closest('.q'),k=+qd.dataset.k,q=EX[cur].preguntas[k],fb=qd.querySelector('.fb');let ok=false;
@@ -1160,10 +1602,10 @@ dock.addEventListener('click',e=>{const t=e.target;
     ok=q.abs!=null?Math.abs(v-q.ans)<=q.abs:Math.abs(v-q.ans)<=Math.abs(q.ans)*(q.tol??.05)+1e-12;}
   res[k]=ok;fb.className='fb '+(ok?'good':'bad');fb.textContent=ok?'✓ Correcto.':'✗ Revise la medición.'+(q.pista?' Pista: '+q.pista:'');
   if(res.every(Boolean)){done.add(EX[cur].id);saveDone();renderCards();$('#celebr').innerHTML='<div class="celebrate">🎉 ¡Ejercicio completado! Revise la resolución para confirmar el razonamiento.</div>';}});
-$('#resetAll').addEventListener('click',()=>{applySetup(null);dock.classList.remove('open');$('#lab').scrollIntoView({behavior:'smooth'})});
+$('#resetAll').addEventListener('click',()=>{if(EV.active){openEval(EV.cur);return}applySetup(null);dock.classList.remove('open');$('#lab').scrollIntoView({behavior:'smooth'})});
 
 renderCards();syncGen();refreshSeg();refreshT();resize();drawCables();setTimeout(drawCables,300);requestAnimationFrame(loop);
-saResize();syncSA();requestAnimationFrame(saLoop);
+saResize();syncSA();syncDut();requestAnimationFrame(saLoop);
 </script>
 </body>
 </html>
