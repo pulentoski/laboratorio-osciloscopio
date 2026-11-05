@@ -10,9 +10,11 @@ Todo funciona en un solo archivo (`index.html`), sin dependencias ni servidor.
 - Ondas senoidal, triangular, cuadrada y diente de sierra.
 - Frecuencia 1 Hz – 1 MHz (ajuste grueso y fino), amplitud 10 mV – 15 Vpp, offset ±10 V, fase 0–360°.
 - Valores editables escribiendo sobre el display (`2.5k`, `500m`, `1M`).
+- Modo libre (RANGE 6 GHz): cualquier frecuencia hasta 6 GHz para trabajar con FM, LoRa (915 MHz), GPS o Wi-Fi.
 
 **Osciloscopio**
 - VOLTS/DIV (10 mV – 20 V) y TIME/DIV (0,1 µs – 0,2 s).
+- Ancho de banda realista de 20 MHz: sobre esa frecuencia la señal se atenúa y se redondean los flancos.
 - Acoplamiento AC / DC / GND, con filtro pasa-altos real en AC (~10 Hz).
 - Modos CH1, CH2, DUAL, ADD, X-Y (Lissajous) e inversión de CH2.
 - Disparo con nivel, fuente, pendiente y modo AUTO / NORM.
@@ -21,6 +23,7 @@ Todo funciona en un solo archivo (`index.html`), sin dependencias ni servidor.
 
 **Analizador de espectro**
 - CENTER, SPAN, FULL SPAN, REF LEVEL con atenuación automática, escala en dB/div y RBW (auto o manual).
+- Rango 0–6 MHz, o 0–6 GHz en modo libre, con bandas de referencia (AM, FM, LoRa AU915, GPS, Wi-Fi).
 - Marcador con búsqueda de pico, siguiente pico, MKR → CF y marcador delta (Δf y dB).
 - Traza WRITE / MAX HOLD / AVG, piso de ruido dependiente de RBW y atenuación, tiempo de barrido realista.
 - Espectro calculado por serie de Fourier de cada forma de onda, con distorsión armónica del generador y fuga del oscilador local en 0 Hz.
@@ -28,7 +31,7 @@ Todo funciona en un solo archivo (`index.html`), sin dependencias ni servidor.
 **Pedagogía**
 - Nombres de controles en inglés con su traducción al español y ayuda emergente.
 - Guía: lectura de pantalla, fórmulas, tabla de cada control, receta de 6 pasos, problemas frecuentes y sección del analizador de espectro (dBm, armónicos, RBW).
-- 15 ejercicios (básico a avanzado; 6 de ellos con el analizador de espectro) que configuran los equipos automáticamente, con preguntas corregidas al instante y resolución paso a paso. Algunos ocultan el generador para medir una señal desconocida.
+- 16 ejercicios (básico a avanzado; 7 de ellos con el analizador de espectro) que configuran los equipos automáticamente, con preguntas corregidas al instante y resolución paso a paso. Algunos ocultan el generador para medir una señal desconocida.
 
 ## Estructura
 

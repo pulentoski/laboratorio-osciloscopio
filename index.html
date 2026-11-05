@@ -240,7 +240,7 @@ footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;f
   <!-- GENERADOR -->
   <section class="inst gen" id="gen">
     <i class="screw a"></i><i class="screw b"></i><i class="screw c"></i><i class="screw d"></i>
-    <div class="brand"><span>GF-2 · GENERADOR DE FUNCIONES<br><span class="sub">FUNCTION GENERATOR · 1 Hz – 1 MHz</span></span>
+    <div class="brand"><span>GF-2 · GENERADOR DE FUNCIONES<br><span class="sub" id="genRange">FUNCTION GENERATOR · 1 Hz – 1 MHz</span></span>
       <button class="pbtn tg" data-t="gpow" data-help="<b>POWER (encendido)</b><br>Enciende o apaga el generador. Apagado no entrega señal."><span class="led g"></span>POWER<small style="font-weight:600;opacity:.7">(encendido)</small></button></div>
     <div class="lcd" id="lcd">
       <div class="lrow"><span id="lcdCh">CH1</span><span id="lcdWave">SENOIDAL</span><span id="lcdOut">SALIDA ON</span></div>
@@ -266,6 +266,13 @@ footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;f
       <h3>AJUSTES <small>(settings)</small></h3>
       <div class="row"><div id="kFreq"></div><div id="kFine"></div></div>
       <div class="row" style="margin-top:6px"><div id="kAmp"></div><div id="kOff"></div><div id="kPh"></div></div>
+    </div>
+    <div class="sec">
+      <h3>RANGE <small>(rango de frecuencia)</small></h3>
+      <div class="col">
+        <div class="seg" data-k="range" data-help="<b>RANGE (rango)</b><br><b>1 MHz</b>: como un generador de funciones real de laboratorio.<br><b>6 GHz (libre)</b>: permite cualquier frecuencia, incluidas FM, LoRa (915 MHz), GPS y Wi-Fi. El osciloscopio sigue limitado a 20 MHz, como uno real: sobre eso la señal se atenúa hasta desaparecer y hay que medir con el analizador."><button class="btn" data-v="real">1 MHz <small style="font-weight:600;opacity:.8">(equipo real)</small></button><button class="btn" data-v="free">6 GHz <small style="font-weight:600;opacity:.8">(modo libre)</small></button></div>
+        <span class="cap">En modo libre el analizador llega a 6 GHz; el osciloscopio sigue en 20 MHz.</span>
+      </div>
     </div>
     <div class="sec">
       <h3>SALIDAS <small>(outputs)</small></h3>
@@ -358,7 +365,7 @@ footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;f
 <div class="bench2">
   <section class="inst sa" id="sa">
     <i class="screw a"></i><i class="screw b"></i><i class="screw c"></i><i class="screw d"></i>
-    <div class="brand"><span>SA-3000 · ANALIZADOR DE ESPECTRO<br><span class="sub">SPECTRUM ANALYZER · 0 – 6 MHz · 50 Ω</span></span>
+    <div class="brand"><span>SA-3000 · ANALIZADOR DE ESPECTRO<br><span class="sub" id="saRange">SPECTRUM ANALYZER · 0 – 6 MHz · 50 Ω</span></span>
       <button class="pbtn tg" data-t="sapow" data-help="<b>POWER (encendido)</b><br>Enciende o apaga el analizador de espectro."><span class="led g"></span>POWER<small style="font-weight:600;opacity:.7">(encendido)</small></button></div>
     <div class="sa-body">
       <div>
@@ -384,7 +391,7 @@ footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;f
         <div class="sec">
           <h3>FREQUENCY <small>(frecuencia · eje X)</small></h3>
           <div class="row"><div id="kCF"></div><div id="kSpan"></div>
-            <div class="col"><button class="btn tg" data-a="full" data-help="<b>FULL SPAN (rango completo)</b><br>Muestra de 0 a 5 MHz para encontrar señales sin saber dónde están.">FULL SPAN <small style="font-weight:600;opacity:.8">(todo)</small></button></div></div>
+            <div class="col"><button class="btn tg" data-a="full" data-help="<b>FULL SPAN (rango completo)</b><br>Muestra todo el rango (0 a 6 MHz, o 0 a 6 GHz en modo libre) para encontrar señales sin saber dónde están.">FULL SPAN <small style="font-weight:600;opacity:.8">(todo)</small></button></div></div>
         </div>
         <div class="sec">
           <h3>AMPLITUDE <small>(amplitud · eje Y)</small></h3>
@@ -565,6 +572,8 @@ footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;f
     <tr><td>Triangular</td><td>f, 3f, 5f… (solo impares)</td><td>Amplitud 1/n²: el 3er armónico está 19 dB abajo</td></tr>
     <tr><td>Diente de sierra</td><td>f, 2f, 3f, 4f… (todos)</td><td>Amplitud 1/n: el 2º armónico está 6 dB abajo</td></tr>
   </table>
+  <p><b>Modo libre (RANGE 6 GHz)</b></p>
+  <p>Un generador de funciones real llega a unos pocos MHz. En modo libre la página permite cualquier frecuencia hasta 6 GHz (FM, LoRa 915 MHz, GPS, Wi-Fi) y el analizador muestra esas bandas en celeste. El osciloscopio <b>sigue siendo de 20 MHz</b>, como uno real: sobre esa frecuencia la señal se achica hasta desaparecer y aparece un aviso. Regla práctica: para ver bien la forma de una señal, el osciloscopio necesita un ancho de banda de 3 a 5 veces su frecuencia; en RF se mide con el analizador.</p>
   <div class="tipbox">💡 El pico que aparece siempre en <b>0 Hz</b>, aunque no haya señal, es la fuga del oscilador local del propio analizador (<i>LO feedthrough</i>). Es normal y se ignora. Un offset DC del generador también aparece en 0 Hz.</div>
   <p><b>Receta: medir una señal con el analizador</b></p>
   <ol class="steps">
@@ -579,7 +588,7 @@ footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;f
 <!-- EJERCICIOS -->
 <section id="ejercicios" class="doc">
   <h2>📝 Ejercicios prácticos</h2>
-  <p class="lead">Cada ejercicio prepara los equipos automáticamente. Se abre un panel en la esquina con el procedimiento, las preguntas (con corrección inmediata) y la resolución paso a paso. En los ejercicios con 🔒 el generador queda oculto: la señal se debe descubrir solo midiendo. Los ejercicios 10 al 15 usan el analizador de espectro.</p>
+  <p class="lead">Cada ejercicio prepara los equipos automáticamente. Se abre un panel en la esquina con el procedimiento, las preguntas (con corrección inmediata) y la resolución paso a paso. En los ejercicios con 🔒 el generador queda oculto: la señal se debe descubrir solo midiendo. Los ejercicios 10 al 16 usan el analizador de espectro.</p>
   <p class="progress" id="progress"></p>
   <div class="exgrid" id="exGrid"></div>
 </section>
@@ -598,13 +607,13 @@ const WNAME={sine:'SENOIDAL',triangle:'TRIANGULAR',square:'CUADRADA',saw:'DIENTE
 const FC=10, TAU=1/(2*Math.PI*FC);
 
 function si(v,u,d=3){if(v===0)return '0 '+u;const a=Math.abs(v);
-  for(const [m,p] of [[1e6,'M'],[1e3,'k'],[1,''],[1e-3,'m'],[1e-6,'µ']]) if(a>=m*.9995) return +(v/m).toPrecision(d)+' '+p+u;
+  for(const [m,p] of [[1e9,'G'],[1e6,'M'],[1e3,'k'],[1,''],[1e-3,'m'],[1e-6,'µ']]) if(a>=m*.9995) return +(v/m).toPrecision(d)+' '+p+u;
   return +(v/1e-9).toPrecision(d)+' n'+u;}
 function fix(v,u,d=5){const a=Math.abs(v);let m=1,p='';
-  if(a>=1e6){m=1e6;p='M'}else if(a>=1e3){m=1e3;p='k'}else if(a>=1||a===0){}else if(a>=1e-3){m=1e-3;p='m'}else{m=1e-6;p='µ'}
+  if(a>=1e9){m=1e9;p='G'}else if(a>=1e6){m=1e6;p='M'}else if(a>=1e3){m=1e3;p='k'}else if(a>=1||a===0){}else if(a>=1e-3){m=1e-3;p='m'}else{m=1e-6;p='µ'}
   return (v/m).toPrecision(d)+' '+p+u;}
-const MUL={'':1,p:1e-12,n:1e-9,u:1e-6,'µ':1e-6,m:1e-3,k:1e3,K:1e3,M:1e6};
-function parseSI(s,scale=1){s=String(s).trim().replace(',','.');const m=s.match(/^([-+]?\d*\.?\d+(?:e[-+]?\d+)?)\s*([pnuµmkKM]?)/);if(!m)return NaN;
+const MUL={'':1,p:1e-12,n:1e-9,u:1e-6,'µ':1e-6,m:1e-3,k:1e3,K:1e3,M:1e6,G:1e9};
+function parseSI(s,scale=1){s=String(s).trim().replace(',','.');const m=s.match(/^([-+]?\d*\.?\d+(?:e[-+]?\d+)?)\s*([pnuµmkKMG]?)/);if(!m)return NaN;
   return parseFloat(m[1])*(m[2]?MUL[m[2]]:scale);}
 
 /* ---------- estado ---------- */
@@ -612,7 +621,8 @@ const DEF_GEN=()=>[{wave:'sine',freq:1000,fine:1,amp:4,off:0,ph:0,on:true},{wave
 const DEF_SC=()=>({vd:[4,4],pos:[1.5,-1.5],coup:['DC','DC'],inv:false,mode:'DUAL',td:8,hpos:0,src:0,lvl:0,slope:1,tmode:'AUTO',int:.8,focus:0,trace:2,readout:true,meas:false,phos:'color'});
 const gen=DEF_GEN(), sc=DEF_SC();
 let gs=0, genPow=true, scopePow=true, hidden=false, scopeOnAt=performance.now(), scopeOffAt=-1e9;
-const effF=i=>clamp(gen[i].freq*gen[i].fine,1,1e6);
+let free=false;const FMAX=()=>free?6e9:1e6;
+const effF=i=>clamp(gen[i].freq*gen[i].fine,1,FMAX());
 
 /* ---------- perilla ---------- */
 class Knob{
@@ -635,6 +645,7 @@ class Knob{
     this.k.addEventListener('keydown',e=>{const m={ArrowUp:1,ArrowRight:1,ArrowDown:-1,ArrowLeft:-1}[e.key];if(m){e.preventDefault();this.bump(m,e.shiftKey)}});
     this.k.addEventListener('dblclick',()=>this.setN(this.def));
   }
+  setSteps(arr,idx){this.o.steps=arr;const t=this.k.querySelector('.ticks');t.innerHTML='';for(let i=0;i<arr.length;i++){const b=document.createElement('b');b.style.transform=`rotate(${-135+270*i/(arr.length-1)}deg)`;t.appendChild(b);}this.idx=-1;this.setIdx(idx,true);}
   bump(d,f){if(this.o.steps)this.setIdx(this.idx+d);else this.setN(this.n+d*(f?.002:.012));}
   setN(n,silent){n=clamp(n,0,1);if(this.o.steps)return this.setIdx(Math.round(n*(this.o.steps.length-1)),silent);
     const o=this.o;this.n=n;this.v=o.log?o.min*Math.pow(o.max/o.min,n):o.min+(o.max-o.min)*n;if(!silent)o.on(this.v);this.draw();}
@@ -666,7 +677,7 @@ $$('.ed').forEach(el=>el.addEventListener('click',()=>{
   const inp=document.createElement('input');inp.className='lcdin';inp.placeholder=el.textContent;el.textContent='';el.appendChild(inp);inp.focus();
   let done=false;const fin=ok=>{if(done)return;done=true;
     if(ok){const v=parseSI(inp.value);if(!isNaN(v)){const g=gen[gs];
-      if(f==='freq'){g.freq=clamp(v,1,1e6);g.fine=1}else if(f==='amp')g.amp=clamp(v,.01,15);else if(f==='off')g.off=clamp(v,-10,10);else g.ph=((v%360)+360)%360;
+      if(f==='freq'){g.freq=clamp(v,1,FMAX());g.fine=1}else if(f==='amp')g.amp=clamp(v,.01,15);else if(f==='off')g.off=clamp(v,-10,10);else g.ph=((v%360)+360)%360;
       syncGen();}}
     updLCD();};
   inp.addEventListener('keydown',e=>{if(e.key==='Enter')fin(true);if(e.key==='Escape')fin(false)});
@@ -688,13 +699,13 @@ const kFoc=new Knob('kFoc',{label:'Focus',es:'enfoque',size:'s',min:-1,max:1,val
 function applyFocus(){const b=(Math.abs(sc.focus)*2.4).toFixed(2);$('#cvTrace').style.filter=`blur(${b}px)`;}
 function syncScope(){kV1.setIdx(sc.vd[0],true);kV2.setIdx(sc.vd[1],true);kP1.setVal(sc.pos[0],true);kP2.setVal(sc.pos[1],true);kT.setIdx(sc.td,true);kH.setVal(sc.hpos,true);kLvl.setVal(sc.lvl,true);kInt.setVal(sc.int,true);kFoc.setVal(sc.focus,true);applyFocus();refreshSeg();refreshT();}
 
-function getK(k){return{coup0:sc.coup[0],coup1:sc.coup[1],mode:sc.mode,src:sc.src,slope:sc.slope,tmode:sc.tmode,trace:sc.trace,phos:sc.phos,wave:gen[gs].wave,gs,sain:sa.inp,samode:sa.mode,sascale:sa.scale}[k];}
+function getK(k){return{coup0:sc.coup[0],coup1:sc.coup[1],mode:sc.mode,src:sc.src,slope:sc.slope,tmode:sc.tmode,trace:sc.trace,phos:sc.phos,wave:gen[gs].wave,gs,sain:sa.inp,samode:sa.mode,sascale:sa.scale,range:free?'free':'real'}[k];}
 function setK(k,v){switch(k){
   case'coup0':sc.coup[0]=v;break;case'coup1':sc.coup[1]=v;break;
   case'mode':sc.mode=v;clearTrace();break;case'src':sc.src=+v;kLvl.draw();break;
   case'slope':sc.slope=+v;break;case'tmode':sc.tmode=v;break;case'trace':sc.trace=+v;break;case'phos':sc.phos=v;break;
   case'wave':if(hidden)return;gen[gs].wave=v;updLCD();break;case'gs':gs=+v;syncGen();break;
-  case'sain':sa.inp=v;saReset();break;case'samode':sa.mode=v;saReset();break;case'sascale':sa.scale=+v;break;}
+  case'sain':sa.inp=v;saReset();break;case'samode':sa.mode=v;saReset();break;case'sascale':sa.scale=+v;break;case'range':setFree(v==='free');break;}
   refreshSeg();}
 function refreshSeg(){$$('.seg[data-k]').forEach(g=>{const c=String(getK(g.dataset.k));g.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===c))});}
 $$('.seg[data-k]').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(b)setK(g.dataset.k,b.dataset.v)}));
@@ -709,8 +720,14 @@ $$('[data-t]').forEach(b=>b.addEventListener('click',()=>{tflip[b.dataset.t]();r
 function wv(type,p){p-=Math.floor(p);switch(type){
   case'sine':return Math.sin(2*Math.PI*p);case'square':return p<.5?1:-1;
   case'triangle':return p<.25?4*p:p<.75?2-4*p:4*p-4;default:return 2*p-1;}}
+const SCOPE_BW=20e6,bwH=f=>Math.exp(-.34657*(f/SCOPE_BW)*(f/SCOPE_BW));
+function bwSynth(w,f,p){const tp=2*Math.PI*p;if(w==='sine')return bwH(f)*Math.sin(tp);
+  const N=Math.min(Math.ceil(3.5*SCOPE_BW/f),201);let s=0;
+  for(let n=1;n<=N;n++){let a;if(w==='square'){if(!(n&1))continue;a=4/(Math.PI*n)}else if(w==='triangle'){if(!(n&1))continue;a=8/(Math.PI*Math.PI*n*n)*(((n-1)/2)%2?-1:1)}else a=-2/(Math.PI*n);
+    s+=a*bwH(n*f)*Math.sin(n*tp);}return s;}
 function chV(c,t){const g=gen[c],cp=sc.coup[c];if(cp==='GND'||!g.on||!genPow)return 0;
   const f=effF(c),A=g.amp/2,p=f*t+g.ph/360;
+  if(f>1e6)return (cp==='DC'?g.off:0)+A*bwSynth(g.wave,f,p);
   if(cp==='DC')return A*wv(g.wave,p)+g.off;
   if(g.wave==='square'){const T=1/f,k=Math.exp(-T/2/TAU),y0=2*A/(1+k),q=p-Math.floor(p);
     return q<.5?y0*Math.exp(-q*T/TAU):-y0*Math.exp(-(q-.5)*T/TAU);}
@@ -791,6 +808,10 @@ function drawOver(trig,rng,head,warm){
   put(m==='XY'?'X-Y':`M ${si(TDIV[sc.td],'s')}`,'#dfe');
   if(m!=='XY'){const s=`T:CH${sc.src+1} ${sc.slope>0?'↑':'↓'} ${si(sc.lvl*VDIV[sc.vd[sc.src]],'V')}${trig==null?' ¡sin disparo!':''}`;
     ox.fillStyle=trig==null?'#ff8a6b':'#dfe';ox.fillText(s,Math.max(x,W-pad-ox.measureText(s).width),y);}
+  {const over=[0,1].filter(c=>show[c]&&genPow&&gen[c].on&&sc.coup[c]!=='GND'&&effF(c)>SCOPE_BW);
+   if(over.length){const t=`⚠ ${over.map(c=>'CH'+(c+1)+' '+si(effF(c),'Hz',4)).join(' · ')} supera los 20 MHz del osciloscopio: la señal se atenúa. Mida con el analizador.`;
+    ox.font=`bold ${fs}px system-ui`;let tw=ox.measureText(t).width;const sc2=Math.min(1,(W-2*pad)/tw);ox.font=`bold ${Math.floor(fs*sc2)}px system-ui`;tw=ox.measureText(t).width;
+    ox.fillStyle='rgba(40,8,6,.85)';ox.fillRect(W/2-tw/2-6*DPR,H*.42,tw+12*DPR,fs*1.6);ox.fillStyle='#ff8a6b';ox.fillText(t,W/2-tw/2,H*.42+fs*.3);ox.font=`${fs}px ui-monospace,Consolas,monospace`;}}
   if(sc.meas){[0,1].forEach(c=>{const yy=pad+c*fs*1.35,g=gen[c];ox.fillStyle=col(c);
     if(!genPow||!g.on||sc.coup[c]==='GND'){ox.fillText(`CH${c+1}  sin señal`,pad,yy);return}
     const r=rng[c],f=effF(c);
@@ -871,16 +892,17 @@ document.addEventListener('pointerdown',hideTip);document.addEventListener('scro
 
 
 /* ---------- analizador de espectro ---------- */
-const SPANS=[100,200,500,1e3,2e3,5e3,1e4,2e4,5e4,1e5,2e5,5e5,1e6,2e6,5e6];
-const RBWS=['AUTO',1,3,10,30,100,300,1e3,3e3,1e4,3e4,1e5,3e5,1e6];
+const SPANS_R=[100,200,500,1e3,2e3,5e3,1e4,2e4,5e4,1e5,2e5,5e5,1e6,2e6,5e6],SPANS_F=[...SPANS_R,1e7,2e7,5e7,1e8,2e8,5e8,1e9,2e9,5e9];
+let SPANS=SPANS_R;
+const RBWS=['AUTO',1,3,10,30,100,300,1e3,3e3,1e4,3e4,1e5,3e5,1e6,3e6];
 const REFS=[-80,-70,-60,-50,-40,-30,-20,-10,0,10,20,30];
-const SAMAX=6e6,NPT=601,LOFT=-25;
+const saMax=()=>free?6e9:6e6,NPT=601,LOFT=-25;
 const DEF_SA=()=>({pow:true,inp:'1',cf:5000,span:1e4,ref:20,scale:10,rbw:'AUTO',mode:'WRITE',mkF:1000,dmk:null});
 const sa=DEF_SA();
 const toW=d=>1e-3*Math.pow(10,d/10), dbm=w=>10*Math.log10(Math.max(w,1e-30)/1e-3), rat=d=>Math.pow(10,d/10);
 const nearIdx=(arr,v)=>{let bi=0,bd=Infinity;arr.forEach((a,i)=>{if(typeof a!=='number')return;const d=Math.abs(Math.log(Math.abs(a)+1e-9)-Math.log(Math.abs(v)+1e-9))+(Math.sign(a)!==Math.sign(v)?9:0);if(d<bd){bd=d;bi=i}});return bi;};
 const nearLin=(arr,v)=>{let bi=0;arr.forEach((a,i)=>{if(Math.abs(a-v)<Math.abs(arr[bi]-v))bi=i});return bi;};
-function saView(){const span=clamp(sa.span,100,5e6),cf=clamp(sa.cf,0,SAMAX),start=Math.max(0,cf-span/2),stop=start+span;
+function saView(){const span=clamp(sa.span,100,saMax()),cf=clamp(sa.cf,0,saMax()),start=Math.max(0,cf-span/2),stop=start+span;
   let rbw=sa.rbw;if(rbw==='AUTO'){rbw=1;for(const r of RBWS)if(r!=='AUTO'&&r<=span/100)rbw=r;}
   const att=clamp(Math.ceil(sa.ref/10)*10,0,40),danl=-125+10*Math.log10(rbw)+att,swt=clamp(.5*span/(rbw*rbw),.03,3);
   return{span,start,stop,cf:start+span/2,rbw,att,danl,swt,d:span/(NPT-1)};}
@@ -888,7 +910,7 @@ function saComps(v){const out=[[0,toW(LOFT)]],m=4*v.rbw,pw=a=>a*a/100;
   const add=c=>{const g=gen[c];if(!genPow||!g.on)return;const f=effF(c),A=g.amp/2;
     if(Math.abs(g.off)>1e-9)out.push([0,g.off*g.off/50]);
     if(g.wave==='sine'){out.push([f,pw(A)],[2*f,pw(A)*rat(-55)],[3*f,pw(A)*rat(-62)]);return;}
-    const n0=Math.max(1,Math.floor((v.start-m)/f)),n1=Math.min(Math.floor((v.stop+m)/f),n0+60000);
+    const n0=Math.max(1,Math.floor((v.start-m)/f)),n1=Math.min(Math.floor((v.stop+m)/f),n0+200000);
     for(let n=n0;n<=n1;n++){let a;if(g.wave==='square'){if(!(n&1))continue;a=4/(Math.PI*n)}else if(g.wave==='triangle'){if(!(n&1))continue;a=8/(Math.PI*Math.PI*n*n)}else a=2/(Math.PI*n);out.push([n*f,pw(A*a)]);}};
   if(sa.inp!=='2')add(0);if(sa.inp!=='1')add(1);return out;}
 function saClean(v){const P=new Float64Array(NPT),k=4*Math.LN2/(v.rbw*v.rbw),reach=3.5*v.rbw;
@@ -896,19 +918,25 @@ function saClean(v){const P=new Float64Array(NPT),k=4*Math.LN2/(v.rbw*v.rbw),rea
     const i0=Math.max(0,Math.floor((f-reach-v.start)/v.d)),i1=Math.min(NPT-1,Math.ceil((f+reach-v.start)/v.d));
     for(let i=i0;i<=i1;i++){const a=v.start+(i-.5)*v.d,b=v.start+(i+.5)*v.d,dd=f<a?a-f:f>b?f-b:0;P[i]+=p*Math.exp(-k*dd*dd);}}
   return P;}
+const BANDS=[[535e3,1705e3,'Radio AM'],[88e6,108e6,'Radio FM'],[915e6,928e6,'LoRa AU915 (Chile)'],[1574.42e6,1576.42e6,'GPS L1'],[2.4e9,2.4835e9,'Wi-Fi / Bluetooth 2,4 GHz'],[5.15e9,5.85e9,'Wi-Fi 5 GHz']];
 let saKey='',saP=null,saTr=null,saAvg=1,saIdx=0,saT0=performance.now(),saOnAt=performance.now(),saLastV=null;
 function saReset(){saTr=null;}
 const saIdxOf=(v,f)=>clamp(Math.round((f-v.start)/v.d),0,NPT-1);
 const saLevel=(v,f)=>dbm(saP[saIdxOf(v,f)]+toW(v.danl));
 const fmtF=f=>fix(f,'Hz',5);
 
-const kCF=new Knob('kCF',{label:'Center',es:'frec. central',size:'l',min:10,max:SAMAX,log:true,value:sa.cf,tip:v=>fmtF(v),help:'<b>CENTER (frecuencia central)</b><br>Frecuencia que queda en el centro de la pantalla.',on:v=>{sa.cf=v;}});
+const kCF=new Knob('kCF',{label:'Center',es:'frec. central',size:'l',min:10,max:saMax(),log:true,value:sa.cf,tip:v=>fmtF(v),help:'<b>CENTER (frecuencia central)</b><br>Frecuencia que queda en el centro de la pantalla.',on:v=>{sa.cf=v;}});
 const kSpan=new Knob('kSpan',{label:'Span',es:'ancho',steps:SPANS,idx:nearIdx(SPANS,sa.span),fmt:v=>si(v,'Hz'),help:'<b>SPAN (ancho)</b><br>Rango de frecuencias mostrado en la pantalla. A la derecha: más zoom.',on:v=>{sa.span=v;}});
 const kRef=new Knob('kRef',{label:'Ref level',es:'nivel ref.',steps:REFS,idx:nearLin(REFS,sa.ref),cap:'#ffd23f',fmt:v=>(v>0?'+':'')+v+' dBm',help:'<b>REF LEVEL (nivel de referencia)</b><br>Potencia del borde superior de la pantalla. Si la señal lo supera, se corta.',on:v=>{sa.ref=v;saReset();}});
 const kRBW=new Knob('kRBW',{label:'RBW',es:'resolución',size:'s',steps:RBWS,idx:0,fmt:v=>v==='AUTO'?'AUTO':si(v,'Hz'),help:'<b>RBW (ancho de banda de resolución)</b><br>Menor RBW: separa señales cercanas y baja el ruido, pero el barrido es más lento. AUTO lo ajusta según el SPAN.',on:v=>{sa.rbw=v;}});
 const kMk=new Knob('kMk',{label:'Marker',es:'mover marcador',min:0,max:1,value:.1,tip:()=>fmtF(sa.mkF),help:'<b>MARKER (marcador)</b><br>Gírelo para recorrer la pantalla y leer frecuencia y potencia de cualquier punto.',on:n=>{const v=saView();sa.mkF=v.start+n*v.span;}});
-function syncSA(){kCF.setVal(clamp(sa.cf,10,SAMAX),true);kSpan.setIdx(nearIdx(SPANS,sa.span),true);kRef.setIdx(nearLin(REFS,sa.ref),true);
+function syncSA(){kCF.setVal(clamp(sa.cf,10,saMax()),true);kSpan.setIdx(nearIdx(SPANS,sa.span),true);kRef.setIdx(nearLin(REFS,sa.ref),true);
   kRBW.setIdx(sa.rbw==='AUTO'?0:nearIdx(RBWS,sa.rbw),true);const v=saView();kMk.setVal(clamp((sa.mkF-v.start)/v.span,0,1),true);refreshSeg();refreshT();}
+function setFree(on){free=on;
+  if(!on){gen.forEach(g=>{g.freq=Math.min(g.freq,1e6);});sa.cf=Math.min(sa.cf,6e6);sa.span=Math.min(sa.span,6e6);sa.mkF=Math.min(sa.mkF,6e6);}
+  kFreq.o.max=FMAX();kCF.o.max=saMax();SPANS=free?SPANS_F:SPANS_R;kSpan.setSteps(SPANS,nearIdx(SPANS,sa.span));
+  $('#genRange').textContent='FUNCTION GENERATOR · 1 Hz – '+(free?'6 GHz (modo libre)':'1 MHz');$('#saRange').textContent='SPECTRUM ANALYZER · 0 – '+(free?'6 GHz':'6 MHz')+' · 50 Ω';
+  saReset();syncGen();syncSA();}
 function saSetMk(f){sa.mkF=f;const v=saView();kMk.setVal(clamp((f-v.start)/v.span,0,1),true);}
 function saPeaks(v){const pk=[],floor=toW(v.danl)*4,skip=v.start<3*v.rbw?Math.ceil(3*v.rbw/v.d):0;
   for(let i=Math.max(1,skip);i<NPT-1;i++)if(saP[i]>floor&&saP[i]>=saP[i-1]&&saP[i]>saP[i+1])pk.push(i);
@@ -916,7 +944,7 @@ function saPeaks(v){const pk=[],floor=toW(v.danl)*4,skip=v.start<3*v.rbw?Math.ce
   if(saP[NPT-1]>floor&&saP[NPT-1]>saP[NPT-2])pk.push(NPT-1);
   return pk.sort((a,b)=>saP[b]-saP[a]);}
 $$('[data-a]').forEach(b=>b.addEventListener('click',()=>{if(!sa.pow)return;const a=b.dataset.a,v=saView();
-  if(a==='full'){sa.cf=2.5e6;sa.span=5e6;saReset();syncSA();return;}
+  if(a==='full'){sa.cf=saMax()/2;sa.span=saMax();saReset();syncSA();return;}
   if(!saP)return;const pk=saPeaks(v);
   if(a==='peak'){if(pk.length)saSetMk(v.start+pk[0]*v.d);}
   else if(a==='next'){const cur=saP[saIdxOf(v,sa.mkF)];const nx=pk.find(i=>saP[i]<cur*.98);if(nx!=null)saSetMk(v.start+nx*v.d);}
@@ -927,7 +955,7 @@ tflip.dmk=()=>{if(sa.dmk){sa.dmk=null;return}const v=saView();if(saP)sa.dmk={f:s
 $$('.sed').forEach(el=>el.addEventListener('click',()=>{if(!sa.pow||el.querySelector('input'))return;const f=el.dataset.s;hideTip();
   const inp=document.createElement('input');inp.className='lcdin';inp.placeholder=el.textContent;el.textContent='';el.appendChild(inp);inp.focus();
   let done=false;const fin=ok=>{if(done)return;done=true;if(ok){const v=parseSI(inp.value);if(!isNaN(v)){
-    if(f==='cf')sa.cf=clamp(v,0,SAMAX);else if(f==='span')sa.span=clamp(v,100,5e6);else sa.ref=clamp(v,-100,30);saReset();syncSA();}}
+    if(f==='cf')sa.cf=clamp(v,0,saMax());else if(f==='span')sa.span=clamp(v,100,saMax());else sa.ref=clamp(v,-100,30);saReset();syncSA();}}
     el.textContent='';saFields(true);};
   inp.addEventListener('keydown',e=>{if(e.key==='Enter')fin(true);if(e.key==='Escape')fin(false)});inp.addEventListener('blur',()=>fin(true));}));
 let saFTxt='';
@@ -950,6 +978,9 @@ function saLoop(now){requestAnimationFrame(saLoop);saFields();
   sx.strokeStyle='rgba(140,160,175,.28)';sx.lineWidth=D;sx.beginPath();
   for(let i=0;i<=10;i++){const x=Math.round(x0+pw*i/10)+.5;sx.moveTo(x,y0);sx.lineTo(x,y0+ph);const y=Math.round(y0+ph*i/10)+.5;sx.moveTo(x0,y);sx.lineTo(x0+pw,y);}sx.stroke();
   sx.strokeStyle='rgba(170,190,205,.55)';sx.strokeRect(x0+.5,y0+.5,pw,ph);
+  for(const[b0,b1,nm]of BANDS){if(b1<v.start||b0>v.stop)continue;const xa=x0+pw*clamp((b0-v.start)/v.span,0,1),xb=x0+pw*clamp((b1-v.start)/v.span,0,1),bw=Math.max(xb-xa,2*D);
+    sx.fillStyle='rgba(80,160,255,.13)';sx.fillRect(xa,y0,bw,ph);sx.fillStyle='rgba(150,200,255,.85)';sx.font=`${Math.round(fs*.85)}px system-ui`;sx.textBaseline='bottom';
+    const tw=sx.measureText(nm).width;sx.fillText(nm,clamp(xa+bw/2-tw/2,x0+2*D,x0+pw-tw-2*D),y0+ph-3*D);}
   const ys=db=>y0+clamp((sa.ref-db)/(sa.scale*10),0,1)*ph,xs=i=>x0+pw*i/(NPT-1);
   sx.beginPath();for(let i=0;i<NPT;i++){const y=ys(dbm(saTr[i]));i?sx.lineTo(xs(i),y):sx.moveTo(xs(i),y);}
   sx.lineJoin='round';sx.strokeStyle='rgba(255,210,63,.22)';sx.lineWidth=4*D;sx.stroke();sx.strokeStyle='#ffd23f';sx.lineWidth=1.4*D;sx.stroke();
@@ -1080,7 +1111,17 @@ const EX=[
  preguntas:[{q:'¿Por qué el pico se veía cortado arriba?',type:'choice',opts:['La señal está distorsionada','La potencia supera el nivel de referencia (borde superior de la pantalla)','El RBW es muy angosto'],ans:1},
   {q:'¿Cuál es la potencia de la señal?',ans:23.98,abs:.6,unit:'dBm',pista:'Vrms = 10/(2√2) = 3,54 V; P = Vrms²/50 Ω.'},
   {q:'Al subir REF LEVEL, el piso de ruido…',type:'choice',opts:['sube, porque el analizador agrega atenuación (ATT) a la entrada','baja','no cambia'],ans:0}],
- resolucion:`<ol><li>10 Vpp → Vrms = 3,54 V → P = 3,54² / 50 = 0,25 W → <b>+23,98 dBm</b>.</li><li>Con REF = −20 dBm la pantalla solo llega hasta −20 dBm: todo lo que está más arriba se corta. Con REF = +30 dBm el pico queda dentro.</li><li>Para proteger su mezclador interno, el analizador agrega <b>atenuación</b> cuando se sube REF LEVEL. Esa atenuación también levanta el piso de ruido: medir señales fuertes y débiles a la vez siempre es un compromiso.</li><li>Ojo: la entrada soporta como máximo +30 dBm (1 W). Por encima, un analizador real se daña.</li></ol>`}
+ resolucion:`<ol><li>10 Vpp → Vrms = 3,54 V → P = 3,54² / 50 = 0,25 W → <b>+23,98 dBm</b>.</li><li>Con REF = −20 dBm la pantalla solo llega hasta −20 dBm: todo lo que está más arriba se corta. Con REF = +30 dBm el pico queda dentro.</li><li>Para proteger su mezclador interno, el analizador agrega <b>atenuación</b> cuando se sube REF LEVEL. Esa atenuación también levanta el piso de ruido: medir señales fuertes y débiles a la vez siempre es un compromiso.</li><li>Ojo: la entrada soporta como máximo +30 dBm (1 W). Por encima, un analizador real se daña.</li></ol>`},
+{id:'e16',sa:1,titulo:'LoRa real a 915 MHz y el límite del osciloscopio',nivel:'Intermedio',controles:'RANGE (modo libre), analizador, osciloscopio',
+ objetivo:'Generar una portadora en la banda LoRa de Chile, medirla con el analizador y comprobar por qué el osciloscopio no sirve a esa frecuencia.',
+ setup:{free:true,gen:[{wave:'sine',freq:915e6,amp:1},{on:false}],sc:{vd:[4,4],mode:'CH1',td:19},sa:{cf:921.5e6,span:5e7,ref:10,inp:'1'}},
+ pasos:['El generador está en modo libre (RANGE: 6 GHz) entregando 915 MHz, 1 Vpp.','Mire el osciloscopio: aunque está en su escala más rápida (0,1 µs/div), aparece el aviso de ancho de banda.','Baje al analizador: la zona celeste es la banda LoRa AU915 que se usa en Chile (915–928 MHz).','Presione PEAK y lea frecuencia y potencia.','Cambie la frecuencia del generador a 30 MHz, luego a 20 MHz y a 10 MHz, y mire cómo cambia la amplitud en el osciloscopio.'],
+ preguntas:[{q:'¿Qué muestra el osciloscopio a 915 MHz?',type:'choice',opts:['La senoidal perfecta','Una línea casi plana: la señal no pasa','Una onda cuadrada'],ans:1},
+  {q:'¿Por qué?',type:'choice',opts:['El generador está apagado','915 MHz supera por mucho el ancho de banda del osciloscopio (20 MHz)','El disparo está mal ajustado'],ans:1},
+  {q:'Frecuencia medida en el analizador:',ans:915e6,unit:'MHz',scale:1e6,tol:.005,ej:'915'},
+  {q:'Potencia medida:',ans:3.98,abs:.7,unit:'dBm'},
+  {q:'¿La portadora está dentro de la banda LoRa de Chile?',type:'choice',opts:['Sí, en el borde inferior (915 MHz)','No, está fuera'],ans:0}],
+ resolucion:`<ol><li>Todo instrumento tiene un <b>ancho de banda</b>. El osciloscopio es de 20 MHz: a esa frecuencia la señal ya se ve un 30 % más chica, y a 915 MHz prácticamente no pasa nada.</li><li>Para RF se usa el <b>analizador de espectro</b>: muestra la portadora en <b>915 MHz</b> con <b>+3,98 dBm</b> (1 Vpp sobre 50 Ω).</li><li>La banda <b>AU915</b> (915–928 MHz) es la que usan en Chile los equipos LoRa/LoRaWAN; 915 MHz es su borde inferior.</li><li>Los pequeños picos en 1,83 y 2,75 GHz son los armónicos del generador. En un transmisor real deben estar bajo el límite que exige la norma para no interferir otros servicios.</li></ol><p>Regla práctica: para ver la <b>forma</b> de una señal, el osciloscopio debe tener un ancho de banda de al menos 3 a 5 veces su frecuencia.</p>`}
 ];
 
 let done=new Set();try{done=new Set(JSON.parse(localStorage.getItem('oscDone')||'[]'))}catch(e){}
@@ -1094,7 +1135,7 @@ function applySetup(s){const dg=DEF_GEN();
   Object.assign(sc,DEF_SC(),s?{pos:[0,0],mode:'CH1',...s.sc}:{});
   genPow=true;if(!scopePow){scopePow=true;scopeOnAt=performance.now();}
   hidden=!!(s&&s.hide);gs=0;syncGen();syncScope();clearTrace();
-  Object.assign(sa,DEF_SA(),s&&s.sa?s.sa:{});if(s&&s.sa){const v0=saView();sa.mkF=v0.start+v0.span*.1;}saOnAt=performance.now();saReset();syncSA();}
+  setFree(!!(s&&s.free));Object.assign(sa,DEF_SA(),s&&s.sa?s.sa:{});if(s&&s.sa){const v0=saView();sa.mkF=v0.start+v0.span*.1;}saOnAt=performance.now();saReset();syncSA();}
 
 let cur=-1,res=[];
 const dock=$('#dock');
