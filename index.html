@@ -205,13 +205,32 @@ details.sol p,details.sol li{font-size:13.5px}
 .dk-f{display:flex;gap:8px;justify-content:space-between;margin-top:12px;flex-wrap:wrap}
 .dk-f button{font:700 12px system-ui;padding:7px 11px;border-radius:7px;border:1px solid rgba(255,255,255,.15);background:#232c32;color:#fff;cursor:pointer}
 .celebrate{background:#163a22;border:1px solid #2f8a4c;color:#b6ffc5;padding:8px 10px;border-radius:8px;margin-top:10px;font-weight:600}
+/* analizador */
+.bench2{max-width:1440px;margin:26px auto 0}
+.sa{color:#22282c;background:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 3px),linear-gradient(#d6dbe0,#a8b0b7)}
+.sa .sec{background:rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.12)}
+.sa .btn{background:linear-gradient(#5d6166,#33363a)}
+.sa .btn.on{background:linear-gradient(#202326,#3a3e42)}
+.sa-body{display:grid;grid-template-columns:minmax(320px,1.35fr) minmax(300px,1fr);gap:16px}
+@media(max-width:940px){.sa-body{grid-template-columns:1fr}}
+.lcdbez{background:linear-gradient(#2b3035,#1a1e21);border-radius:14px;padding:12px;box-shadow:inset 0 2px 0 rgba(255,255,255,.08),0 3px 8px rgba(0,0,0,.45);margin-bottom:12px}
+.sascreen{position:relative;width:100%;aspect-ratio:4/3;border-radius:6px;overflow:hidden;background:#03070b;box-shadow:inset 0 0 0 2px #000}
+.sascreen canvas{position:absolute;inset:0;width:100%;height:100%}
+.sascreen::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(130deg,rgba(255,255,255,.07),rgba(255,255,255,0) 35%)}
+.saedit{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.saedit>div{background:#0b1418;color:#ffd23f;border-radius:6px;padding:6px 9px;font:13px ui-monospace,Consolas,monospace;box-shadow:inset 0 2px 6px #000}
+.saedit small{display:block;color:#8fa1ab;font:600 10px system-ui;letter-spacing:.06em}
+.sed{cursor:text;border-bottom:1px dashed rgba(255,210,63,.35)}
+.sed .lcdin{width:100%;color:#ffd23f;border-color:#ffd23f;background:#1a1a0e}
+.sabtns{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:6px}
+.sabtns .btn{border-radius:6px;box-shadow:0 2px 5px rgba(0,0,0,.5),0 0 0 1px #15171a}
 footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;font-size:12px}
 </style>
 </head>
 <body>
 <div class="top"><div class="in">
   <h1>Laboratorio Virtual · Generador de Funciones y Osciloscopio<small>Simulador pedagógico de banco de pruebas</small></h1>
-  <nav class="nav"><a href="#lab">🔬 Laboratorio</a><a href="#guia">📘 Cómo usar</a><a href="#ejercicios">📝 Ejercicios</a><button id="resetAll" data-help="Vuelve todos los equipos a su configuración inicial.">↺ Restablecer</button></nav>
+  <nav class="nav"><a href="#lab">🔬 Laboratorio</a><a href="#sa">📡 Analizador</a><a href="#guia">📘 Cómo usar</a><a href="#ejercicios">📝 Ejercicios</a><button id="resetAll" data-help="Vuelve todos los equipos a su configuración inicial.">↺ Restablecer</button></nav>
 </div></div>
 
 <main>
@@ -332,6 +351,58 @@ footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;f
       <div class="inputs">
         <div class="out"><div class="bnc" id="bncI1"></div><span>CH1 (X) INPUT <small style="font-weight:600">(entrada)</small></span></div>
         <div class="out"><div class="bnc" id="bncI2"></div><span>CH2 (Y) INPUT <small style="font-weight:600">(entrada)</small></span></div>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="bench2">
+  <section class="inst sa" id="sa">
+    <i class="screw a"></i><i class="screw b"></i><i class="screw c"></i><i class="screw d"></i>
+    <div class="brand"><span>SA-3000 · ANALIZADOR DE ESPECTRO<br><span class="sub">SPECTRUM ANALYZER · 0 – 6 MHz · 50 Ω</span></span>
+      <button class="pbtn tg" data-t="sapow" data-help="<b>POWER (encendido)</b><br>Enciende o apaga el analizador de espectro."><span class="led g"></span>POWER<small style="font-weight:600;opacity:.7">(encendido)</small></button></div>
+    <div class="sa-body">
+      <div>
+        <div class="lcdbez"><div class="sascreen" id="sascreen"><canvas id="cvSA"></canvas></div></div>
+        <div class="saedit">
+          <div><small>CENTER (frecuencia central)</small><span class="sed" data-s="cf" id="sfCF" data-help="Clic para escribir la frecuencia central exacta. Ej: <b>10k</b>, <b>1.5M</b>."></span></div>
+          <div><small>SPAN (ancho)</small><span class="sed" data-s="span" id="sfSP" data-help="Clic para escribir el ancho de frecuencias mostrado. Ej: <b>20k</b>."></span></div>
+          <div><small>REF LEVEL (nivel ref.)</small><span class="sed" data-s="ref" id="sfRF" data-help="Clic para escribir el nivel de referencia en dBm (borde superior de la pantalla)."></span></div>
+        </div>
+        <div class="sec">
+          <h3>INPUT <small>(entrada · máx. +30 dBm)</small></h3>
+          <div class="row" style="align-items:center">
+            <div class="out"><div class="bnc"></div><span>RF IN <small style="font-weight:600">(entrada)</small></span></div>
+            <div class="col"><span class="glbl">SOURCE<small>(qué salida del generador se conecta)</small></span>
+              <div class="seg" data-k="sain" data-help="<b>Entrada</b><br>Qué salida del generador está conectada al analizador: OUT 1, OUT 2 o ambas sumadas con un combinador."><button class="btn" data-v="1">OUT 1</button><button class="btn" data-v="2">OUT 2</button><button class="btn" data-v="12">OUT 1 + 2</button></div></div>
+            <div class="col"><span class="glbl">TRACE<small>(modo de traza)</small></span>
+              <div class="seg" data-k="samode" data-help="<b>TRACE (traza)</b><br><b>WRITE</b> (escribir): cada barrido reemplaza al anterior.<br><b>MAX HOLD</b> (retener máximo): guarda el valor más alto visto.<br><b>AVG</b> (promedio): promedia barridos y suaviza el ruido."><button class="btn" data-v="WRITE">WRITE</button><button class="btn" data-v="MAX">MAX HOLD</button><button class="btn" data-v="AVG">AVG</button></div>
+              <span class="cap">WRITE (normal) · MAX HOLD (máximo) · AVG (promedio)</span></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec">
+          <h3>FREQUENCY <small>(frecuencia · eje X)</small></h3>
+          <div class="row"><div id="kCF"></div><div id="kSpan"></div>
+            <div class="col"><button class="btn tg" data-a="full" data-help="<b>FULL SPAN (rango completo)</b><br>Muestra de 0 a 5 MHz para encontrar señales sin saber dónde están.">FULL SPAN <small style="font-weight:600;opacity:.8">(todo)</small></button></div></div>
+        </div>
+        <div class="sec">
+          <h3>AMPLITUDE <small>(amplitud · eje Y)</small></h3>
+          <div class="row"><div id="kRef"></div>
+            <div class="col"><span class="glbl">SCALE<small>(dB por división)</small></span>
+              <div class="seg" data-k="sascale" data-help="<b>SCALE (escala)</b><br>Cuántos dB vale cada división vertical. 10 dB/div permite ver señales muy distintas a la vez."><button class="btn" data-v="10">10</button><button class="btn" data-v="5">5</button><button class="btn" data-v="2">2</button><button class="btn" data-v="1">1</button></div></div>
+            <div id="kRBW"></div></div>
+        </div>
+        <div class="sec">
+          <h3>MARKER <small>(marcador)</small></h3>
+          <div class="row" style="align-items:center"><div id="kMk"></div>
+            <div class="sabtns" style="flex:1">
+              <button class="btn" data-a="peak" data-help="<b>PEAK SEARCH (buscar pico)</b><br>Pone el marcador en la señal más alta de la pantalla.">PEAK <small style="font-weight:600;opacity:.8">(pico)</small></button>
+              <button class="btn" data-a="next" data-help="<b>NEXT PEAK (siguiente pico)</b><br>Salta al siguiente pico más bajo. Útil para recorrer armónicos.">NEXT PEAK <small style="font-weight:600;opacity:.8">(siguiente)</small></button>
+              <button class="btn" data-a="mkcf" data-help="<b>MKR → CF</b><br>Lleva la frecuencia del marcador al centro de la pantalla. Luego puede reducir SPAN para hacer zoom.">MKR → CF <small style="font-weight:600;opacity:.8">(al centro)</small></button>
+              <button class="btn tg" data-t="dmk" data-help="<b>Δ MKR (marcador delta)</b><br>Fija una referencia en la posición actual y mide la diferencia de frecuencia y de dB respecto de ella. Ideal para medir armónicos en dBc."><span class="led g"></span>Δ MKR <small style="font-weight:600;opacity:.8">(diferencia)</small></button>
+            </div></div>
+        </div>
       </div>
     </div>
   </section>
@@ -465,12 +536,50 @@ footer{max-width:1100px;margin:30px auto 120px;text-align:center;color:#71828c;f
     <li><b>Doble clic</b> = vuelve al valor inicial.</li>
     <li>Mientras arrastra aparece una burbuja con el valor actual.</li>
   </ul>
+  <h3>8. Analizador de espectro</h3>
+  <p>El osciloscopio muestra la señal en el <b>tiempo</b>. El analizador de espectro muestra la misma señal en <b>frecuencia</b>: dibuja un pico por cada frecuencia que la señal contiene, y la altura del pico es su <b>potencia en dBm</b>. Una senoidal pura da un solo pico; cualquier otra forma da varios (sus armónicos).</p>
+  <table>
+    <tr><th>Control</th><th>En español</th><th>Para qué sirve</th></tr>
+    <tr><td><span class="k">CENTER</span></td><td class="es">frecuencia central</td><td>Qué frecuencia queda en el medio de la pantalla.</td></tr>
+    <tr><td><span class="k">SPAN</span></td><td class="es">ancho</td><td>Rango total mostrado. Con CENTER 10 kHz y SPAN 20 kHz se ve de 0 a 20 kHz.</td></tr>
+    <tr><td><span class="k">FULL SPAN</span></td><td class="es">rango completo</td><td>Muestra todo (0 a 5 MHz). Sirve para buscar señales cuando no sabe dónde están.</td></tr>
+    <tr><td><span class="k">REF LEVEL</span></td><td class="es">nivel de referencia</td><td>Potencia del borde superior de la pantalla. Si una señal lo supera, se ve cortada arriba. Al subirlo, el equipo agrega atenuación (ATT) y el piso de ruido también sube.</td></tr>
+    <tr><td><span class="k">SCALE</span></td><td class="es">escala</td><td>dB por división vertical (normalmente 10).</td></tr>
+    <tr><td><span class="k">RBW</span></td><td class="es">ancho de banda de resolución</td><td>Qué tan "fino" mira el equipo. Menor RBW: separa señales cercanas y baja el piso de ruido, pero el barrido (SWT) es más lento.</td></tr>
+    <tr><td><span class="k">MARKER</span></td><td class="es">marcador</td><td>Lee la frecuencia y la potencia exactas de un punto. <span class="k">PEAK</span> lo pone en el pico más alto, <span class="k">NEXT PEAK</span> salta al siguiente.</td></tr>
+    <tr><td><span class="k">MKR → CF</span></td><td class="es">marcador al centro</td><td>Centra la pantalla en el marcador para luego hacer zoom con SPAN.</td></tr>
+    <tr><td><span class="k">Δ MKR</span></td><td class="es">marcador delta</td><td>Mide la diferencia en frecuencia y en dB entre dos puntos. Una diferencia en dB respecto de la portadora se llama <b>dBc</b>.</td></tr>
+    <tr><td><span class="k">TRACE</span></td><td class="es">traza</td><td>WRITE (normal), MAX HOLD (guarda el máximo) y AVG (promedia y suaviza el ruido).</td></tr>
+  </table>
+  <div class="formula">
+    <div><b>P(dBm) = 10·log₁₀(P / 1 mW)</b><span>0 dBm = 1 mW · +10 dBm = 10 mW · −10 dBm = 0,1 mW.</span></div>
+    <div><b>P = Vrms² / 50 Ω</b><span>Potencia de una senoidal sobre 50 Ω. Vrms = Vpp / (2√2).</span></div>
+    <div><b>0 dBm ≈ 0,632 Vpp</b><span>Senoidal sobre 50 Ω. Cada vez que duplica el voltaje, sube 6 dB.</span></div>
+    <div><b>ΔdB = 20·log₁₀(V₁ / V₂)</b><span>Diferencia en dB entre dos voltajes. Para potencias: 10·log₁₀(P₁/P₂).</span></div>
+  </div>
+  <p><b>Qué espectro produce cada forma de onda</b> (con fundamental f):</p>
+  <table>
+    <tr><th>Forma de onda</th><th>Picos que aparecen</th><th>Cómo bajan</th></tr>
+    <tr><td>Senoidal</td><td>Solo f</td><td>— (en un generador real hay armónicos muy pequeños, unos 55 dB más abajo: distorsión)</td></tr>
+    <tr><td>Cuadrada</td><td>f, 3f, 5f, 7f… (solo impares)</td><td>Amplitud 1/n: el 3er armónico está 9,5 dB abajo</td></tr>
+    <tr><td>Triangular</td><td>f, 3f, 5f… (solo impares)</td><td>Amplitud 1/n²: el 3er armónico está 19 dB abajo</td></tr>
+    <tr><td>Diente de sierra</td><td>f, 2f, 3f, 4f… (todos)</td><td>Amplitud 1/n: el 2º armónico está 6 dB abajo</td></tr>
+  </table>
+  <div class="tipbox">💡 El pico que aparece siempre en <b>0 Hz</b>, aunque no haya señal, es la fuga del oscilador local del propio analizador (<i>LO feedthrough</i>). Es normal y se ignora. Un offset DC del generador también aparece en 0 Hz.</div>
+  <p><b>Receta: medir una señal con el analizador</b></p>
+  <ol class="steps">
+    <li>Elija la entrada (SOURCE) y presione <span class="k">FULL SPAN</span> para ver dónde está la señal.</li>
+    <li>Presione <span class="k">PEAK</span> y luego <span class="k">MKR → CF</span>: la señal queda al centro.</li>
+    <li>Reduzca <span class="k">SPAN</span> para hacer zoom alrededor de la señal.</li>
+    <li>Ajuste <span class="k">REF LEVEL</span> para que el pico quede cerca del borde superior sin cortarse.</li>
+    <li>Lea frecuencia y potencia en el marcador. Para armónicos use <span class="k">Δ MKR</span> y <span class="k">NEXT PEAK</span>.</li>
+  </ol>
 </section>
 
 <!-- EJERCICIOS -->
 <section id="ejercicios" class="doc">
   <h2>📝 Ejercicios prácticos</h2>
-  <p class="lead">Cada ejercicio prepara los equipos automáticamente. Se abre un panel en la esquina con el procedimiento, las preguntas (con corrección inmediata) y la resolución paso a paso. En los ejercicios con 🔒 el generador queda oculto: la señal se debe descubrir solo con el osciloscopio.</p>
+  <p class="lead">Cada ejercicio prepara los equipos automáticamente. Se abre un panel en la esquina con el procedimiento, las preguntas (con corrección inmediata) y la resolución paso a paso. En los ejercicios con 🔒 el generador queda oculto: la señal se debe descubrir solo midiendo. Los ejercicios 10 al 15 usan el analizador de espectro.</p>
   <p class="progress" id="progress"></p>
   <div class="exgrid" id="exGrid"></div>
 </section>
@@ -579,12 +688,13 @@ const kFoc=new Knob('kFoc',{label:'Focus',es:'enfoque',size:'s',min:-1,max:1,val
 function applyFocus(){const b=(Math.abs(sc.focus)*2.4).toFixed(2);$('#cvTrace').style.filter=`blur(${b}px)`;}
 function syncScope(){kV1.setIdx(sc.vd[0],true);kV2.setIdx(sc.vd[1],true);kP1.setVal(sc.pos[0],true);kP2.setVal(sc.pos[1],true);kT.setIdx(sc.td,true);kH.setVal(sc.hpos,true);kLvl.setVal(sc.lvl,true);kInt.setVal(sc.int,true);kFoc.setVal(sc.focus,true);applyFocus();refreshSeg();refreshT();}
 
-function getK(k){return{coup0:sc.coup[0],coup1:sc.coup[1],mode:sc.mode,src:sc.src,slope:sc.slope,tmode:sc.tmode,trace:sc.trace,phos:sc.phos,wave:gen[gs].wave,gs}[k];}
+function getK(k){return{coup0:sc.coup[0],coup1:sc.coup[1],mode:sc.mode,src:sc.src,slope:sc.slope,tmode:sc.tmode,trace:sc.trace,phos:sc.phos,wave:gen[gs].wave,gs,sain:sa.inp,samode:sa.mode,sascale:sa.scale}[k];}
 function setK(k,v){switch(k){
   case'coup0':sc.coup[0]=v;break;case'coup1':sc.coup[1]=v;break;
   case'mode':sc.mode=v;clearTrace();break;case'src':sc.src=+v;kLvl.draw();break;
   case'slope':sc.slope=+v;break;case'tmode':sc.tmode=v;break;case'trace':sc.trace=+v;break;case'phos':sc.phos=v;break;
-  case'wave':if(hidden)return;gen[gs].wave=v;updLCD();break;case'gs':gs=+v;syncGen();break;}
+  case'wave':if(hidden)return;gen[gs].wave=v;updLCD();break;case'gs':gs=+v;syncGen();break;
+  case'sain':sa.inp=v;saReset();break;case'samode':sa.mode=v;saReset();break;case'sascale':sa.scale=+v;break;}
   refreshSeg();}
 function refreshSeg(){$$('.seg[data-k]').forEach(g=>{const c=String(getK(g.dataset.k));g.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===c))});}
 $$('.seg[data-k]').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(b)setK(g.dataset.k,b.dataset.v)}));
@@ -759,6 +869,111 @@ document.addEventListener('pointerdown',hideTip);document.addEventListener('scro
   h+=`<text x="4" y="256" fill="#9fb0ba" font-size="11" font-family="system-ui">1 V/div · 0,2 ms/div</text>`;
   s.innerHTML=h;})();
 
+
+/* ---------- analizador de espectro ---------- */
+const SPANS=[100,200,500,1e3,2e3,5e3,1e4,2e4,5e4,1e5,2e5,5e5,1e6,2e6,5e6];
+const RBWS=['AUTO',1,3,10,30,100,300,1e3,3e3,1e4,3e4,1e5,3e5,1e6];
+const REFS=[-80,-70,-60,-50,-40,-30,-20,-10,0,10,20,30];
+const SAMAX=6e6,NPT=601,LOFT=-25;
+const DEF_SA=()=>({pow:true,inp:'1',cf:5000,span:1e4,ref:20,scale:10,rbw:'AUTO',mode:'WRITE',mkF:1000,dmk:null});
+const sa=DEF_SA();
+const toW=d=>1e-3*Math.pow(10,d/10), dbm=w=>10*Math.log10(Math.max(w,1e-30)/1e-3), rat=d=>Math.pow(10,d/10);
+const nearIdx=(arr,v)=>{let bi=0,bd=Infinity;arr.forEach((a,i)=>{if(typeof a!=='number')return;const d=Math.abs(Math.log(Math.abs(a)+1e-9)-Math.log(Math.abs(v)+1e-9))+(Math.sign(a)!==Math.sign(v)?9:0);if(d<bd){bd=d;bi=i}});return bi;};
+const nearLin=(arr,v)=>{let bi=0;arr.forEach((a,i)=>{if(Math.abs(a-v)<Math.abs(arr[bi]-v))bi=i});return bi;};
+function saView(){const span=clamp(sa.span,100,5e6),cf=clamp(sa.cf,0,SAMAX),start=Math.max(0,cf-span/2),stop=start+span;
+  let rbw=sa.rbw;if(rbw==='AUTO'){rbw=1;for(const r of RBWS)if(r!=='AUTO'&&r<=span/100)rbw=r;}
+  const att=clamp(Math.ceil(sa.ref/10)*10,0,40),danl=-125+10*Math.log10(rbw)+att,swt=clamp(.5*span/(rbw*rbw),.03,3);
+  return{span,start,stop,cf:start+span/2,rbw,att,danl,swt,d:span/(NPT-1)};}
+function saComps(v){const out=[[0,toW(LOFT)]],m=4*v.rbw,pw=a=>a*a/100;
+  const add=c=>{const g=gen[c];if(!genPow||!g.on)return;const f=effF(c),A=g.amp/2;
+    if(Math.abs(g.off)>1e-9)out.push([0,g.off*g.off/50]);
+    if(g.wave==='sine'){out.push([f,pw(A)],[2*f,pw(A)*rat(-55)],[3*f,pw(A)*rat(-62)]);return;}
+    const n0=Math.max(1,Math.floor((v.start-m)/f)),n1=Math.min(Math.floor((v.stop+m)/f),n0+60000);
+    for(let n=n0;n<=n1;n++){let a;if(g.wave==='square'){if(!(n&1))continue;a=4/(Math.PI*n)}else if(g.wave==='triangle'){if(!(n&1))continue;a=8/(Math.PI*Math.PI*n*n)}else a=2/(Math.PI*n);out.push([n*f,pw(A*a)]);}};
+  if(sa.inp!=='2')add(0);if(sa.inp!=='1')add(1);return out;}
+function saClean(v){const P=new Float64Array(NPT),k=4*Math.LN2/(v.rbw*v.rbw),reach=3.5*v.rbw;
+  for(const[f,p]of saComps(v)){if(f<v.start-reach||f>v.stop+reach)continue;
+    const i0=Math.max(0,Math.floor((f-reach-v.start)/v.d)),i1=Math.min(NPT-1,Math.ceil((f+reach-v.start)/v.d));
+    for(let i=i0;i<=i1;i++){const a=v.start+(i-.5)*v.d,b=v.start+(i+.5)*v.d,dd=f<a?a-f:f>b?f-b:0;P[i]+=p*Math.exp(-k*dd*dd);}}
+  return P;}
+let saKey='',saP=null,saTr=null,saAvg=1,saIdx=0,saT0=performance.now(),saOnAt=performance.now(),saLastV=null;
+function saReset(){saTr=null;}
+const saIdxOf=(v,f)=>clamp(Math.round((f-v.start)/v.d),0,NPT-1);
+const saLevel=(v,f)=>dbm(saP[saIdxOf(v,f)]+toW(v.danl));
+const fmtF=f=>fix(f,'Hz',5);
+
+const kCF=new Knob('kCF',{label:'Center',es:'frec. central',size:'l',min:10,max:SAMAX,log:true,value:sa.cf,tip:v=>fmtF(v),help:'<b>CENTER (frecuencia central)</b><br>Frecuencia que queda en el centro de la pantalla.',on:v=>{sa.cf=v;}});
+const kSpan=new Knob('kSpan',{label:'Span',es:'ancho',steps:SPANS,idx:nearIdx(SPANS,sa.span),fmt:v=>si(v,'Hz'),help:'<b>SPAN (ancho)</b><br>Rango de frecuencias mostrado en la pantalla. A la derecha: más zoom.',on:v=>{sa.span=v;}});
+const kRef=new Knob('kRef',{label:'Ref level',es:'nivel ref.',steps:REFS,idx:nearLin(REFS,sa.ref),cap:'#ffd23f',fmt:v=>(v>0?'+':'')+v+' dBm',help:'<b>REF LEVEL (nivel de referencia)</b><br>Potencia del borde superior de la pantalla. Si la señal lo supera, se corta.',on:v=>{sa.ref=v;saReset();}});
+const kRBW=new Knob('kRBW',{label:'RBW',es:'resolución',size:'s',steps:RBWS,idx:0,fmt:v=>v==='AUTO'?'AUTO':si(v,'Hz'),help:'<b>RBW (ancho de banda de resolución)</b><br>Menor RBW: separa señales cercanas y baja el ruido, pero el barrido es más lento. AUTO lo ajusta según el SPAN.',on:v=>{sa.rbw=v;}});
+const kMk=new Knob('kMk',{label:'Marker',es:'mover marcador',min:0,max:1,value:.1,tip:()=>fmtF(sa.mkF),help:'<b>MARKER (marcador)</b><br>Gírelo para recorrer la pantalla y leer frecuencia y potencia de cualquier punto.',on:n=>{const v=saView();sa.mkF=v.start+n*v.span;}});
+function syncSA(){kCF.setVal(clamp(sa.cf,10,SAMAX),true);kSpan.setIdx(nearIdx(SPANS,sa.span),true);kRef.setIdx(nearLin(REFS,sa.ref),true);
+  kRBW.setIdx(sa.rbw==='AUTO'?0:nearIdx(RBWS,sa.rbw),true);const v=saView();kMk.setVal(clamp((sa.mkF-v.start)/v.span,0,1),true);refreshSeg();refreshT();}
+function saSetMk(f){sa.mkF=f;const v=saView();kMk.setVal(clamp((f-v.start)/v.span,0,1),true);}
+function saPeaks(v){const pk=[],floor=toW(v.danl)*4,skip=v.start<3*v.rbw?Math.ceil(3*v.rbw/v.d):0;
+  for(let i=Math.max(1,skip);i<NPT-1;i++)if(saP[i]>floor&&saP[i]>=saP[i-1]&&saP[i]>saP[i+1])pk.push(i);
+  if(skip===0&&saP[0]>floor&&saP[0]>saP[1])pk.push(0);
+  if(saP[NPT-1]>floor&&saP[NPT-1]>saP[NPT-2])pk.push(NPT-1);
+  return pk.sort((a,b)=>saP[b]-saP[a]);}
+$$('[data-a]').forEach(b=>b.addEventListener('click',()=>{if(!sa.pow)return;const a=b.dataset.a,v=saView();
+  if(a==='full'){sa.cf=2.5e6;sa.span=5e6;saReset();syncSA();return;}
+  if(!saP)return;const pk=saPeaks(v);
+  if(a==='peak'){if(pk.length)saSetMk(v.start+pk[0]*v.d);}
+  else if(a==='next'){const cur=saP[saIdxOf(v,sa.mkF)];const nx=pk.find(i=>saP[i]<cur*.98);if(nx!=null)saSetMk(v.start+nx*v.d);}
+  else if(a==='mkcf'){if(sa.mkF>0){sa.cf=sa.mkF;saReset();syncSA();}}}));
+tget.sapow=()=>sa.pow;tget.dmk=()=>!!sa.dmk;
+tflip.sapow=()=>{sa.pow=!sa.pow;if(sa.pow){saOnAt=performance.now();saReset();}};
+tflip.dmk=()=>{if(sa.dmk){sa.dmk=null;return}const v=saView();if(saP)sa.dmk={f:sa.mkF,db:saLevel(v,sa.mkF)};};
+$$('.sed').forEach(el=>el.addEventListener('click',()=>{if(!sa.pow||el.querySelector('input'))return;const f=el.dataset.s;hideTip();
+  const inp=document.createElement('input');inp.className='lcdin';inp.placeholder=el.textContent;el.textContent='';el.appendChild(inp);inp.focus();
+  let done=false;const fin=ok=>{if(done)return;done=true;if(ok){const v=parseSI(inp.value);if(!isNaN(v)){
+    if(f==='cf')sa.cf=clamp(v,0,SAMAX);else if(f==='span')sa.span=clamp(v,100,5e6);else sa.ref=clamp(v,-100,30);saReset();syncSA();}}
+    el.textContent='';saFields(true);};
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')fin(true);if(e.key==='Escape')fin(false)});inp.addEventListener('blur',()=>fin(true));}));
+let saFTxt='';
+function saFields(force){const v=saView(),t=[fmtF(v.cf),si(v.span,'Hz',4),(sa.ref>0?'+':'')+(+sa.ref.toFixed(1))+' dBm'];const k=t.join('|');if(!force&&k===saFTxt)return;saFTxt=k;
+  [['#sfCF',0],['#sfSP',1],['#sfRF',2]].forEach(([id,i])=>{const el=$(id);if(!el.querySelector('input'))el.textContent=t[i];});}
+const csa=$('#cvSA'),sx=csa.getContext('2d');let SW=1,SH=1,SDPR=1;
+function saResize(){const r=csa.parentElement.getBoundingClientRect();SDPR=Math.min(window.devicePixelRatio||1,2);SW=csa.width=Math.max(1,Math.round(r.width*SDPR));SH=csa.height=Math.max(1,Math.round(r.height*SDPR));}
+new ResizeObserver(saResize).observe($('#sascreen'));
+function saLoop(now){requestAnimationFrame(saLoop);saFields();
+  const W=SW,H=SH,D=SDPR;sx.fillStyle='#03070b';sx.fillRect(0,0,W,H);
+  if(!sa.pow){return;}
+  const v=saView(),key=JSON.stringify([gen,genPow,sa.inp,v.start,v.span,v.rbw,v.att]);
+  if(key!==saKey){saKey=key;saP=saClean(v);if(!saLastV||saLastV.start!==v.start||saLastV.span!==v.span||saLastV.rbw!==v.rbw)saTr=null;saLastV=v;}
+  const nw=toW(v.danl),smp=i=>saP[i]+nw*(-Math.log(1-Math.random()));
+  if(!saTr){saTr=new Float64Array(NPT);for(let i=0;i<NPT;i++)saTr[i]=smp(i);saAvg=1;saIdx=0;saT0=now;}
+  const target=Math.floor((now-saT0)/1000/v.swt*NPT);let n=Math.min(target-saIdx,NPT*2);
+  while(n-->0){const i=saIdx%NPT,val=smp(i);if(sa.mode==='MAX')saTr[i]=Math.max(saTr[i],val);else if(sa.mode==='AVG')saTr[i]+=(val-saTr[i])/Math.min(saAvg,24);else saTr[i]=val;if(i===NPT-1)saAvg++;saIdx++;}
+  const warm=clamp((now-saOnAt)/900,0,1);sx.globalAlpha=warm;
+  const fs=Math.round(Math.max(10,W/D/62)*D),pad=8*D,x0=pad,y0=fs*2.9,pw=W-2*pad,ph=H-y0-fs*3.1;
+  sx.strokeStyle='rgba(140,160,175,.28)';sx.lineWidth=D;sx.beginPath();
+  for(let i=0;i<=10;i++){const x=Math.round(x0+pw*i/10)+.5;sx.moveTo(x,y0);sx.lineTo(x,y0+ph);const y=Math.round(y0+ph*i/10)+.5;sx.moveTo(x0,y);sx.lineTo(x0+pw,y);}sx.stroke();
+  sx.strokeStyle='rgba(170,190,205,.55)';sx.strokeRect(x0+.5,y0+.5,pw,ph);
+  const ys=db=>y0+clamp((sa.ref-db)/(sa.scale*10),0,1)*ph,xs=i=>x0+pw*i/(NPT-1);
+  sx.beginPath();for(let i=0;i<NPT;i++){const y=ys(dbm(saTr[i]));i?sx.lineTo(xs(i),y):sx.moveTo(xs(i),y);}
+  sx.lineJoin='round';sx.strokeStyle='rgba(255,210,63,.22)';sx.lineWidth=4*D;sx.stroke();sx.strokeStyle='#ffd23f';sx.lineWidth=1.4*D;sx.stroke();
+  if(v.swt>.15){const xi=xs(saIdx%NPT);sx.strokeStyle='rgba(120,220,255,.35)';sx.lineWidth=D;sx.beginPath();sx.moveTo(xi,y0);sx.lineTo(xi,y0+ph);sx.stroke();}
+  let maxC=-999;for(let i=0;i<NPT;i++){const d=dbm(saP[i]);if(d>maxC&&!(v.start<3*v.rbw&&v.start+i*v.d<3*v.rbw))maxC=d;}
+  const diamond=(x,y,c,t)=>{sx.fillStyle=c;sx.beginPath();sx.moveTo(x,y-8*D);sx.lineTo(x+5*D,y-2*D);sx.lineTo(x,y+4*D);sx.lineTo(x-5*D,y-2*D);sx.closePath();sx.fill();sx.font=`bold ${fs}px ui-monospace,Consolas,monospace`;sx.textBaseline='bottom';sx.fillText(t,x+6*D,y-6*D);};
+  const mkDb=saLevel(v,sa.mkF),inView=f=>f>=v.start-1e-9&&f<=v.stop+1e-9;
+  if(sa.dmk&&inView(sa.dmk.f))diamond(xs(saIdxOf(v,sa.dmk.f)),ys(sa.dmk.db),'#ff7ad9','R');
+  if(inView(sa.mkF))diamond(xs(saIdxOf(v,sa.mkF)),ys(mkDb),'#59ff8b','1');
+  sx.font=`${fs}px ui-monospace,Consolas,monospace`;sx.textBaseline='top';
+  const L=(t,x,y,c,al)=>{sx.fillStyle=c||'#cfe3ee';if(al==='r')x-=sx.measureText(t).width;sx.fillText(t,x,y);};
+  L(`REF ${(sa.ref>0?'+':'')+(+sa.ref.toFixed(1))} dBm   ${sa.scale} dB/div   ATT ${v.att} dB`,pad,pad*.6);
+  L(`IN: ${{'1':'OUT 1','2':'OUT 2','12':'OUT 1+2'}[sa.inp]}   ${{WRITE:'WRITE',MAX:'MAX HOLD',AVG:'AVG '+Math.min(saAvg,24)}[sa.mode]}`,pad,pad*.6+fs*1.3,'#8fb3c7');
+  let mt,mt2;
+  if(sa.dmk){mt=`ΔMKR  Δf ${si(sa.mkF-sa.dmk.f,'Hz',4)}`;mt2=`Δ ${(mkDb-sa.dmk.db>=0?'+':'')+(mkDb-sa.dmk.db).toFixed(2)} dB`;}
+  else{const vr=Math.sqrt(toW(mkDb)*50);mt=`MKR1 ${fmtF(sa.mkF)}  ${mkDb.toFixed(2)} dBm`;mt2=`≈ ${si(vr*2*Math.SQRT2,'V')}pp senoidal`;}
+  L(mt,W-pad,pad*.6,'#59ff8b','r');L(mt2,W-pad,pad*.6+fs*1.3,'#59ff8b','r');
+  if(!inView(sa.mkF))L('(marcador fuera de pantalla)',W-pad,pad*.6+fs*2.6,'#ff9a8a','r');
+  const yb=y0+ph+fs*.45;
+  L(`CENTER ${fmtF(v.cf)}`,pad,yb);L(`SPAN ${si(v.span,'Hz',4)}`,W-pad,yb,null,'r');
+  L(`START ${si(v.start,'Hz',4)}`,pad,yb+fs*1.3,'#8fb3c7');L(`RBW ${si(v.rbw,'Hz')}${sa.rbw==='AUTO'?' (auto)':''}   SWT ${si(v.swt,'s')}`,W-pad,yb+fs*1.3,'#8fb3c7','r');
+  if(maxC>sa.ref+.5){sx.font=`bold ${fs}px system-ui`;const t='⚠ SEÑAL SOBRE REF LEVEL — suba REF LEVEL',tw=sx.measureText(t).width;sx.fillStyle='rgba(40,8,6,.85)';sx.fillRect(W/2-tw/2-6*D,y0+fs*.2,tw+12*D,fs*1.5);L(t,W/2-tw/2,y0+fs*.4,'#ff6b5a');}
+  sx.globalAlpha=1;}
+
 /* ---------- ejercicios ---------- */
 const EX=[
 {id:'e1',titulo:'Primer contacto: leer la pantalla',nivel:'Básico',controles:'VOLTS/DIV, TIME/DIV, MEASURE',
@@ -821,12 +1036,56 @@ const EX=[
  setup:{hide:true,gen:[{wave:'triangle',freq:20000,amp:.05},{on:false}],sc:{vd:[4,4],pos:[0,0],mode:'CH1',td:7}},
  pasos:['A 1 V/div la señal parece una línea casi plana.','Reduzca VOLTS/DIV hasta que ocupe varias divisiones.','Ajuste TIME/DIV para ver 1 o 2 ciclos.','Si la imagen no está quieta, revise LEVEL (con escalas tan sensibles, el nivel debe ser pequeño).','Identifique la forma de onda y mida.'],
  preguntas:[{q:'¿Qué forma de onda es?',type:'choice',opts:['Senoidal','Triangular','Cuadrada','Diente de sierra'],ans:1},{q:'¿Cuál es el Vpp?',ans:.05,unit:'mV',scale:1e-3,ej:'50'},{q:'¿Cuál es el período?',ans:5e-5,unit:'µs',scale:1e-6,ej:'50'},{q:'¿Cuál es la frecuencia?',ans:20000,unit:'Hz',ej:'20k'}],
- resolucion:`<ol><li>Con <b>10 mV/div</b> la señal ocupa <b>5 divisiones</b> → Vpp = 5 × 10 mV = <b>50 mV</b>.</li><li>Con <b>10 µs/div</b> un período ocupa <b>5 divisiones</b> → T = <b>50 µs</b>.</li><li>f = 1 / 50 µs = <b>20 kHz</b>.</li><li>La forma es <b>triangular</b>: rampas rectas que suben y bajan con la misma pendiente.</li></ol><p>Ojo con los prefijos: m = 10⁻³, µ = 10⁻⁶, k = 10³.</p>`}
+ resolucion:`<ol><li>Con <b>10 mV/div</b> la señal ocupa <b>5 divisiones</b> → Vpp = 5 × 10 mV = <b>50 mV</b>.</li><li>Con <b>10 µs/div</b> un período ocupa <b>5 divisiones</b> → T = <b>50 µs</b>.</li><li>f = 1 / 50 µs = <b>20 kHz</b>.</li><li>La forma es <b>triangular</b>: rampas rectas que suben y bajan con la misma pendiente.</li></ol><p>Ojo con los prefijos: m = 10⁻³, µ = 10⁻⁶, k = 10³.</p>`},
+{id:'e10',sa:1,titulo:'Primer espectro: una senoidal',nivel:'Básico',controles:'Analizador: MARKER, PEAK, REF LEVEL',
+ objetivo:'Ver una senoidal en el dominio de la frecuencia y medir su potencia en dBm.',
+ setup:{gen:[{wave:'sine',freq:1000,amp:1},{on:false}],sc:{vd:[5,4],mode:'CH1',td:9},sa:{cf:5000,span:1e4,ref:10,inp:'1'}},
+ pasos:['El generador entrega una senoidal de 1 kHz y 1 Vpp. Mírela en el osciloscopio y luego baje al analizador.','Ignore el pico en 0 Hz: es la fuga del oscilador local del analizador.','Presione PEAK y lea frecuencia y potencia en la esquina superior derecha.','Observe los picos muy pequeños en 2 y 3 kHz.','Cambie la amplitud del generador a 2 Vpp y vuelva a medir el pico.'],
+ preguntas:[{q:'¿En qué frecuencia está el pico principal?',ans:1000,unit:'Hz',tol:.02},{q:'¿Cuál es su potencia?',ans:3.98,abs:.6,unit:'dBm',pista:'Vrms = 1/(2√2) = 0,354 V; P = Vrms²/50 Ω = 2,5 mW.'},
+  {q:'Los picos pequeños en 2 y 3 kHz son…',type:'choice',opts:['otra señal que se coló','distorsión armónica del generador: ninguna senoidal real es perfecta','ruido del cable'],ans:1},
+  {q:'Al pasar de 1 Vpp a 2 Vpp, ¿cuántos dB sube el pico?',ans:6.02,abs:.5,unit:'dB'}],
+ resolucion:`<ol><li>Una senoidal pura tiene <b>una sola frecuencia</b>: un pico en <b>1 kHz</b>.</li><li>1 Vpp → Vrms = 1 / (2√2) = 0,354 V → P = 0,354² / 50 = 2,5 mW → 10·log₁₀(2,5) = <b>+3,98 dBm</b>.</li><li>Los picos en 2 y 3 kHz están unos 55–60 dB abajo: es la <b>distorsión</b> del generador. En equipos reales se especifica como "harmonics < −50 dBc".</li><li>Duplicar el voltaje cuadruplica la potencia: 10·log₁₀(4) = <b>+6,02 dB</b>.</li></ol>`},
+{id:'e11',sa:1,titulo:'Armónicos de una onda cuadrada',nivel:'Intermedio',controles:'Analizador: NEXT PEAK, Δ MKR',
+ objetivo:'Comprobar que una cuadrada es una suma de senoidales impares (serie de Fourier).',
+ setup:{gen:[{wave:'square',freq:1000,amp:2},{on:false}],sc:{vd:[4,4],mode:'CH1',td:9},sa:{cf:5000,span:1e4,ref:20,inp:'1'}},
+ pasos:['Hay una cuadrada de 1 kHz y 2 Vpp. Observe en el analizador los picos que aparecen.','PEAK pone el marcador en el fundamental (1 kHz). Active Δ MKR para fijar la referencia ahí.','Presione NEXT PEAK: el marcador salta al siguiente armónico y muestra la diferencia en dB.','Fíjese qué pasa en 2 kHz y 4 kHz.'],
+ preguntas:[{q:'¿En qué frecuencia está el segundo pico más alto?',ans:3000,unit:'Hz',tol:.02},{q:'¿Cuántos dB más abajo está ese armónico respecto del fundamental?',ans:9.54,abs:.7,unit:'dB',pista:'La amplitud del armónico n es 1/n: 20·log₁₀(3).'},
+  {q:'¿Por qué no hay pico en 2 kHz ni en 4 kHz?',type:'choice',opts:['Porque el analizador no los alcanza a ver','Porque la cuadrada simétrica solo tiene armónicos impares','Porque el RBW es muy grande'],ans:1},
+  {q:'¿Cuál es la potencia del fundamental?',ans:12.1,abs:.7,unit:'dBm',pista:'El fundamental de una cuadrada de amplitud A tiene amplitud 4A/π.'}],
+ resolucion:`<ol><li>La serie de Fourier de una cuadrada contiene solo los armónicos <b>impares</b>: 1, 3, 5, 7 kHz…</li><li>Cada armónico tiene amplitud 1/n: el 3º es 1/3 del fundamental → 20·log₁₀(3) = <b>9,54 dB</b> abajo; el 5º, 14 dB abajo.</li><li>Fundamental: A = 1 V → 4/π = 1,27 V pico → 0,90 Vrms → 16,2 mW → <b>+12,1 dBm</b>.</li></ol><p>Esto es la integral de Fourier "en vivo": los bordes rectos de la cuadrada necesitan muchas senoidales para formarse. Por eso las señales digitales rápidas ocupan mucho ancho de banda e interfieren a otros equipos.</p>`},
+{id:'e12',sa:1,titulo:'Identificar una señal por su espectro',nivel:'Intermedio',controles:'Analizador: PEAK, Δ MKR, NEXT PEAK',
+ objetivo:'Descubrir la forma de onda y la frecuencia de una señal desconocida solo mirando su espectro.',
+ setup:{hide:true,gen:[{wave:'saw',freq:2000,amp:2},{on:false}],sc:{vd:[4,4],mode:'CH1',td:9},sa:{cf:10000,span:2e4,ref:10,inp:'1'}},
+ pasos:['No mire el osciloscopio todavía: use solo el analizador.','Mida la frecuencia del primer pico (fundamental).','Observe qué armónicos aparecen: ¿solo impares o todos?','Con Δ MKR mida cuánto baja el 2º armónico respecto del fundamental.','Compare con la tabla de la guía (sección 8). Recién ahí confirme en el osciloscopio.'],
+ preguntas:[{q:'¿Cuál es la frecuencia fundamental?',ans:2000,unit:'Hz',tol:.02},{q:'¿Cuántos dB baja el 2º armónico respecto del fundamental?',ans:6.02,abs:.7,unit:'dB'},
+  {q:'¿Qué forma de onda es?',type:'choice',opts:['Senoidal','Cuadrada','Triangular','Diente de sierra'],ans:3}],
+ resolucion:`<ol><li>El primer pico está en <b>2 kHz</b> y aparecen picos en <b>todos</b> los múltiplos: 4, 6, 8 kHz…</li><li>El 2º armónico está <b>6 dB</b> abajo (amplitud 1/2), el 3º 9,5 dB abajo (1/3).</li><li>Todos los armónicos con caída 1/n → <b>diente de sierra</b>. Una cuadrada tendría solo impares, y una triangular solo impares con caída mucho más rápida (1/n²).</li></ol>`},
+{id:'e13',sa:1,titulo:'Dos señales mezcladas',nivel:'Intermedio',controles:'Analizador: OUT 1+2, PEAK, NEXT PEAK, Δ MKR',
+ objetivo:'Separar dos señales que en el osciloscopio se ven como una sola onda deformada.',
+ setup:{hide:true,gen:[{wave:'sine',freq:10000,amp:1},{wave:'sine',freq:12500,amp:.2}],sc:{vd:[5,5],mode:'ADD',td:11},sa:{cf:11000,span:1e4,ref:10,inp:'12'}},
+ pasos:['El osciloscopio está en ADD: muestra la suma de dos señales. Cuesta saber qué hay ahí.','El analizador recibe OUT 1 + OUT 2. Observe cuántos picos aparecen.','Mida la frecuencia de cada uno con PEAK y NEXT PEAK.','Con Δ MKR mida la diferencia de nivel entre ambos.'],
+ preguntas:[{q:'Frecuencia de la señal más fuerte:',ans:10000,unit:'Hz',tol:.02},{q:'Frecuencia de la señal más débil:',ans:12500,unit:'Hz',tol:.02},{q:'¿Cuántos dB más débil es la segunda señal?',ans:13.98,abs:.7,unit:'dB'}],
+ resolucion:`<ol><li>Dos picos: <b>10 kHz</b> (+4 dBm) y <b>12,5 kHz</b> (−10 dBm).</li><li>Diferencia ≈ <b>14 dB</b>, que corresponde a una relación de voltaje de 5 veces (1 Vpp contra 0,2 Vpp): 20·log₁₀(5) = 13,98 dB.</li></ol><p>Así se encuentran interferencias en la vida real: en el tiempo todo se ve mezclado, pero en frecuencia cada fuente es un pico separado con su propia potencia.</p>`},
+{id:'e14',sa:1,titulo:'Resolución (RBW): dos tonos cercanos',nivel:'Avanzado',controles:'Analizador: RBW, SPAN',
+ objetivo:'Entender cómo el RBW decide si dos señales cercanas se ven separadas y cómo afecta al ruido y al tiempo de barrido.',
+ setup:{gen:[{wave:'sine',freq:10000,amp:.1},{wave:'sine',freq:10300,amp:.1}],sc:{vd:[7,7],mode:'DUAL',td:9},sa:{cf:10150,span:5000,ref:-10,inp:'12',rbw:1000}},
+ pasos:['Hay dos senoidales de igual nivel: 10,0 kHz y 10,3 kHz, sumadas en la entrada. El RBW está en 1 kHz.','Observe cuántos picos se distinguen.','Gire RBW hasta 100 Hz y observe de nuevo. Fíjese en SWT (tiempo de barrido) y en el piso de ruido.','Pruebe RBW = 30 Hz y luego vuelva a AUTO.'],
+ preguntas:[{q:'Con RBW = 1 kHz, ¿cuántas señales parece haber?',type:'choice',opts:['Una sola (un "cerro")','Dos','Tres'],ans:0},{q:'Con RBW = 100 Hz, ¿cuántas se distinguen?',type:'choice',opts:['Una','Dos','Tres'],ans:1},
+  {q:'¿Cuál es la separación entre ambas?',ans:300,unit:'Hz',tol:.08},{q:'Al bajar el RBW, el tiempo de barrido (SWT)…',type:'choice',opts:['aumenta','disminuye','no cambia'],ans:0},{q:'Al bajar el RBW de 1 kHz a 100 Hz, el piso de ruido…',type:'choice',opts:['sube unos 10 dB','baja unos 10 dB','no cambia'],ans:1}],
+ resolucion:`<ol><li>El RBW es el "ancho del ojo" del analizador. Si dos señales están más cerca que el RBW (300 Hz &lt; 1 kHz), se ven como <b>un solo cerro</b>.</li><li>Con RBW = 100 Hz (menor que la separación) aparecen <b>dos picos</b> separados por <b>300 Hz</b>.</li><li>El ruido que entra al filtro es proporcional a su ancho: 10× menos RBW → <b>10 dB menos</b> de piso de ruido. Por eso un RBW chico permite ver señales muy débiles.</li><li>El costo: el filtro angosto necesita más tiempo para responder, así que el <b>barrido es más lento</b> (SWT ∝ SPAN / RBW²).</li></ol>`},
+{id:'e15',sa:1,titulo:'Nivel de referencia y sobrecarga',nivel:'Básico',controles:'Analizador: REF LEVEL, ATT',
+ objetivo:'Ajustar el nivel de referencia para medir una señal fuerte sin que se corte.',
+ setup:{gen:[{wave:'sine',freq:100000,amp:10},{on:false}],sc:{vd:[2,4],mode:'CH1',td:13},sa:{cf:1e5,span:5e4,ref:-20,inp:'1'}},
+ pasos:['La señal es fuerte (10 Vpp) y el REF LEVEL está en −20 dBm: aparece una advertencia y el pico se ve cortado arriba.','Suba REF LEVEL de a 10 dB hasta que el pico quede completo dentro de la pantalla.','Mida su potencia con PEAK.','Observe el valor de ATT en la esquina superior y el piso de ruido mientras sube REF LEVEL.'],
+ preguntas:[{q:'¿Por qué el pico se veía cortado arriba?',type:'choice',opts:['La señal está distorsionada','La potencia supera el nivel de referencia (borde superior de la pantalla)','El RBW es muy angosto'],ans:1},
+  {q:'¿Cuál es la potencia de la señal?',ans:23.98,abs:.6,unit:'dBm',pista:'Vrms = 10/(2√2) = 3,54 V; P = Vrms²/50 Ω.'},
+  {q:'Al subir REF LEVEL, el piso de ruido…',type:'choice',opts:['sube, porque el analizador agrega atenuación (ATT) a la entrada','baja','no cambia'],ans:0}],
+ resolucion:`<ol><li>10 Vpp → Vrms = 3,54 V → P = 3,54² / 50 = 0,25 W → <b>+23,98 dBm</b>.</li><li>Con REF = −20 dBm la pantalla solo llega hasta −20 dBm: todo lo que está más arriba se corta. Con REF = +30 dBm el pico queda dentro.</li><li>Para proteger su mezclador interno, el analizador agrega <b>atenuación</b> cuando se sube REF LEVEL. Esa atenuación también levanta el piso de ruido: medir señales fuertes y débiles a la vez siempre es un compromiso.</li><li>Ojo: la entrada soporta como máximo +30 dBm (1 W). Por encima, un analizador real se daña.</li></ol>`}
 ];
 
 let done=new Set();try{done=new Set(JSON.parse(localStorage.getItem('oscDone')||'[]'))}catch(e){}
 const saveDone=()=>{try{localStorage.setItem('oscDone',JSON.stringify([...done]))}catch(e){}};
-function renderCards(){$('#exGrid').innerHTML=EX.map((e,i)=>`<article class="exc ${done.has(e.id)?'done':''}"><div class="exh"><span class="lvl lv-${e.nivel}">${e.nivel}</span>${done.has(e.id)?'<span class="ok">✓ Completado</span>':''}${e.setup.hide?'<span title="Generador oculto">🔒</span>':''}</div><h4>${i+1}. ${e.titulo}</h4><p>${e.objetivo}</p><p class="mini">Controles: ${e.controles}</p><button class="go" data-i="${i}">Preparar ejercicio →</button></article>`).join('');
+function renderCards(){$('#exGrid').innerHTML=EX.map((e,i)=>`<article class="exc ${done.has(e.id)?'done':''}"><div class="exh"><span class="lvl lv-${e.nivel}">${e.nivel}</span>${done.has(e.id)?'<span class="ok">✓ Completado</span>':''}${e.setup.hide?'<span title="Generador oculto">🔒</span>':''}</div><h4>${i+1}. ${e.titulo}</h4><p>${e.objetivo}</p><p class="mini">${e.sa?'📡 ':''}Controles: ${e.controles}</p><button class="go" data-i="${i}">Preparar ejercicio →</button></article>`).join('');
   $('#progress').innerHTML=`Progreso: <b>${done.size}</b> de ${EX.length} ejercicios completados.`;}
 $('#exGrid').addEventListener('click',e=>{const b=e.target.closest('.go');if(b)openEx(+b.dataset.i)});
 
@@ -834,7 +1093,8 @@ function applySetup(s){const dg=DEF_GEN();
   for(let i=0;i<2;i++)Object.assign(gen[i],{wave:'sine',freq:1000,fine:1,amp:2,off:0,ph:0,on:true},s?(s.gen[i]||{}):dg[i]);
   Object.assign(sc,DEF_SC(),s?{pos:[0,0],mode:'CH1',...s.sc}:{});
   genPow=true;if(!scopePow){scopePow=true;scopeOnAt=performance.now();}
-  hidden=!!(s&&s.hide);gs=0;syncGen();syncScope();clearTrace();}
+  hidden=!!(s&&s.hide);gs=0;syncGen();syncScope();clearTrace();
+  Object.assign(sa,DEF_SA(),s&&s.sa?s.sa:{});if(s&&s.sa){const v0=saView();sa.mkF=v0.start+v0.span*.1;}saOnAt=performance.now();saReset();syncSA();}
 
 let cur=-1,res=[];
 const dock=$('#dock');
@@ -842,12 +1102,12 @@ function qHTML(q,k){if(q.type==='choice')return `<div class="q" data-k="${k}"><p
   return `<div class="q" data-k="${k}"><p><b>${k+1}.</b> ${q.q}</p><div class="qa"><input type="text" inputmode="decimal" placeholder="${q.ej?'ej: '+q.ej:''}"><span class="u">${q.unit||''}</span><button class="chk">Comprobar</button></div><div class="fb"></div></div>`;}
 function openEx(i){const e=EX[i];cur=i;res=e.preguntas.map(()=>false);applySetup(e.setup);
   dock.innerHTML=`<div class="dk-h"><b>Ejercicio ${i+1}: ${e.titulo}</b><button class="dk-min" title="Minimizar">–</button><button class="dk-x" title="Cerrar">×</button></div>
-  <div class="dk-b"><p><b>Objetivo:</b> ${e.objetivo}</p>${e.setup.hide?'<p class="note">🔒 El generador está oculto. Descubra la señal solo con el osciloscopio.</p>':''}
+  <div class="dk-b"><p><b>Objetivo:</b> ${e.objetivo}</p>${e.setup.hide?`<p class="note">🔒 El generador está oculto. Descubra la señal solo con ${e.sa?'el analizador de espectro':'el osciloscopio'}.</p>`:''}
   <h5>Procedimiento</h5><ol>${e.pasos.map(p=>`<li>${p}</li>`).join('')}</ol>
   <h5>Preguntas</h5>${e.preguntas.map(qHTML).join('')}<div id="celebr"></div>
   <details class="sol"><summary>Ver resolución paso a paso</summary>${e.resolucion}</details>
   <div class="dk-f"><button class="again">↺ Volver a preparar</button>${i<EX.length-1?'<button class="next">Siguiente ejercicio →</button>':''}</div></div>`;
-  dock.classList.add('open');dock.classList.remove('min');$('#lab').scrollIntoView({behavior:'smooth'});}
+  dock.classList.add('open');dock.classList.remove('min');$(e.sa?'#sa':'#lab').scrollIntoView({behavior:'smooth'});}
 dock.addEventListener('click',e=>{const t=e.target;
   if(t.closest('.dk-x')){dock.classList.remove('open');return}
   if(t.closest('.dk-min')||(t.closest('.dk-h')&&!t.closest('button'))){dock.classList.toggle('min');return}
@@ -862,6 +1122,7 @@ dock.addEventListener('click',e=>{const t=e.target;
 $('#resetAll').addEventListener('click',()=>{applySetup(null);dock.classList.remove('open');$('#lab').scrollIntoView({behavior:'smooth'})});
 
 renderCards();syncGen();refreshSeg();refreshT();resize();drawCables();setTimeout(drawCables,300);requestAnimationFrame(loop);
+saResize();syncSA();requestAnimationFrame(saLoop);
 </script>
 </body>
 </html>
